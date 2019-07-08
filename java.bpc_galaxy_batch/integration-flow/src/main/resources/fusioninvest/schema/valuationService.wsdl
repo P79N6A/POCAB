@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="valuationService" targetNamespace="http://valuation.soa.sophis.net" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapwsdl="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://valuation.soa.sophis.net" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<wsdl:types>
+
+		<xsd:schema targetNamespace="http://sophis.net/sophis/common">
+			<xsd:include schemaLocation="common.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/party">
+			<xsd:include schemaLocation="party.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/ExoticMask">
+			<xsd:include schemaLocation="ClauseBuilderExoticMask.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/Instrument">
+			<xsd:include schemaLocation="instrument.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/folio">
+			<xsd:include schemaLocation="folio.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/SSI">
+			<xsd:include schemaLocation="ssi.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccount">
+			<xsd:include schemaLocation="NostroAccount.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/trade">
+			<xsd:include schemaLocation="trade.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/user">
+			<xsd:include schemaLocation="user.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/reporting">
+			<xsd:include schemaLocation="Reporting.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/preferences">
+			<xsd:include schemaLocation="preferences.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/valuation">
+			<xsd:include schemaLocation="Valuation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/scenario">
+			<xsd:include schemaLocation="scenario.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/history">
+			<xsd:include schemaLocation="history.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/otc_message">
+			<xsd:include schemaLocation="otc_message.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/sr">
+			<xsd:include schemaLocation="sr.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/reconciliation">
+			<xsd:include schemaLocation="reconciliation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/fund">
+			<xsd:include schemaLocation="fund.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmark">
+			<xsd:include schemaLocation="amBenchmark.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmarkComposition">
+			<xsd:include schemaLocation="amBenchmarkComposition.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/quotation">
+			<xsd:include schemaLocation="quotation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/sophis">
+			<xsd:include schemaLocation="sophis.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.w3.org/2000/09/xmldsig#">
+			<xsd:include schemaLocation="xmldsig-core-schema.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.fpml.org/2005/FpML-4-2">
+			<xsd:include schemaLocation="fpml-msg-4-2-extract.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/volatility">
+			<xsd:include schemaLocation="volatility.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/execution">
+			<xsd:include schemaLocation="execution.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4">
+			<xsd:include schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+		</xsd:schema>
+	
+		<xsd:schema targetNamespace="http://www.sophis.net/CorporateActions">
+			<xsd:include schemaLocation="CorporateActions.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/CreditRisk">
+			<xsd:include schemaLocation="CreditRiskData.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/dividend">
+			<xsd:include schemaLocation="dividend.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/yieldCurve">
+			<xsd:include schemaLocation="YieldCurve.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/correlation">
+			<xsd:include schemaLocation="correlation.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/repo_margin">
+			<xsd:include schemaLocation="repo_margin.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://sophis.net/sophis/gxml/dataExchange">
+			<xsd:include schemaLocation="dataExchange.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/authentication">
+			<xsd:include schemaLocation="authUtil.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/listedmarket">
+			<xsd:include schemaLocation="ListedMarket.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/position">
+			<xsd:include schemaLocation="position.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/FactorModels">
+			<xsd:include schemaLocation="FactorModelTypes.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/Tag">
+			<xsd:include schemaLocation="Tag.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccountReference">
+			<xsd:include schemaLocation="NostroAccountReference.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/accountingposition">
+			<xsd:include schemaLocation="accountingposition.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/dailyData">
+			<xsd:include schemaLocation="dailyData.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://valuation.soa.sophis.net" xmlns:authUtil="http://www.sophis.net/authentication" xmlns:common="http://sophis.net/sophis/common" xmlns:dataExch="http://sophis.net/sophis/gxml/dataExchange" xmlns:folio="http://www.sophis.net/folio" xmlns:fpml="http://www.fpml.org/2005/FpML-4-2" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:party="http://www.sophis.net/party" xmlns:sophis="http://www.sophis.net/sophis" xmlns:trade="http://www.sophis.net/trade" xmlns:user="http://www.sophis.net/user" xmlns:valuation="http://www.sophis.net/valuation">
+
+			<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/ExoticMask" schemaLocation="ClauseBuilderExoticMask.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/sophis" schemaLocation="sophis.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/otc_message" schemaLocation="otc_message.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/sr" schemaLocation="sr.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/fund" schemaLocation="fund.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/amBenchmark" schemaLocation="amBenchmark.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/history" schemaLocation="history.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/reconciliation" schemaLocation="reconciliation.xsd"/>
+			<xsd:import namespace="http://www.fixprotocol.org/FIXML-4-4" schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+			<xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+			<xsd:import namespace="http://sophis.net/sophis/gxml/dataExchange" schemaLocation="dataExchange.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/authentication" schemaLocation="authUtil.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/FactorModels" schemaLocation="FactorModelTypes.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/dailyData" schemaLocation="dailyData.xsd"/>
+			
+
+			<xsd:simpleType name="ErrorCode">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+							0 	= success
+							1 	= not logged in
+							2 	= already logged id
+							3 	= no license available
+							4 	= valuation error
+							5	= other error; a reason is provided
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="SUCCESS"/>
+					<xsd:enumeration value="NOTLOGGEDIN"/>
+					<xsd:enumeration value="ALREADYLOGGED"/>
+					<xsd:enumeration value="NOLICENSE"/>
+					<xsd:enumeration value="VALUATIONERROR"/>
+					<xsd:enumeration value="MISC"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="Error">
+				<xsd:sequence>
+					<xsd:element name="code" type="tns:ErrorCode"/>
+					<xsd:element minOccurs="0" name="reason" type="xsd:string">
+					<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">defined only if errorCode=3</xsd:documentation>
+					</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Valuate">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:valuationRequest"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuate" type="tns:Valuate"/>
+
+			<xsd:complexType name="ValuateResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateResponse" type="tns:ValuateResponse"/>
+
+			<xsd:complexType name="ValuateRaw">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="message" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRaw" type="tns:ValuateRaw"/>
+
+			<xsd:complexType name="ValuateRawResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="response" type="xsd:string"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRawResponse" type="tns:ValuateRawResponse"/>
+
+			<xsd:complexType name="ValuateRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:valuationRequest"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRMA" type="tns:ValuateRMA"/>
+
+			<xsd:complexType name="ValuateRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRMAResponse" type="tns:ValuateRMAResponse"/>
+
+			<xsd:complexType name="ValuateRawRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="message" type="xsd:string"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRawRMA" type="tns:ValuateRawRMA"/>
+
+			<xsd:complexType name="ValuateRawRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="response" type="xsd:string"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="valuateRawRMAResponse" type="tns:ValuateRawRMAResponse"/>
+
+			<xsd:complexType name="Login">
+				<xsd:sequence>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="login" type="tns:Login"/>
+
+			<xsd:complexType name="LoginResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="authUtil:token"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="loginResponse" type="tns:LoginResponse"/>
+
+			<xsd:complexType name="Logout">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logout" type="tns:Logout"/>
+
+			<xsd:complexType name="LogoutResponse">
+				<xsd:sequence>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logoutResponse" type="tns:LogoutResponse"/>
+
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="valuateRequest">
+		<wsdl:part element="tns:valuate" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="valuateResponse">
+		<wsdl:part element="tns:valuateResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRawRequest">
+		<wsdl:part element="tns:valuateRaw" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRawResponse">
+		<wsdl:part element="tns:valuateRawResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRMARequest">
+		<wsdl:part element="tns:valuateRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRMAResponse">
+		<wsdl:part element="tns:valuateRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRawRMARequest">
+		<wsdl:part element="tns:valuateRawRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="valuateRawRMAResponse">
+		<wsdl:part element="tns:valuateRawRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="loginRequest">
+		<wsdl:part element="tns:login" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="loginResponse">
+		<wsdl:part element="tns:loginResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="logoutRequest">
+		<wsdl:part element="tns:logout" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="logoutResponse">
+		<wsdl:part element="tns:logoutResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ValuationService">
+		<wsdl:operation name="valuate">
+		<wsdl:input message="tns:valuateRequest"/>
+		<wsdl:output message="tns:valuateResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="valuateRaw">
+		<wsdl:input message="tns:valuateRawRequest"/>
+		<wsdl:output message="tns:valuateRawResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+		<wsdl:input message="tns:loginRequest"/>
+		<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+		<wsdl:input message="tns:logoutRequest"/>
+		<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:portType name="ValuationServiceRMA">
+		<wsdl:operation name="valuateRMA">
+		<wsdl:input message="tns:valuateRMARequest"/>
+		<wsdl:output message="tns:valuateRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="valuateRawRMA">
+		<wsdl:input message="tns:valuateRawRMARequest"/>
+		<wsdl:output message="tns:valuateRawRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+		<wsdl:input message="tns:loginRequest"/>
+		<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+		<wsdl:input message="tns:logoutRequest"/>
+		<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ValuationServiceSOAP" type="tns:ValuationService">
+
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="valuate">
+
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/valuate"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="valuateRaw">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/valuateRaw"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/login"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/logout"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:binding name="ValuationServiceRMASOAP" type="tns:ValuationServiceRMA">
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="valuateRMA">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/valuateRMA"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="valuateRawRMA">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/valuateRawRMA"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/login"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+		<soapwsdl:operation soapAction="http://valuation.soa.sophis.net/logout"/>
+		<wsdl:input>
+			<soapwsdl:body use="literal"/>
+		</wsdl:input>
+		<wsdl:output>
+			<soapwsdl:body use="literal"/>
+		</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ValuationService">
+		<wsdl:port binding="tns:ValuationServiceSOAP" name="ValuationServicePort">
+		<soapwsdl:address location="http://localhost:9080/ValuationWsHttpRouter/ValuationServicePort"/>
+		</wsdl:port>
+	</wsdl:service>
+	<wsdl:service name="ValuationServiceRMA">
+
+		<wsdl:port binding="tns:ValuationServiceRMASOAP" name="ValuationServicePortRMA">
+		<soapwsdl:address location="http://localhost:9080/ValuationWsHttpRouter/ValuationServicePortRMA"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

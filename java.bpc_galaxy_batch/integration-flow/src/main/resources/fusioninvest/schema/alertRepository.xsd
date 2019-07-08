@@ -1,0 +1,548 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://sophis.net/sophis/alert" xmlns:tns="http://sophis.net/sophis/alert"
+            xmlns:fpml="http://www.fpml.org/2005/FpML-4-2">
+	<xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+
+	<xsd:simpleType name="BasicString">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ElementId">
+		<xsd:restriction base="xsd:int"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AlertDateTime">
+		<xsd:restriction base="xsd:dateTime"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="FPMLSender">
+		<xsd:restriction base="tns:BasicString"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="FPMLMessageId">
+		<xsd:restriction base="tns:BasicString"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="Operator">
+		<xsd:restriction base="tns:BasicString">
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AlertLevel">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="info"/>
+			<xsd:enumeration value="warning"/>
+			<xsd:enumeration value="error"/>
+			<xsd:enumeration value="integrity"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AlertStatus">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="NOT_PROCESSED"/>
+			<xsd:enumeration value="PROCESSED"/>
+			<xsd:enumeration value="IGNORED"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FileType">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="reimport"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="File">
+		<xsd:sequence>
+			<xsd:element name="description" minOccurs="0" maxOccurs="1" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Used in a result of DisplayQuery. It will contain in this case the first 500
+					characters of the column output (FPML_ALERTS_OUTPUTS)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="content" minOccurs="0" maxOccurs="1" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Used in a result of LoadQuery. It contains:
+					- the whole content of the column output (FPML_ALERTS_OUTPUTS) if no error occurs
+					- an error message if an error occurs
+					</xsd:documentation>
+				</xsd:annotation>
+
+			</xsd:element>
+		</xsd:sequence>
+
+		<!--
+		- When using with a LoadQuery, at least one of the 3 attributes bellow must be specified
+		(If none is specified, no element is returned).
+		- In a DisplayQuery result, all of them will be filled -->
+		<xsd:attribute name="outputid" type="tns:ElementId" use="optional"/>
+		<xsd:attribute name="type" type="tns:FileType" use="optional"/>
+		<xsd:attribute name="alertId" type="tns:ElementId" use="optional"/>
+	</xsd:complexType>
+	<xsd:simpleType name="ActionType">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="reserve"/>
+			<xsd:enumeration value="unreserve"/>
+			<xsd:enumeration value="process"/><!-- for this action the standard IS interfaces will be used-->
+			<xsd:enumeration value="ignore"/>
+			<xsd:enumeration value="nothing"/> <!-- used to display the null values of the column action_type -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Action">
+		<xsd:sequence>
+			<xsd:element name="alertId" type="tns:ElementId"/>
+			<xsd:element name="action_type" type="tns:ActionType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionResult">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Action">
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:sequence>
+							<xsd:element name="actionDateTime" type="xsd:dateTime"/>
+							<xsd:element name="status" type="tns:AlertStatus">
+								<xsd:annotation>
+									<xsd:documentation>
+									Specifies the state of the alert after the action. The alert repository does not have
+									any intelligence concerning the alerts state machine, everything is in the console.
+									</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:element name="errorMsg" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>
+								Specifies the state of the alert after the action. The alert repository does not have
+								any intelligence concerning the alerts state machine, everything is in the console.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:choice>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Alert">
+		<xsd:sequence>
+			<xsd:element minOccurs="1" maxOccurs="1" name="alertid" type="tns:ElementId"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="father_alertid" type="tns:ElementId"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="has_children" type="xsd:boolean"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="fpml_messageid" type="tns:FPMLMessageId"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="fpml_sender" type="tns:FPMLSender"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_messageid" type="xsd:int"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_datecode" type="xsd:int"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_source" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_irkd" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_instrument" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_externalRef" type="xsd:string"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="rma_operation" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="alert_datetime" type="tns:AlertDateTime"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="alert_level" type="tns:AlertLevel"/>
+			<xsd:element name="description" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="status" type="tns:AlertStatus"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="action_operator" type="tns:Operator"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="action_datetime" type="tns:AlertDateTime"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="action_type" type="tns:ActionType"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="action_outputids" type="xsd:string"/>
+			<xsd:element minOccurs="1" maxOccurs="1" name="last_update_time" type="xsd:dateTime"/>
+			<xsd:element minOccurs="0" maxOccurs="1" name="entity" type="xsd:string"/>
+			<xsd:element name="files" minOccurs="0" maxOccurs="1" type="tns:Files" />
+			<xsd:element name="executionFields" minOccurs="0" maxOccurs="1" type="tns:ExecutionFields" />
+      <xsd:element name="processing_count" minOccurs="0" maxOccurs="1" type="xsd:int" />
+    </xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="CriterionMode">
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="include"/>
+			<xsd:enumeration value="exclude"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:complexType name="ExecutionFields" >
+		<xsd:sequence>
+			<xsd:element name="executionField"  type="tns:ExecutionField" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="outputid" type="tns:ElementId" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ExecutionField" >
+		<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="columnId" type="xsd:string" use="required"/>
+				</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ColumnsDescription" >
+		<xsd:sequence>
+			<xsd:element name="isExecution"  type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="column"  type="tns:ColumnDescription" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ColumnDescription" >
+		<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="columnId" type="xsd:string" use="required"/>
+					<xsd:attribute name="isWritable" type="xsd:boolean" use="required" />
+					<xsd:attribute name="autoCompletion" type="xsd:boolean" use="optional" default="false"/>
+				</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="BusinessEventsDescription" >
+		<xsd:sequence>
+			<xsd:element name="bEvent"  type="tns:BusinessEventDescription" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="dummy1"  type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="BusinessEventDescription" >
+		<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="id" type="xsd:string" use="required"/>
+				</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="UniversalsDescription" >
+		<xsd:sequence>
+			<xsd:element name="univerval"  type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="dummy2"  type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Criterion" abstract="true">
+		<xsd:sequence/>
+		<xsd:attribute name="mode" type="tns:CriterionMode" default="include"/>
+	</xsd:complexType>
+	<xsd:complexType name="DateCriterion" abstract="false">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="fromDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="toDate" type="xsd:dateTime" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DateActionCriterion" abstract="false">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="fromDate" type="xsd:dateTime" minOccurs="0"/>
+					<xsd:element name="toDate" type="xsd:dateTime" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AlertCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="alertId" type="tns:ElementId" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AlertLevelCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="level" type="tns:AlertLevel" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ActionTypeCriterion" mixed="true">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="action" type="tns:ActionType" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FPMLSenderCriterion" mixed="true">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="fPMLsender" type="tns:FPMLSender" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="OperatorCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="action_operator" type="tns:Operator" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="EntityCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="fpmlEntity" type="xsd:string" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ChildrenCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="has_children" type="xsd:boolean"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="UserBookidsAlertsCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="onlyUserBookIds" type="xsd:boolean" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="BookIdsCriterion">
+		<xsd:complexContent>
+			<xsd:extension base="tns:Criterion">
+				<xsd:sequence>
+					<xsd:element name="idBook" type="tns:ElementId" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+
+	<xsd:element name="abstractCriterion" type="tns:Criterion"/>
+	<xsd:element name="date" type="tns:DateCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="dateAction" type="tns:DateActionCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="levels" type="tns:AlertLevelCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="alerts" type="tns:AlertCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="actionTypes" type="tns:ActionTypeCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="fpmlSenders" type="tns:FPMLSenderCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="operator" type="tns:OperatorCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="children" type="tns:ChildrenCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="entities" type="tns:EntityCriterion" substitutionGroup="tns:abstractCriterion"/>
+	<xsd:element name="userBookIds" type="tns:UserBookidsAlertsCriterion" substitutionGroup="tns:abstractCriterion"  />
+	<xsd:element name="bookIds" type="tns:BookIdsCriterion" substitutionGroup="tns:abstractCriterion"  />
+
+	<xsd:complexType name="Cursor">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>
+				Informations used to split a request in more smaller requests.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="idRequest" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+					Used in requests and answers. When initiating the request, the client sets this field to 0.
+					The server will create unique id and return it in the first answer. The client must provide
+					this id in all the further partial requests.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="packetSize" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+					In requests = the maximum size of the requested packet. 0 = return all.
+					In answers = the size of the returned packet.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="remaining" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+					Only in answers: indicates how many elements remain to be obtained to complete the request.
+					0 = finished.
+					negative value = error; consult the error message in this case
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorMsg" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+					Only in answers.
+					Filled up only when there is a negative value in 'remaining'
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="cursor" type="tns:Cursor"/>
+
+	<xsd:complexType name="AlertQuery" abstract="true">
+		<xsd:attribute name="id" type="xsd:ID">
+			<xsd:annotation>
+				<xsd:documentation>Needed for what?</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="DisplayQuery">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertQuery">
+				<xsd:sequence>
+					<xsd:element name="criterions">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:choice maxOccurs="unbounded">
+									<xsd:element ref="tns:abstractCriterion" minOccurs="1" maxOccurs="1"/>
+								</xsd:choice>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="nbMaxResult" type="xsd:int"/>
+					<xsd:element name="isExecution" type="xsd:boolean"  default="false"  minOccurs="0" maxOccurs="1" />
+					<xsd:element ref="tns:cursor" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="DisplayResult">
+		<xsd:complexContent>
+			<xsd:extension base="tns:DisplayQuery">
+				<xsd:sequence>
+					<xsd:element name="alerts" type="tns:Alerts"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Files">
+		<xsd:sequence>
+			<xsd:element name="file" type="tns:File" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Alerts">
+		<xsd:sequence>
+			<xsd:element name="alert" type="tns:Alert" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LoadResult">
+		<xsd:complexContent>
+			<xsd:extension base="tns:LoadQuery">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ActionQuery">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertQuery">
+				<xsd:sequence>
+					<xsd:element name="action_operator" type="tns:Operator"/>
+					<xsd:element name="actions">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="action" type="tns:Action" minOccurs="1" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="isExecution" type="xsd:boolean"  default="false"  minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ActionQueryResult">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertQuery">
+				<xsd:sequence>
+					<xsd:element name="action_operator" type="tns:Operator"/>
+					<xsd:element name="actionResults">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="actionResult" type="tns:ActionResult" minOccurs="1" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="isExecution" type="xsd:boolean"  default="false"  minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LoadQuery">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertQuery">
+				<xsd:sequence>
+					<xsd:element name="files" type="tns:Files"/>
+					<xsd:element name="executionFields" minOccurs="0" maxOccurs="1" type="tns:ExecutionFields" />
+					<xsd:element name="isExecution" type="xsd:boolean"  default="false"  minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="abstractQuery" abstract="true" type="tns:AlertQuery"/>
+	<xsd:element name="displayQuery" type="tns:DisplayQuery" substitutionGroup="tns:abstractQuery"/>
+	<xsd:element name="loadQuery" type="tns:LoadQuery" substitutionGroup="tns:abstractQuery"/>
+	<xsd:element name="alertConfigQuery" type="tns:AlertConfigQuery" substitutionGroup="tns:abstractQuery"/>
+	<xsd:element name="actionQuery" type="tns:ActionQuery" substitutionGroup="tns:abstractQuery"/>
+	<xsd:element name="abstractResult" type="tns:AlertQuery"/>
+	<xsd:element name="displayResult" type="tns:DisplayResult" substitutionGroup="tns:abstractResult"/>
+	<xsd:element name="loadResult" type="tns:LoadResult" substitutionGroup="tns:abstractResult"/>
+	<xsd:element name="actionQueryResult" type="tns:ActionQueryResult" substitutionGroup="tns:abstractResult"/>
+	<xsd:element name="alertConfigResult" type="tns:AlertConfigResult" substitutionGroup="tns:abstractResult"/>
+	<xsd:complexType name="AlertMessage">
+		<xsd:complexContent>
+			<xsd:extension base="fpml:Message">
+				<xsd:sequence>
+					<xsd:element ref="tns:abstractQuery"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AlertMessageResult">
+		<xsd:complexContent>
+			<xsd:extension base="fpml:NotificationMessage">
+				<xsd:sequence>
+					<xsd:element ref="tns:abstractResult"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="message" type="fpml:Message"/>
+	<xsd:element name="alertMessage" type="tns:AlertMessage" substitutionGroup="tns:message"/>
+	<xsd:element name="alertMessageResult" type="tns:AlertMessageResult" substitutionGroup="tns:message"/>
+
+	<!--
+	<xs:simpleType name="UserRightEnum">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+			V : View
+			M : Modify
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value = "V"/>
+			<xs:enumeration value = "M"/>
+		</xs:restriction>
+	</xs:simpleType>
+	-->
+
+	<xsd:complexType name="AlertConfigQuery">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertQuery">
+				<xsd:sequence>
+					<xsd:element name="user" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="AlertConfigResult">
+		<xsd:complexContent>
+			<xsd:extension base="tns:AlertConfigQuery">
+				<xsd:sequence>
+					<xsd:element name="userRight" type="xsd:string"  minOccurs="1" maxOccurs="1"/>
+					<xsd:element name="columnsDescription" type="tns:ColumnsDescription"   minOccurs="1" maxOccurs="unbounded"/>
+					<xsd:element name="businessEventsDescription" type="tns:BusinessEventsDescription"   minOccurs="1" maxOccurs="unbounded"/>
+					<xsd:element name="universalsDescription" type="tns:UniversalsDescription"   minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>

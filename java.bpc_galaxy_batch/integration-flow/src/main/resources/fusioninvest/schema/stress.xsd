@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sophis.net/sophis/var/stress" targetNamespace="http://sophis.net/sophis/var/stress">
+  <xs:complexType name="GenericStressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the stress type : CommoditySpot, PowerCommoditySpot, ExchangeRate, InstrumentSpread, CreditSpread...</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MaturityStressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the GenericStressType and the maturity in number of days. Used for Equity and index implied volatility shifts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+        <xs:attribute name="Maturity" type="tns:MaturityType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="MaturityStressInterestRateCurveType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" 	type="tns:StressMode"/>
+        <xs:attribute name="Maturity" 		type="tns:MaturityType"/>
+        <xs:attribute name="Curve"        type="tns:InterestRateCurveType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+
+  <xs:complexType name="MaturityStressInflationCurveType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" 	  type="tns:StressMode"/>
+        <xs:attribute name="Maturity" 		  type="tns:MaturityType"/>
+        <xs:attribute name="Curve"          type="tns:InflationCurveType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MaturityStrikeStressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the GenericStressType, the Maturity and the strike value of the stress. Used for Equity and index skew shifts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+        <xs:attribute name="Maturity" type="tns:MaturityType" />
+        <xs:attribute name="Strike" type="tns:StrikeType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Maturity1Maturity2StressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the GenericStressType, the Maturity of the IR option (in number of days, ex. : 1000), the tenor maturity (iin number of days, ex. : 180), and the stress value. Used for Interest rate volatility shifts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+        <xs:attribute name="Maturity1" type="tns:MaturityType" />
+        <xs:attribute name="Maturity2" type="tns:MaturityType" />
+        <xs:attribute name="Strike" type="tns:StrikeType" />
+        <xs:attribute name="Curve" type="tns:CurveType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MaturitySeniorityEventStressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the GenericStressType, the Maturity (in days), the Seniority and the DefaultEvent. Used for Credit default swap spread shifts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+        <xs:attribute name="Maturity" type="tns:MaturityType" />
+        <xs:attribute name="Seniority" type="tns:SeniorityType" />
+        <xs:attribute name="DefaultEvent" type="tns:DefaultEventType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MaturityLoadDeliveryStressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Contains the GenericStressType, the Maturity (in days), the load and the delivery type. Used for Power commodity shifts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="StressType" type="tns:StressMode" />
+        <xs:attribute name="Maturity" type="tns:MaturityType" />
+        <xs:attribute name="Load" type="tns:LoadType" />
+        <xs:attribute name="Delivery" type="tns:DeliveryType" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="StressMode">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Type of the stress applied : "absolute", "fixed", "relative".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="default" />
+      <xs:enumeration value="absolute" />
+      <xs:enumeration value="relative" />
+      <xs:enumeration value="fixed" />
+     <xs:enumeration value="index"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MaturityType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Maturities in number of days.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="StrikeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Strike used to defined the shifts. Used for volatility bumps : "Equity and index volatility", "Commodity volatility", "Future volatility".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="SeniorityType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Seniority of the CDS spread shifts applied. Ex. : SNRFOR (41), SECDOM (21).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="DefaultEventType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Event type of the CDS spread shifts applied. Ex. : MR (61), MM (102), CR (101).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="CurveType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Define on which kind of curve the P&amp;L will be computed : callAsk, callMarket, putAsk.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="none" />
+      <xs:enumeration value="callAsk" />
+      <xs:enumeration value="callMarket" />
+      <xs:enumeration value="putAsk" />
+      <xs:enumeration value="callManagement" />
+      <xs:enumeration value="putMarket" />
+      <xs:enumeration value="callResult" />
+      <xs:enumeration value="putManagement" />
+      <xs:enumeration value="callBid" />
+      <xs:enumeration value="putResult" />
+      <xs:enumeration value="putBid" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LoadType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Used for Power Commodity stress shifts. Defines the load type of the shift.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="DeliveryType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Used for Power Commodity stress shifts. Defines the delivery type of the shift.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <xs:simpleType name="InterestRateCurveType">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="zeroCoupon"/>
+      <xs:enumeration value="marketPoint"/>
+      <xs:enumeration value="discountFactor"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InflationCurveType">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="zeroCoupon"/>
+      <xs:enumeration value="marketPoint"/>
+      <xs:enumeration value="discountFactor"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

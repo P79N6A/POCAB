@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by BNP PARIBAS ASSURANCE (BNP PARIBAS ASSURANCE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0.3">  
+  <!--4.0.3 (31/07/2009, FTSAT ETL) - MàJ / correction automatique d'encodage vers ISO-8859-1 -->
+  <!--4.0.2 (11/05/2009/ FTSAT PWCT) - MàJ / correction automatique d'encodage vers ISO8859-1 -->  
+  <!--06/04/2009 - DTA : remplacement des types nonNegativeInteger et positiveInteger par integer suite à bug informatica de la nouvelle version 8.6-->  
+  <!--V4.0.0 (27/11/08, CMO) : Revue du bloc Anmly : Suppression de la sequence itérative dans le bloc Anomly.Source (remontée des tags ProvdrAnmlyType et Desc), suppression de l'itération sur la sequence après Target et ajout d'une itération sur Anomly.-->  
+  <!--V4.0.0 (21/10/08, CMO) : Remplacement des xs:decimal par xs:double et passage à la nouvelle numérotation des pivots - modif connecteurs all sur optfutprice et indexprice en sequence-->  
+  <!--V03.05 (30/05/08, CMO) : Modification de QuotationType suite aux abbréviations des balises du type complexe ObjectIdentificationType+Format EventInpuDate + Ajout de MidPrice dans DebtPrice + Rattachement Status à un type-->  
+  <!--V03.04 (22/05/08, DTAS) : incrément du numéro de version pour rester en phase avec Event et Dump qui ont évolué-->  
+  <!--V03.03 : Suppression des blocs FundPrice et InHouseFundPrice qui ne sont pas utiles sur ce pivot => Pivot NetAssetValue-->  
+  <!--V03.02 : Ajout de CashBillRate (taux bon du trésor) dans SecurityPrice/Measure/DebtPrice (28/04/2008 DTAS)-->  
+  <!--V03.00 (16/04/2008, Eric de Rochefort) : livraison ETOIL-->  
+  <!--V2.04 : Revue du bloc InitiatingEvent (Distinction Evt interne/externe et autres identifiants) + Context (ajout CREIdentifier) + Renommage de SecurityPrice en Quotation-->  
+  <!--V2.03 : Modification de InitiatingEvent (ajout InputChannelCode), renommage bloc Identifier - Context pointe sur le nouveau type DataContext et création blocs Status et Provider : CorporateActionIndicator est supprimé : info à véhiculer dans InitiatingEvent (nouvelle valeur EventTypeCode = "OST")-->  
+  <!--V2.02 : Attention : Ne pas mettre de restriction sur certains types complexes (BaseOneRate) : il s'agit sans doute d'un Bug Informatica... -->  
+  <!--Normalisation Cours - Cours Titres - Version V 2.01 du 14 Mars 2008 - CM-->  
+  <!--V2.01 : Passage du bloc InitiatingEvent en facultatif + retour en arrière sur le bloc DataContext pour limiter les impacts applicatifs-->  
+  <!--V2.00 : Passage des Cours en itératif pour gérer les cours en pourcentage et à la pièce (ETOIL) + Passage aux normes techniques-->  
+  <!--V1.24 : Ajout de la source du cours "SourceOfPrice" et de l'indicateur de coupon couru inclu "CumDividendIndicator" pour les obligations et TCN (Refcours AVT22 - interface Reuters-Datascope)-->  
+  <!--V1.23 : Passage en obligatoire de la donnée NetAssetValuePerUnit pour les OPCVM et les FI-->  
+  <!--V1.23 : Ajout de l'objet SecurityPriceDump - ajout de la donnée PriceExpression - Création du bloc InHouseFundPrice pour les VL de Fonds internes-->  
+  <!--V1.23 : Création de DebtPrice, Ajout des données MidPrice, YieldToMaturity, WeightedAverageLife, TradePrice, CorporateActionIndicator, UpdateDate, SecurityPriceStatus + Bloc Anomaly + Objet SecurityPriceDump-->  
+  <!--V1.22 : Ajout du cours d'un indice, arborescence IndexPrice-->  
+  <xs:include schemaLocation="NormalisationTypes.xsd"/>  
+  <xs:complexType name="QuotationType"> 
+    <xs:annotation> 
+      <xs:documentation>Objet : Cours</xs:documentation> 
+    </xs:annotation>  
+    <xs:sequence> 
+      <xs:element name="QuotatnIdntfctn"> 
+        <xs:complexType> 
+          <xs:sequence> 
+            <xs:choice> 
+              <xs:sequence> 
+                <xs:element name="SecurtyIdntfctn"> 
+                  <xs:annotation> 
+                    <xs:documentation>Identification d'un Titre (action, obligation...)</xs:documentation> 
+                  </xs:annotation>  
+                  <xs:complexType> 
+                    <xs:sequence> 
+                      <xs:element name="ISIN" type="ISINIdentifier" minOccurs="0"> 
+                        <xs:annotation> 
+                          <xs:documentation>International Securities Identifier Number</xs:documentation> 
+                        </xs:annotation> 
+                      </xs:element>  
+                      <xs:element name="OthrIdntfctn" type="AlternateFinancialInstrumentIdentification" minOccurs="0" maxOccurs="unbounded"/> 
+                    </xs:sequence> 
+                  </xs:complexType> 
+                </xs:element>  
+                <xs:element name="PlaceOfListng" type="MICIdentifier" minOccurs="0"> 
+                  <xs:annotation> 
+                    <xs:documentation>Place de cotation</xs:documentation> 
+                  </xs:annotation> 
+                </xs:element> 
+              </xs:sequence>  
+              <xs:element name="FutIdntfctn"> 
+                <xs:annotation> 
+                  <xs:documentation>Identification d'un Future</xs:documentation> 
+                </xs:annotation>  
+                <xs:complexType> 
+                  <xs:sequence> 
+                    <xs:element name="MarktIdntfctn" type="MICIdentifier"> 
+                      <xs:annotation> 
+                        <xs:documentation>A standardized code used to identify places of trade, ie, stock exchanges, regulated (eg, Electronic Trading Platforms (ECN)) and unregulated (eg, Automated Trading Systems (ATS)) markets, as sources of prices and related information in order to facilitate automated processing.</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="CntrctName" type="Name"> 
+                      <xs:annotation> 
+                        <xs:documentation>Nom d'un contrat future ou option</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="ExpiryDate" type="ISODateTime"> 
+                      <xs:annotation> 
+                        <xs:documentation>Date à laquelle expire un privilège (option, droit...)</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element> 
+                  </xs:sequence> 
+                </xs:complexType> 
+              </xs:element>  
+              <xs:element name="OptIdntfctn"> 
+                <xs:annotation> 
+                  <xs:documentation>Identification d'une Option</xs:documentation> 
+                </xs:annotation>  
+                <xs:complexType> 
+                  <xs:sequence> 
+                    <xs:element name="MarktIdntfctn" type="MICIdentifier"> 
+                      <xs:annotation> 
+                        <xs:documentation>A standardized code used to identify places of trade, ie, stock exchanges, regulated (eg, Electronic Trading Platforms (ECN)) and unregulated (eg, Automated Trading Systems (ATS)) markets, as sources of prices and related information in order to facilitate automated processing.</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="CntrctName" type="Name"> 
+                      <xs:annotation> 
+                        <xs:documentation>Nom d'un contrat future ou option</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="CntrctVrsNumb"> 
+                      <xs:annotation> 
+                        <xs:documentation>Numéro de version de l'option ou de la tranche de l'instrument financier</xs:documentation> 
+                      </xs:annotation>  
+                      <xs:simpleType> 
+                        <xs:restriction base="xs:string"> 
+                          <xs:maxLength value="3"/> 
+                        </xs:restriction> 
+                      </xs:simpleType> 
+                    </xs:element>  
+                    <xs:element name="ExpiryDate" type="ISODateTime"> 
+                      <xs:annotation> 
+                        <xs:documentation>Date à laquelle expire un privilège (option, droit...)</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="OptType" type="OptionTypeCode"> 
+                      <xs:annotation> 
+                        <xs:documentation>Spécifie si une option est une option d'achat (Call, droit d'acheter le sous-jacent) ou de vente (Put, droit de vendre le sous-jacent)</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element>  
+                    <xs:element name="ExrcisePrice" type="Price"> 
+                      <xs:annotation> 
+                        <xs:documentation>Prix auquel le détenteur de l'option peut acheter ou vendre l'instrument sous-jacent</xs:documentation> 
+                      </xs:annotation> 
+                    </xs:element> 
+                  </xs:sequence> 
+                </xs:complexType> 
+              </xs:element> 
+            </xs:choice>  
+            <xs:element name="ValdtyDate" type="ISODate"> 
+              <xs:annotation> 
+                <xs:documentation>Date de validité d'une donnée ou d'un objet</xs:documentation> 
+              </xs:annotation> 
+            </xs:element> 
+          </xs:sequence> 
+        </xs:complexType> 
+      </xs:element>  
+      <xs:element name="QuotatnStatus"> 
+        <xs:complexType> 
+          <xs:sequence> 
+            <xs:element name="Status" type="QuotationStatusCode"> 
+              <xs:annotation> 
+                <xs:documentation>Statut du cours : Valide, Modifie</xs:documentation> 
+              </xs:annotation> 
+            </xs:element>  
+            <xs:element name="EffctveDate" type="ISODate" minOccurs="0"> 
+              <xs:annotation> 
+                <xs:documentation>Date d'effet du statut</xs:documentation> 
+              </xs:annotation> 
+            </xs:element> 
+          </xs:sequence> 
+        </xs:complexType> 
+      </xs:element>  
+      <xs:element name="InitiatngEvt" type="STDInitiatingEventType" minOccurs="0"/>  
+      <xs:element name="Mesure"> 
+        <xs:complexType> 
+          <xs:choice> 
+            <xs:element name="SharePrice"> 
+              <xs:annotation> 
+                <xs:documentation>Cours Action</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="AskPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à la vente</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BidPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à l'achat</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="HighPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus haute d'un cours sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LowPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus basse d'un prix sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OpeningPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>The value at the beginning of trading or opening of the market.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ClosngPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours (à l'achat ou à la vente) observé à la fin d'une session de négociation sur un marché organisé</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="IndctvePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours indicatif utilisé à des fins de valorisation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours négocié</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceChnge" type="BaseOneRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Variation d'un cours entre deux valorisations.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrQty" type="FinancialInstrumentQuantity" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Nombre de titres échangés sur une période spécifiée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant des capitaux échangés sur un Titre sur une Période donnée.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BDFRefRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux BdF</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceExprssn" type="PriceExpressionCode" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Type d'expression du cours : à la pièce ou en % du nominal</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="SrceOfPrice" type="IdentificationInformation" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Indicates the source of price quotation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element>  
+            <xs:element name="BondPrice"> 
+              <xs:annotation> 
+                <xs:documentation>Cours obligation</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="Yield" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Rendement</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ISMAYield" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Rendement calculé selon la méthode de l'ISMA</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="YieldToMaturty" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux actuariel</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetMargn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>C'est le résultat net divisé par le chiffre d'affaires hors taxes</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetDuratn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Duration nette. Mesure du risque de taux d'intérêt d'un instrument financier correspondant à la vie moyenne exprimée en années des flux dégagés par cet instrument (intérêts et capital), actualisés au taux en vigueur sur le marché à la date des calculs.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetModifDuratn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Sensibilité nette. Indicateur qui permet de mesurer la variation, à la hausse ou à la baisse, du prix d' une obligation ou de la VL d'un OPCVM obligataire</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="WeightdAvrgeLife" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Contains the weighted average life of the fixed income instrument (expressed in years).</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OutstdngAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant global d'une émission de titres</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="AccredIntrstRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Coupon couru exprimé sous forme de taux</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradeDateAccredIntrst" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Coupon couru en date de négociation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="CumDvdndIndic" type="YesNoIndicator" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Indicates whether the dividend is included, ie, cum-dividend, in the price. When the dividend is not included, the price will be ex-dividend.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="AskPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à la vente</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BidPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à l'achat</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="MidPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>An order pegged against the mid price, which is the average between the offer and bid prices.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="HighPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus haute d'un cours sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LowPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus basse d'un prix sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OpeningPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>The value at the beginning of trading or opening of the market.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ClosngPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours (à l'achat ou à la vente) observé à la fin d'une session de négociation sur un marché organisé</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="IndctvePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours indicatif utilisé à des fins de valorisation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours négocié</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceChnge" type="BaseOneRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Variation d'un cours entre deux valorisations.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrQty" type="FinancialInstrumentQuantity" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Nombre de titres échangés sur une période spécifiée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant des capitaux échangés sur un Titre sur une Période donnée.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BDFRefRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux BdF</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceExprssn" type="PriceExpressionCode" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Type d'expression du cours : à la pièce ou en % du nominal</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="SrceOfPrice" type="IdentificationInformation" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Indicates the source of price quotation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element>  
+            <xs:element name="DebtPrice"> 
+              <xs:annotation> 
+                <xs:documentation>Cours TCN</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="Yield" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Rendement</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ISMAYield" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Rendement calculé selon la méthode de l'ISMA</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="YieldToMaturty" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux actuariel</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetMargn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>C'est le résultat net divisé par le chiffre d'affaires hors taxes</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetDuratn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Duration nette. Mesure du risque de taux d'intérêt d'un instrument financier correspondant à la vie moyenne exprimée en années des flux dégagés par cet instrument (intérêts et capital), actualisés au taux en vigueur sur le marché à la date des calculs.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="NetModifDuratn" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Sensibilité nette. Indicateur qui permet de mesurer la variation, à la hausse ou à la baisse, du prix d' une obligation ou de la VL d'un OPCVM obligataire</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="WeightdAvrgeLife" type="DecimalNumber" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Contains the weighted average life of the fixed income instrument (expressed in years).</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OutstdngAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant global d'une émission de titres</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="AccredIntrstRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Coupon couru exprimé sous forme de taux</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradeDateAccredIntrst" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Coupon couru en date de négociation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="CumDvdndIndic" type="YesNoIndicator" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Indicates whether the dividend is included, ie, cum-dividend, in the price. When the dividend is not included, the price will be ex-dividend.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="AskPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à la vente</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BidPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à l'achat</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="MidPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>An order pegged against the mid price, which is the average between the offer and bid prices.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="HighPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus haute d'un cours sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LowPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus basse d'un prix sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OpeningPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>The value at the beginning of trading or opening of the market.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ClosngPrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours (à l'achat ou à la vente) observé à la fin d'une session de négociation sur un marché organisé</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="IndctvePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours indicatif utilisé à des fins de valorisation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradePrice" type="Price" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours négocié</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceChnge" type="BaseOneRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Variation d'un cours entre deux valorisations.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrQty" type="FinancialInstrumentQuantity" minOccurs="0" maxOccurs="unbounded"> 
+                    <xs:annotation> 
+                      <xs:documentation>Nombre de titres échangés sur une période spécifiée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant des capitaux échangés sur un Titre sur une Période donnée.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BDFRefRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux BdF</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="CashBillRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux bon du Trésor</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceExprssn" type="PriceExpressionCode" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Type d'expression du cours : à la pièce ou en % du nominal</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="SrceOfPrice" type="IdentificationInformation" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Indicates the source of price quotation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element>  
+            <xs:element name="OptFutPrice"> 
+              <xs:annotation> 
+                <xs:documentation>Cours option ou future</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="AskPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à la vente</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BidPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours offert à l'achat</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="HighPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus haute d'un cours sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LowPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus basse d'un prix sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OpeningPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>The value at the beginning of trading or opening of the market.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ClosngPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours (à l'achat ou à la vente) observé à la fin d'une session de négociation sur un marché organisé</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="IndctvePrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours indicatif utilisé à des fins de valorisation</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="SettlmntPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Cours de compensation d'un Future ou d'une Option</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceChnge" type="BaseOneRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Variation d'un cours entre deux valorisations.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TradngOpenIntrst" type="FinancialInstrumentQuantity" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Trading Open Interest</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="MarktOpenIntrst" type="FinancialInstrumentQuantity" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Market Open Interest</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrQty" type="FinancialInstrumentQuantity" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Nombre de titres échangés sur une période spécifiée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="TrnvrAmnt" type="CurrencyAndAmount" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Montant des capitaux échangés sur un Titre sur une Période donnée.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="BDFRefRate" type="PercentageRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Taux BdF</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element>  
+            <xs:element name="IndexPrice"> 
+              <xs:annotation> 
+                <xs:documentation>Cours Indice</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="HighPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus haute d'un cours sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LowPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>La valeur la plus basse d'un prix sur une période donnée</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="OpeningPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>The value at the beginning of trading or opening of the market.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="ClosngPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours (à l'achat ou à la vente) observé à la fin d'une session de négociation sur un marché organisé</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="MarktPrice" type="Price" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Dernier cours d'un Titre observé sur un Marché, déterminé par l'offre et le demande.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="PriceChnge" type="BaseOneRate" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>Variation d'un cours entre deux valorisations.</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element> 
+          </xs:choice> 
+        </xs:complexType> 
+      </xs:element>  
+      <xs:element name="Provdr"> 
+        <xs:annotation> 
+          <xs:documentation>Informations sur le provider</xs:documentation> 
+        </xs:annotation>  
+        <xs:complexType> 
+          <xs:sequence> 
+            <xs:element name="DataProvdr" type="ProviderCode"> 
+              <xs:annotation> 
+                <xs:documentation>Source d'informations financières. Fournit des informations et des données financières via divers media.</xs:documentation> 
+              </xs:annotation> 
+            </xs:element>  
+            <xs:element name="ProvdrTimeStamp" type="ISODateTime"> 
+              <xs:annotation> 
+                <xs:documentation>Date et heure de récupération des données chez le Provider</xs:documentation> 
+              </xs:annotation> 
+            </xs:element> 
+          </xs:sequence> 
+        </xs:complexType> 
+      </xs:element>  
+      <xs:element name="Anmly" minOccurs="0" maxOccurs="unbounded"> 
+        <xs:annotation> 
+          <xs:documentation>Bloc utilisé pour les Cours reçus des providers en anomalie (format/contenu)</xs:documentation> 
+        </xs:annotation>  
+        <xs:complexType> 
+          <xs:sequence> 
+            <xs:element name="Srce"> 
+              <xs:annotation> 
+                <xs:documentation>Données Sources</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="LineNumb" type="xs:integer" minOccurs="0"> 
+                    <xs:annotation> 
+                      <xs:documentation>N° ligne</xs:documentation> 
+                    </xs:annotation> 
+                  </xs:element>  
+                  <xs:element name="LineValue"> 
+                    <xs:annotation> 
+                      <xs:documentation>Ligne en anomalie</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="500"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element>  
+                  <xs:element name="ProvdrAnmlyType"> 
+                    <xs:annotation> 
+                      <xs:documentation>Type d'anomalie référencée chez le Provider</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="100"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element>  
+                  <xs:element name="ProvdrAnmlyDesc"> 
+                    <xs:annotation> 
+                      <xs:documentation>Description de l'anomalie référencée chez le Provider</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="200"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element>  
+            <xs:element name="Trget"> 
+              <xs:annotation> 
+                <xs:documentation>Données Cibles</xs:documentation> 
+              </xs:annotation>  
+              <xs:complexType> 
+                <xs:sequence> 
+                  <xs:element name="TagName"> 
+                    <xs:annotation> 
+                      <xs:documentation>Nom de l'attribut en erreur</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="100"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element>  
+                  <xs:element name="TagValue"> 
+                    <xs:annotation> 
+                      <xs:documentation>Valeur de l'attribut en erreur</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="100"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element>  
+                  <xs:element name="FailReasn"> 
+                    <xs:annotation> 
+                      <xs:documentation>Raison de l'échec</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="50"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element>  
+                  <xs:element name="Desc"> 
+                    <xs:annotation> 
+                      <xs:documentation>Description non structurée</xs:documentation> 
+                    </xs:annotation>  
+                    <xs:simpleType> 
+                      <xs:restriction base="xs:string"> 
+                        <xs:maxLength value="500"/> 
+                      </xs:restriction> 
+                    </xs:simpleType> 
+                  </xs:element> 
+                </xs:sequence> 
+              </xs:complexType> 
+            </xs:element> 
+          </xs:sequence> 
+        </xs:complexType> 
+      </xs:element>  
+      <xs:element name="Cntxt" type="DataContextType"/> 
+    </xs:sequence> 
+  </xs:complexType>  
+
+</xs:schema>

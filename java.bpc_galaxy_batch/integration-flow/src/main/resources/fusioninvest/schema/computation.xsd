@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sophis.net/sophis/var/computation" targetNamespace="http://sophis.net/sophis/var/computation">
+  <xs:complexType name="ComputationsType">
+	<xs:annotation>
+	  <xs:documentation xml:lang="en">Describes computation preferences, that is to say the global stress test processing preferences.</xs:documentation>
+	</xs:annotation>  
+    <xs:sequence>
+      <xs:element name="ComputeDelta" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ComputeGamma" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ComputeDeltaCash" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ComputeGammaCash" type="xs:boolean" minOccurs="0" />
+	  <xs:element name="ComputeRho" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeRhoConvexity" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeCreditRisk" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeCreditRiskConvexity"	type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeFxDelta"	type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeFxGamma" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeFxVega" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeCashBalance" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="ComputeFairValue" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ComputeStressValue" type="xs:boolean" minOccurs="0" />
+      <xs:element name="ComputeDeltaPnlValue" type="xs:boolean" minOccurs="0" />
+      <xs:element name="DumpXMLContentInOutput" type="xs:boolean" minOccurs="0" />
+      <xs:element name="PivotCurrencyCode" type="xs:string" minOccurs="0" />
+	  <xs:element name="UseBusinessDays" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="PlaceCode" type="xs:string" minOccurs="0"/>
+	  <xs:element name="ComputeStressTheo" type="xs:boolean" minOccurs="0"/>
+	  <xs:element name="ComputeAssetValue" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

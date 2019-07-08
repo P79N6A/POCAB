@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/authentication"
+			xmlns:tns="http://www.sophis.net/authentication"
+			elementFormDefault="qualified" attributeFormDefault="qualified" 
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:complexType name="Property">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="property" type="tns:Property"/>
+
+	<xsd:complexType name="Token">
+		<xsd:sequence>
+			<xsd:element name="sessionId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="securityId" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="sophisUserName" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		</xsd:complexType>
+	<xsd:element name="token" type="tns:Token"/>
+
+</xsd:schema>

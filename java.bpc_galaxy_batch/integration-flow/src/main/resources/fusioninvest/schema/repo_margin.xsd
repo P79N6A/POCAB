@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sophis.net/repo_margin" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:tns="http://www.sophis.net/repo_margin" xmlns:instr="http://www.sophis.net/Instrument" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+	<xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+	<xs:element name="repoMargins" type="tns:RepoMargins" />
+	<xs:element name="repoMarginsIdentifier" type="instr:Identifier" />
+	<xs:complexType name="RepoMargin">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">
+				The repo rate is the rate at which a given stock can be loaned or borrowed. The repo margin is the spread between those two rates
+				.
+				The Repo Rates are given in percentage per year (e.g. 5 means 5% per year) and Bid/Ask values are also provided.
+				The Repo Rates is defined for a Repo from today to the maturity date. In other words, the Forward date of the Share is only calculated using the 2 closest dates (interpolation) but not the dates before.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="common:AdjustableOrRelativeDate" />
+			<xs:element name="repoRate" type="xs:double" />
+			<xs:element name="bid" type="xs:double" />
+			<xs:element name="ask" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RepoMarginList">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">
+				The list of Repo Rates for different dates defines a term structure of Repo Rates.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="repoMargin" type="tns:RepoMargin" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RepoMargins">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">
+				The RepoMargins table of the Share (or instrument) defines a term structure of Repo Rates.
+
+				The Repo Rates are given in percentage per year (e.g. 5 means 5% per year) and Bid/Ask values are also provided.
+				The Repo Rates is defined for a Repo from today to the maturity date. In other words, the Forward date of the Share is only calculated using the 2 closest dates (interpolation) but not the dates before.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="identifier" type="instr:Identifier" />
+      <xs:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0" maxOccurs="1" />
+			<xs:element name="repoMarginList" type="tns:RepoMarginList" />
+		</xs:sequence>
+		<xs:attributeGroup ref="common:PersistentEntity.model"/>
+	</xs:complexType>
+	<xs:complexType name="RepoMarginHistoricElement">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">couple date / repo margin</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="histoDate" type="xs:date"/>
+			<xs:element ref="tns:repoMargins"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="repoMarginHistoricElement" type="tns:RepoMarginHistoricElement"/>
+
+	<xs:complexType name="RepoMarginHistoric">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">historic of repo margin</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+			<xs:element ref="tns:repoMarginHistoricElement" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="common:PersistentEntity.model"/>
+	</xs:complexType>
+	<xs:element name="repoMarginHistoric" type="tns:RepoMarginHistoric"/>
+
+	<xs:complexType name="RepoMarginHistoricIdentifier">
+		<xs:sequence>
+			<xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+			<xs:element name="histoDate" type="xs:date" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="repoMarginHistoricIdentifier" type="tns:RepoMarginHistoricIdentifier"/>
+</xs:schema>

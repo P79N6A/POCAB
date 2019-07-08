@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/Tag" elementFormDefault="qualified" attributeFormDefault="qualified"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sophis.net/Tag">
+
+  <xsd:complexType name="Tags">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Define Tags List.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tag" type="tns:Tag" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+	<xsd:attribute name="KeepExisting" type="xsd:boolean" use="optional" default="true"/>	
+  </xsd:complexType>
+
+  <xsd:complexType name="Tag">
+	<xsd:sequence>
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Define Different categorie of Tag for Instrument,Trade,Position.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="stringValue" type="xsd:string" />
+			<xsd:element name="integerValue" type="xsd:int" />
+			<xsd:element name="decimalValue" type="xsd:decimal" />
+			<xsd:element name="dateValue" type="xsd:date" />
+			<xsd:element name="boolValue" type="xsd:boolean" />
+		</xsd:choice>
+		<xsd:element name="startDate" type="xsd:date" minOccurs="0" />
+		<xsd:element name="endDate" type="xsd:date" minOccurs="0" />		
+	</xsd:sequence>	
+	<xsd:attribute name="elementId" type="xsd:int"/>
+	<xsd:attribute name="elementCategory" type="xsd:string"/>
+	<xsd:attribute name="elementName" type="xsd:string"/>
+	<xsd:attribute name="sourceId" type="xsd:int"/>
+  </xsd:complexType>
+  
+  
+  <xsd:element name="tagInformation" type="tns:Tag"/>
+
+</xsd:schema>

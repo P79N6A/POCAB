@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Revision: FIXML 4.4 Schema Version - 20040109
+    Copyright 2003,2004 FIX Protocol Limited.  All rights reserved.
+
+    This Schema represents FIXML vocabulary based on version 4.4 of the FIX Protocol
+
+    Comments should be posted on the FIX protocol web-site
+    www.fixprotocol.org
+-->
+<xs:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.fixprotocol.org/FIXML-4-4" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<!-- not supported in .net
+	<xs:redefine schemaLocation="fixml-components-base-4-4.xsd">
+	    <xs:attributeGroup name="InstrumentAttributes">
+	        <xs:attributeGroup ref="InstrumentAttributes"/>
+		    <xs:attribute name="href" type="xs:IDREF" use="optional"/>
+	    </xs:attributeGroup>
+    </xs:redefine>  
+	-->
+	
+	<xs:include schemaLocation="fixml-components-base-4-4.xsd"/>
+
+	<!-- Sophis Order Attribute  -->
+	<xs:attributeGroup name="Sph_OrderAttributes">
+	     <xs:attribute name="SphTradeAllocationRuleID"  type="xs:string" use="optional"/>
+	    <xs:attribute name="SphSessionID"  type="xs:string" use="optional"/> 
+	    <xs:attribute name="SphOriginationStrategyName"  type="xs:string" use="optional"/>
+	    <xs:attribute name="SphBestExecutionRuleName"  type="xs:string" use="optional"/> 
+	</xs:attributeGroup>
+	
+	<!-- Sophis AckOrder block -->
+	
+	<xs:attributeGroup name="OrderMessageAcknowledgeAttributes">
+	    <xs:attribute name="SphID" type="xs:string" use="optional"/>
+	    <xs:attribute name="SphOrderUpdate" type="xs:boolean" use="optional"/>
+	</xs:attributeGroup>
+	
+	<xs:group name="OrderAcknowledgeElements">
+		<xs:sequence>
+		<xs:element name="TrdSes" type="TrdgSesGrp_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:attributeGroup name="OrderAcknowledgeAttributes">
+	    <xs:attribute name="SphClOrdID" type="xs:string" use="required"/>
+		<xs:attribute name="SphSessionID"  type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+
+
+	<xs:complexType name="Sph_OrderAck_Block_t" >
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+		</xs:documentation>
+	</xs:annotation>
+	<xs:complexContent>
+		<xs:extension base="Abstract_message_t">
+			<xs:sequence>
+				<xs:group ref="OrderAcknowledgeElements"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="OrderAcknowledgeAttributes"/>
+		</xs:extension>
+	</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:element  name="SphOrderAck" type="Sph_OrderAck_Block_t" />
+	
+	<!-- Sophis Properties -->
+	<xs:group name="SphPropertiesElements">
+		<xs:sequence/>
+	</xs:group>
+	<xs:attributeGroup name="SphPropertiesAttributes">
+		<xs:attribute name="Typ" type="SphPropertiesType_t" use="optional"/>
+		<xs:attribute name="Val" type="SphPropertiesValue_t" use="optional"/>
+	</xs:attributeGroup>
+	
+	<xs:complexType name="SphProperties_Block_t" >
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+			Sophis Properties
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="SphPropertiesElements"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="SphPropertiesAttributes"/>
+	</xs:complexType>
+	
+	
+	<!-- Client Custom Filed -->
+	<xs:complexType name="SphCustomFields_Block_t">
+		<xs:annotation>
+			<xs:documentation>
+			Custom fields contains data that are extensions to the model. could be sophis  toolkit data.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Element used in IS export message To export orders -->
+	<xs:complexType name="SphOrderIdentifier_t">
+		<xs:annotation>
+			<xs:documentation>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ordID" type="OrderID_t" minOccurs="0" maxOccurs="1"/> <!-- sophis Order Id  -->
+			<xs:element name="ordID2" type="SecondaryOrderID_t" minOccurs="0" maxOccurs="1"/> <!-- Placement Id  -->
+			<xs:element name="clOrdID" type="ClOrdID_t" minOccurs="0" maxOccurs="1"/> <!-- external order reference : not yet implemented -->
+		</xs:sequence>
+	<!--	<xsd:attribute name="exportWithExec" type="xs:boolean" use="optional" default="false" >
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">set to true if you want to export the order with the executionid</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>-->
+	</xs:complexType>
+	<xs:element  name="sphOrderId" type="SphOrderIdentifier_t" />
+
+</xs:schema>

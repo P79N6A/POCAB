@@ -1,0 +1,6 @@
+EMAIL TEST
+
+Bonjour, ceci est un test !
+Erreur : [(${errorDetails})]
+
+Cordialement

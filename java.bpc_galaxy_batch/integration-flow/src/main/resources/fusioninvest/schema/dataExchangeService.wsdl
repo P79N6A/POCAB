@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="dataExchangeService" targetNamespace="http://dataExchange.soa.sophis.net" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapwsdl="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://dataExchange.soa.sophis.net" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<wsdl:types>
+
+		<xsd:schema targetNamespace="http://sophis.net/sophis/common">
+			<xsd:include schemaLocation="common.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/party">
+			<xsd:include schemaLocation="party.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/ExoticMask">
+			<xsd:include schemaLocation="ClauseBuilderExoticMask.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/Instrument">
+			<xsd:include schemaLocation="instrument.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/folio">
+			<xsd:include schemaLocation="folio.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/SSI">
+			<xsd:include schemaLocation="ssi.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccount">
+			<xsd:include schemaLocation="NostroAccount.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/trade">
+			<xsd:include schemaLocation="trade.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/user">
+			<xsd:include schemaLocation="user.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/reporting">
+			<xsd:include schemaLocation="Reporting.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/preferences">
+			<xsd:include schemaLocation="preferences.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/valuation">
+			<xsd:include schemaLocation="Valuation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/scenario">
+			<xsd:include schemaLocation="scenario.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/history">
+			<xsd:include schemaLocation="history.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/otc_message">
+			<xsd:include schemaLocation="otc_message.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/sr">
+			<xsd:include schemaLocation="sr.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/reconciliation">
+			<xsd:include schemaLocation="reconciliation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/fund">
+			<xsd:include schemaLocation="fund.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmark">
+			<xsd:include schemaLocation="amBenchmark.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmarkComposition">
+			<xsd:include schemaLocation="amBenchmarkComposition.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/quotation">
+			<xsd:include schemaLocation="quotation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/sophis">
+			<xsd:include schemaLocation="sophis.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.w3.org/2000/09/xmldsig#">
+			<xsd:include schemaLocation="xmldsig-core-schema.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.fpml.org/2005/FpML-4-2">
+			<xsd:include schemaLocation="fpml-msg-4-2-extract.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/execution">
+			<xsd:include schemaLocation="execution.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://sophis.net/sophis/gxml/dataExchange">
+			<xsd:include schemaLocation="dataExchange.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://sophis.net/sophis/alert">
+			<xsd:include schemaLocation="alertRepository.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/market_data">
+			<xsd:include schemaLocation="MarketData.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/correlation">
+			<xsd:include schemaLocation="correlation.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/CreditRisk">
+			<xsd:include schemaLocation="CreditRiskData.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/CorporateActions">
+			<xsd:include schemaLocation="CorporateActions.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/dividend">
+			<xsd:include schemaLocation="dividend.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/volatility">
+			<xsd:include schemaLocation="volatility.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/dividend">
+			<xsd:include schemaLocation="dividend.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/yieldCurve">
+			<xsd:include schemaLocation="YieldCurve.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/repo_margin">
+			<xsd:include schemaLocation="repo_margin.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4">
+			<xsd:include schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/authentication">
+			<xsd:include schemaLocation="authUtil.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/listedmarket">
+			<xsd:include schemaLocation="ListedMarket.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/position">
+			<xsd:include schemaLocation="position.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/FactorModels">
+			<xsd:include schemaLocation="FactorModelTypes.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/Tag">
+			<xsd:include schemaLocation="Tag.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccountReference">
+			<xsd:include schemaLocation="NostroAccountReference.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/accountingposition">
+			<xsd:include schemaLocation="accountingposition.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/dailyData">
+			<xsd:include schemaLocation="dailyData.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dataExchange.soa.sophis.net" xmlns:authUtil="http://www.sophis.net/authentication" xmlns:common="http://sophis.net/sophis/common" xmlns:correlation="http://www.sophis.net/correlation" xmlns:crns="http://www.sophis.net/CreditRisk" xmlns:dataExch="http://sophis.net/sophis/gxml/dataExchange" xmlns:dividend="http://www.sophis.net/dividend" xmlns:folio="http://www.sophis.net/folio" xmlns:fpml="http://www.fpml.org/2005/FpML-4-2" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:market_data="http://www.sophis.net/market_data" xmlns:party="http://www.sophis.net/party" xmlns:sophis="http://www.sophis.net/sophis" xmlns:trade="http://www.sophis.net/trade" xmlns:user="http://www.sophis.net/user" xmlns:valuation="http://www.sophis.net/valuation" xmlns:volatility="http://www.sophis.net/volatility" xmlns:yieldCurve="http://www.sophis.net/yieldCurve">
+
+			<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/ExoticMask" schemaLocation="ClauseBuilderExoticMask.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/sophis" schemaLocation="sophis.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/otc_message" schemaLocation="otc_message.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/sr" schemaLocation="sr.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/fund" schemaLocation="fund.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/amBenchmark" schemaLocation="amBenchmark.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/history" schemaLocation="history.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/reconciliation" schemaLocation="reconciliation.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/market_data" schemaLocation="MarketData.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/correlation" schemaLocation="correlation.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/dividend" schemaLocation="dividend.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/yieldCurve" schemaLocation="YieldCurve.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/CreditRisk" schemaLocation="CreditRiskData.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/repo_margin" schemaLocation="repo_margin.xsd"/>
+			<xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+			<xsd:import namespace="http://sophis.net/sophis/gxml/dataExchange" schemaLocation="dataExchange.xsd"/>
+			<xsd:import namespace="http://www.fixprotocol.org/FIXML-4-4" schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/authentication" schemaLocation="authUtil.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/FactorModels" schemaLocation="FactorModelTypes.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/dailyData" schemaLocation="dailyData.xsd"/>
+			
+			<xsd:simpleType name="ErrorCode">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+							0 	= success
+							1 	= not logged in
+							2 	= already logged id
+							3 	= no license available
+							4 	= valuation error
+							5	= other error; a reason is provided</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="SUCCESS"/>
+					<xsd:enumeration value="NOTLOGGEDIN"/>
+					<xsd:enumeration value="ALREADYLOGGED"/>
+					<xsd:enumeration value="NOLICENSE"/>
+					<xsd:enumeration value="DATAEXCHANGEERROR"/>
+					<xsd:enumeration value="MISC"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="Error">
+				<xsd:sequence>
+					<xsd:element name="code" type="tns:ErrorCode"/>
+					<xsd:element minOccurs="0" name="reason" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation source="http://www.sophis.net" xml:lang="en">defined only if errorCode=3</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ImportEntities">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:import"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importEntities" type="tns:ImportEntities"/>
+
+			<xsd:complexType name="ImportEntitiesResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importEntitiesResponse" type="tns:ImportEntitiesResponse"/>
+
+			<xsd:complexType name="ExportEntities">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:export"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportEntities" type="tns:ExportEntities"/>
+
+			<xsd:complexType name="QueryEntities">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:queryMessage"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntities" type="tns:QueryEntities"/>
+			
+			<xsd:complexType name="QueryEntitiesAsynch">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:queryAsynchMessage"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesAsynch" type="tns:QueryEntitiesAsynch"/>
+			
+			<xsd:complexType name="GetPartialResult">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:getPartialResultMessage"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getPartialResult" type="tns:GetPartialResult"/>
+			
+			<xsd:complexType name="ExportEntitiesResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportEntitiesResponse" type="tns:ExportEntitiesResponse"/>
+
+            <xsd:complexType name="ImportMarketDatas">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:importMarketData"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importMarketDatas" type="tns:ImportMarketDatas"/>
+
+			<xsd:complexType name="ImportMarketDatasResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importMarketDatasResponse" type="tns:ImportMarketDatasResponse"/>
+
+			<xsd:complexType name="ExportMarketDatas">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:exportMarketData"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportMarketDatas" type="tns:ExportMarketDatas"/>
+
+			<xsd:complexType name="ExportMarketDatasResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportMarketDatasResponse" type="tns:ExportMarketDatasResponse"/>
+
+			<xsd:complexType name="QueryEntitiesResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesResponse" type="tns:QueryEntitiesResponse"/>
+			
+			<xsd:complexType name="QueryEntitiesResponseAsynch">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesResponseAsynch" type="tns:QueryEntitiesResponseAsynch"/>
+
+			<xsd:complexType name="ProcessEntitiesRaw">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="message" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processEntitiesRaw" type="tns:ProcessEntitiesRaw"/>
+
+			<xsd:complexType name="ProcessEntitiesRawResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="response" type="xsd:string"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processEntitiesRawResponse" type="tns:ProcessEntitiesRawResponse"/>
+
+			<xsd:complexType name="Login">
+				<xsd:sequence>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="login" type="tns:Login"/>
+			
+			<xsd:complexType name="LoginResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="authUtil:token"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="loginResponse" type="tns:LoginResponse"/>
+
+			<xsd:complexType name="Logout">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logout" type="tns:Logout"/>
+
+			<xsd:complexType name="LogoutResponse">
+				<xsd:sequence>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logoutResponse" type="tns:LogoutResponse"/>
+
+			<xsd:complexType name="ImportEntitiesRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:import"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importEntitiesRMA" type="tns:ImportEntitiesRMA"/>
+
+			<xsd:complexType name="ImportEntitiesRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importEntitiesRMAResponse" type="tns:ImportEntitiesRMAResponse"/>
+
+			<xsd:complexType name="ExportEntitiesRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:export"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportEntitiesRMA" type="tns:ExportEntitiesRMA"/>
+
+			<xsd:complexType name="ExportEntitiesRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportEntitiesRMAResponse" type="tns:ExportEntitiesRMAResponse"/>
+
+            <xsd:complexType name="ImportMarketDatasRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:importMarketData"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importMarketDatasRMA" type="tns:ImportMarketDatasRMA"/>
+
+			<xsd:complexType name="ImportMarketDatasRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importMarketDatasRMAResponse" type="tns:ImportMarketDatasRMAResponse"/>
+
+			<xsd:complexType name="ExportMarketDatasRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:exportMarketData"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportMarketDatasRMA" type="tns:ExportMarketDatasRMA"/>
+
+			<xsd:complexType name="ExportMarketDatasRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportMarketDatasRMAResponse" type="tns:ExportMarketDatasRMAResponse"/>
+
+
+			<xsd:complexType name="QueryEntitiesRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:queryMessage"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesRMA" type="tns:QueryEntitiesRMA"/>
+			
+			<xsd:complexType name="QueryEntitiesRMAAsynch">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:queryAsynchMessage"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesRMAAsynch" type="tns:QueryEntitiesRMAAsynch"/>
+			
+			<xsd:complexType name="GetPartialResultRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:getPartialResultMessage"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getPartialResultRMA" type="tns:GetPartialResultRMA"/>
+
+			<xsd:complexType name="QueryEntitiesRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesRMAResponse" type="tns:QueryEntitiesRMAResponse"/>
+			
+			<xsd:complexType name="QueryEntitiesRMAResponseAsynch">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="queryEntitiesRMAResponseAsynch" type="tns:QueryEntitiesRMAResponseAsynch"/>
+
+			<xsd:complexType name="ProcessEntitiesRawRMA">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="message" type="xsd:string"/>
+					<xsd:element name="messageIdRMA" type="xsd:int"/>
+					<xsd:element name="messageDateRMA" type="xsd:int"/>
+					<xsd:element name="sourceIdRMA" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processEntitiesRawRMA" type="tns:ProcessEntitiesRawRMA"/>
+
+			<xsd:complexType name="ProcessEntitiesRawRMAResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="response" type="xsd:string"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processEntitiesRawRMAResponse" type="tns:ProcessEntitiesRawRMAResponse"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="importEntitiesRequest">
+		<wsdl:part element="tns:importEntities" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="importEntitiesResponse">
+		<wsdl:part element="tns:importEntitiesResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="exportEntitiesRequest">
+		<wsdl:part element="tns:exportEntities" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="exportEntitiesResponse">
+		<wsdl:part element="tns:exportEntitiesResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+    <wsdl:message name="importMarketDatasRequest">
+		<wsdl:part element="tns:importMarketDatas" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="importMarketDatasResponse">
+		<wsdl:part element="tns:importMarketDatasResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="exportMarketDatasRequest">
+		<wsdl:part element="tns:exportMarketDatas" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="exportMarketDatasResponse">
+		<wsdl:part element="tns:exportMarketDatasResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="queryEntitiesRequest">
+		<wsdl:part element="tns:queryEntities" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesResponse">
+		<wsdl:part element="tns:queryEntitiesResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesRequestAsynch">
+		<wsdl:part element="tns:queryEntitiesAsynch" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesResponseAsynch">
+		<wsdl:part element="tns:queryEntitiesResponseAsynch" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getPartialResultRequest">
+		<wsdl:part element="tns:getPartialResult" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="getPartialResultResponse">
+		<wsdl:part element="tns:queryEntitiesResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="processEntitiesRawRequest">
+		<wsdl:part element="tns:processEntitiesRaw" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="processEntitiesRawResponse">
+		<wsdl:part element="tns:processEntitiesRawResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="loginRequest">
+		<wsdl:part element="tns:login" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="loginResponse">
+		<wsdl:part element="tns:loginResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="logoutRequest">
+		<wsdl:part element="tns:logout" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="logoutResponse">
+		<wsdl:part element="tns:logoutResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="importEntitiesRMARequest">
+		<wsdl:part element="tns:importEntitiesRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="importEntitiesRMAResponse">
+		<wsdl:part element="tns:importEntitiesRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="exportEntitiesRMARequest">
+		<wsdl:part element="tns:exportEntitiesRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="exportEntitiesRMAResponse">
+		<wsdl:part element="tns:exportEntitiesRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+   <wsdl:message name="importMarketDatasRMARequest">
+		<wsdl:part element="tns:importMarketDatasRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="importMarketDatasRMAResponse">
+		<wsdl:part element="tns:importMarketDatasRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="exportMarketDatasRMARequest">
+		<wsdl:part element="tns:exportMarketDatasRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="exportMarketDatasRMAResponse">
+		<wsdl:part element="tns:exportMarketDatasRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesRMARequest">
+		<wsdl:part element="tns:queryEntitiesRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesRMAResponse">
+		<wsdl:part element="tns:queryEntitiesRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesRMARequestAsynch">
+		<wsdl:part element="tns:queryEntitiesRMAAsynch" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="queryEntitiesRMAResponseAsynch">
+		<wsdl:part element="tns:queryEntitiesRMAResponseAsynch" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getPartialResultRMARequest">
+		<wsdl:part element="tns:getPartialResultRMA" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="getPartialResultRMAResponse">
+		<wsdl:part element="tns:queryEntitiesRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="processEntitiesRawRMARequest">
+		<wsdl:part element="tns:processEntitiesRawRMA" name="parameters">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="processEntitiesRawRMAResponse">
+		<wsdl:part element="tns:processEntitiesRawRMAResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="DataExchangeService">
+		<wsdl:operation name="importEntities">
+			<wsdl:input message="tns:importEntitiesRequest"/>
+			<wsdl:output message="tns:importEntitiesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportEntities">
+			<wsdl:input message="tns:exportEntitiesRequest"/>
+			<wsdl:output message="tns:exportEntitiesResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="importMarketDatas">
+			<wsdl:input message="tns:importMarketDatasRequest"/>
+			<wsdl:output message="tns:importMarketDatasResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportMarketDatas">
+			<wsdl:input message="tns:exportMarketDatasRequest"/>
+			<wsdl:output message="tns:exportMarketDatasResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="queryEntities">
+			<wsdl:input message="tns:queryEntitiesRequest"/>
+			<wsdl:output message="tns:queryEntitiesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="queryEntitiesAsynch">
+			<wsdl:input message="tns:queryEntitiesRequestAsynch"/>
+			<wsdl:output message="tns:queryEntitiesResponseAsynch"/>
+		</wsdl:operation>
+		<wsdl:operation name="getPartialResult">
+			<wsdl:input message="tns:getPartialResultRequest"/>
+			<wsdl:output message="tns:getPartialResultResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="processEntitiesRaw">
+			<wsdl:input message="tns:processEntitiesRawRequest"/>
+			<wsdl:output message="tns:processEntitiesRawResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+			<wsdl:input message="tns:loginRequest"/>
+			<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<wsdl:input message="tns:logoutRequest"/>
+			<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:portType name="DataExchangeServiceRMA">
+		<wsdl:operation name="importEntitiesRMA">
+			<wsdl:input message="tns:importEntitiesRMARequest"/>
+			<wsdl:output message="tns:importEntitiesRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportEntitiesRMA">
+			<wsdl:input message="tns:exportEntitiesRMARequest"/>
+			<wsdl:output message="tns:exportEntitiesRMAResponse"/>
+		</wsdl:operation>
+		
+	    <wsdl:operation name="importMarketDatasRMA">
+			<wsdl:input message="tns:importMarketDatasRMARequest"/>
+			<wsdl:output message="tns:importMarketDatasRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportMarketDatasRMA">
+			<wsdl:input message="tns:exportMarketDatasRMARequest"/>
+			<wsdl:output message="tns:exportMarketDatasRMAResponse"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="queryEntitiesRMA">
+			<wsdl:input message="tns:queryEntitiesRMARequest"/>
+			<wsdl:output message="tns:queryEntitiesRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="queryEntitiesRMAAsynch">
+			<wsdl:input message="tns:queryEntitiesRMARequestAsynch"/>
+			<wsdl:output message="tns:queryEntitiesRMAResponseAsynch"/>
+		</wsdl:operation>
+		<wsdl:operation name="getPartialResultRMA">
+			<wsdl:input message="tns:getPartialResultRMARequest"/>
+			<wsdl:output message="tns:getPartialResultRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="processEntitiesRawRMA">
+			<wsdl:input message="tns:processEntitiesRawRMARequest"/>
+			<wsdl:output message="tns:processEntitiesRawRMAResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+			<wsdl:input message="tns:loginRequest"/>
+			<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<wsdl:input message="tns:logoutRequest"/>
+			<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="DataExchangeServiceSOAP" type="tns:DataExchangeService">
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="importEntities">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/importEntities"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="exportEntities">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/exportEntities"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="importMarketDatas">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/importMarketDatas"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="exportMarketDatas">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/exportMarketDatas"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="queryEntities">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/queryEntities"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryEntitiesAsynch">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/queryEntitiesAsynch"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getPartialResult">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/getPartialResult"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="processEntitiesRaw">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/processEntitiesRaw"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/login"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/logout"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:binding name="DataExchangeServiceRMASOAP" type="tns:DataExchangeServiceRMA">
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="importEntitiesRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/importEntitiesRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="exportEntitiesRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/exportEntitiesRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="importMarketDatasRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/importMarketDatasRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="exportMarketDatasRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/exportMarketDatasRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryEntitiesRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/queryEntitiesRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="queryEntitiesRMAAsynch">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/queryEntitiesRMAAsynch"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getPartialResultRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/getPartialResultRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="processEntitiesRawRMA">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/processEntitiesRawRMA"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/login"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<soapwsdl:operation soapAction="http://dataExchange.soa.sophis.net/logout"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DataExchangeService">
+		<wsdl:port binding="tns:DataExchangeServiceSOAP" name="DataExchangeServicePort">
+			<soapwsdl:address location="http://localhost:9080/DataExchangeWsHttpRouter/DataExchangeServicePort"/>
+		</wsdl:port>
+	</wsdl:service>
+	<wsdl:service name="DataExchangeServiceRMA">
+
+		<wsdl:port binding="tns:DataExchangeServiceRMASOAP" name="DataExchangeServiceRMAPort">
+			<soapwsdl:address location="http://localhost:9080/DataExchangeWsHttpRouter/DataExchangeServiceRMAPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

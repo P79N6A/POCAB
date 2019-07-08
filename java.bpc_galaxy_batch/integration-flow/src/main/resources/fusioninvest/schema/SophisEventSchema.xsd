@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="sophisEventModel" type="SophisEventModelType">
+		<xs:unique name="NameUnique">
+			<xs:selector xpath="events/event|structs/struct|enums/enum"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
+	</xs:element>
+	<xs:complexType name="SophisEventModelType">
+		<xs:sequence>
+			<xs:element name="events" type="EventsType" minOccurs="0" maxOccurs="1">
+				<xs:unique name="WhatUnique">
+					<xs:selector xpath="event"/>
+					<xs:field xpath="@what"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="structs" type="StructsType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="enums" type="EnumsType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="IdType" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="EventsType">
+		<xs:sequence>
+			<xs:element name="event" type="EventType" minOccurs="0" maxOccurs="unbounded">
+				<xs:unique name="EventFieldNameUnique">
+					<xs:selector xpath="field"/>
+					<xs:field xpath="@name"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StructsType">
+		<xs:sequence>
+			<xs:element name="struct" type="StructType" minOccurs="0" maxOccurs="unbounded">
+				<xs:unique name="StructFieldNameUnique">
+					<xs:selector xpath="field"/>
+					<xs:field xpath="@name"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnumsType">
+		<xs:sequence>
+			<xs:element name="enum" type="EnumType" minOccurs="0" maxOccurs="unbounded">
+				<xs:unique name="EnumFieldNameUnique">
+					<xs:selector xpath="field"/>
+					<xs:field xpath="@name"/>
+				</xs:unique>
+				<xs:unique name="EnumFieldValueUnique">
+					<xs:selector xpath="field"/>
+					<xs:field xpath="@value"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventType">
+		<xs:sequence>
+			<xs:element name="field" type="FieldType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="IdType" use="required"/>
+		<xs:attribute name="what" type="LongType" use="required"/>
+		<xs:attribute name="category" type="xs:normalizedString" use="required"/>
+		<xs:attribute name="highPriority" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="packetClass" type="LongType" use="optional" default="MAC."/>
+		<xs:attribute name="packetId" type="LongType" use="optional" default="TRAN"/>
+		<xs:attribute name="comment" type="xs:normalizedString" use="optional" default=""/>
+	</xs:complexType>
+	<xs:complexType name="StructType">
+		<xs:sequence>
+			<xs:element name="field" type="FieldType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="IdType" use="required"/>
+		<xs:attribute name="comment" type="xs:normalizedString" use="optional" default=""/>
+	</xs:complexType>
+	<xs:complexType name="EnumType">
+		<xs:sequence>
+			<xs:element name="field" type="EnumFieldType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="IdType" use="required"/>
+		<xs:attribute name="comment" type="xs:normalizedString" use="optional" default=""/>
+	</xs:complexType>
+	<xs:complexType name="FieldType">
+		<xs:attribute name="name" type="IdType" use="required"/>
+		<xs:attribute name="type" type="TypeType" use="required"/>
+		<xs:attribute name="cardinality" type="CardinalityType" use="optional" default="1"/>
+		<xs:attribute name="comment" type="xs:normalizedString" use="optional" default=""/>
+	</xs:complexType>
+	<xs:complexType name="EnumFieldType">
+		<xs:attribute name="name" type="IdType" use="required"/>
+		<xs:attribute name="value" type="xs:int" use="required"/>
+		<xs:attribute name="comment" type="xs:normalizedString" use="optional" default=""/>
+	</xs:complexType>
+	<xs:simpleType name="LongType">
+		<xs:restriction base="xs:string">
+			<xs:length value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CardinalityType">
+		<xs:union memberTypes="FixedCardinalityType SpecialCardinalityType"/>
+	</xs:simpleType>
+	<xs:simpleType name="FixedCardinalityType">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpecialCardinalityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0-1"/>
+			<xs:enumeration value="*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TypeType">
+		<xs:union memberTypes="IdType SimpleTypeType"/>
+	</xs:simpleType>
+	<xs:simpleType name="IdType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z_][0-9A-Z_a-z]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SimpleTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="bool"/>
+			<xs:enumeration value="char"/>
+			<xs:enumeration value="short"/>
+			<xs:enumeration value="long"/>
+			<xs:enumeration value="long long"/>
+			<xs:enumeration value="float"/>
+			<xs:enumeration value="double"/>
+			<xs:enumeration value="string"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

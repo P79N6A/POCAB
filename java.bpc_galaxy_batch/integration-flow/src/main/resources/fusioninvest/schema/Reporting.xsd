@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/reporting" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:reporting="http://www.sophis.net/reporting" xmlns:tns="http://www.sophis.net/reporting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xsd:element name="reporting" type="tns:Reporting"></xsd:element>
+  <xsd:element name="dynamicReporting" type="tns:DynamicReporting"></xsd:element>
+  <xsd:complexType name="Reporting">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Result of a valuation request when xmlColumnsNames=true. It is a child of the element portfolioValuation from valuation.xsd. 
+      	(xmlColumnsNames is an attribute of the element portfolioValuation and it's provided in a valuation request).
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="header" type="tns:Header" />
+      <xsd:element minOccurs="0" name="window" type="tns:Window" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="DynamicReporting">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Result of a valuation request when xmlColumnsNames=false</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="header" type="tns:Header" />
+      <xsd:element minOccurs="0" name="window" type="tns:DynamicWindow" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="Header">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Header description of the requested folio</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Window">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Data description of the requested folio. When xmlColumnsNames=true, the column are exported as xml elements (names become xml elements).
+      	Since 5.3.3 contains any elements group since portfolio source
+        adds columns result at the root node, in addition to lines and folios</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:group ref="tns:columns.model" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:token" />
+    <xsd:attribute name="parentId" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3.3 contains parent id since portfolio source
+          process the root node like a sub folio</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="Line">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes a leaf position line.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:group ref="tns:columns.model" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="Folio">
+  	<xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes a folio node.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:group ref="tns:columns.model" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="Underlying">
+  	<xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes an underying node when viewType="UnderlyingState".
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:group ref="tns:columns.model" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="DynamicWindow">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+       Data description of the requested folio. When xmlColumnsNames=false, all the columns are exported within the same XML element and the column names become an XML attribute.
+      	Since 5.3.3 contains any elements group since portfolio source
+        adds columns result at the root node, in addition to lines and folios</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="portfolioColumn" type="tns:PortfolioColumn" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="line" type="tns:DynamicLine" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="underlying" type="tns:DynamicUnderlying" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="folio" type="tns:DynamicFolio" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:token" />
+    <xsd:attribute name="parentId" type="xsd:int" use="optional" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="DynamicFolio">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes a folio node.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="portfolioColumn" type="tns:PortfolioColumn" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="line" type="tns:DynamicLine" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="underlying" type="tns:DynamicUnderlying" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="folio" type="tns:DynamicFolio" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="DynamicUnderlying">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes an underying node when viewType="UnderlyingState".
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="portfolioColumn" type="tns:PortfolioColumn" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="line" type="tns:DynamicLine" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="DynamicLine">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes a leaf position line.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="portfolioColumn" type="tns:PortfolioColumn" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="level" type="xsd:token" />
+    <xsd:attribute name="name" type="xsd:string" />
+    <xsd:attribute name="parentId" type="xsd:int" />
+    <xsd:attribute name="Id" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="PortfolioColumn">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      	Describes a portfolio column.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="index" type="xsd:int" />
+        <xsd:attribute name="name" type="xsd:string" />
+        <xsd:attribute name="type" type="xsd:string" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:group name="columns.model">
+    <xsd:sequence>
+      <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:group>
+  <xsd:complexType name="SoaMethodParameter">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Parameter of a Soa method. Contains a name and a string value</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="SoaMethod">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Corresponds to a report template in Reporting Module.
+        Defined by a name and a list of parameters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="param" type="tns:SoaMethodParameter" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+	<xsd:attribute name="groupPath" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:element name="soaMethod" type="tns:SoaMethod" />
+  <xsd:complexType name="SoaMethodResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Corresponds to the result of a report template in Reporting Module.
+        Contains a reporting element</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##any" processContents="lax" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+  </xsd:complexType>
+  <xsd:element name="soaMethodResult" type="tns:SoaMethodResult" />
+  <xsd:complexType name="TemplateIdentifier">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Name of a SOA method template.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="templateIdScheme" type="xsd:anyURI" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TemplateReference">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Reference of a SOA method template</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="templateIdentifier" type="tns:TemplateIdentifier" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="href" use="optional" />
+  </xsd:complexType>
+  <xsd:element name="templateReference" type="tns:TemplateReference" />
+  <xsd:complexType name="TemplateParameter">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Description of a SOA method template parameter.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="bind" use="required" type="xsd:string" />
+        <xsd:attribute name="name" use="required" type="xsd:string" />
+        <xsd:attribute name="type" use="optional" type="xsd:string" />
+        <xsd:attribute name="setting" use="optional" type="xsd:string" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TemplateParameters">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">List of SOA method template paramters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parameter" type="tns:TemplateParameter" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SoaMethodTemplate">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Description of a SOA method template.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parameters" type="tns:TemplateParameters" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="sources" type="tns:TemplateSources" />
+    </xsd:sequence>
+    <xsd:attribute name="name" use="required" type="xsd:string" />
+    <xsd:attribute name="groupPath" use="optional" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:element name="soaMethodTemplate" type="tns:SoaMethodTemplate" />
+  <xsd:element name="SoaMethodTemplates">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">List of SOA method template definitions.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SoaMethodTemplate" type="tns:SoaMethodTemplate" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="TemplateSource">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Description of a SOA method template source.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="field" type="tns:TemplateParameter" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="name" use="required" type="xsd:string" />
+    <xsd:attribute name="type" use="required" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="TemplateSources">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Source list of a SOA method template.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="source" type="tns:TemplateSource" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

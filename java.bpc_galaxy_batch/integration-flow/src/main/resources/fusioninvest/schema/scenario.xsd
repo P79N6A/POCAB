@@ -1,0 +1,1487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sophis.net/scenario" xmlns="http://www.sophis.net/scenario" xmlns:tns="http://www.sophis.net/scenario" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:party="http://www.sophis.net/party" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:folio="http://www.sophis.net/folio" xmlns:volatility="http://www.sophis.net/volatility" xmlns:common="http://sophis.net/sophis/common">
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xs:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Input/Output Global elements and Types          -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Root element -->
+  <xs:element name="scenario" type="Scenario" />
+  <xs:complexType name="Scenario">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Define the format for both XML input and output files of Risk Analysis scenarios in Sophis. In general, the output format is similar to the input format and the output file contains all the input information. Only the 'results' part is specific to the output format. When using, as input, an XML file which contains a 'results' section, this section is ignored.
+</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="input" type="tns:Scenario" minOccurs="0" maxOccurs="1" />
+      <xs:element name="perimeter" type="tns:ScenarioPerimeter" minOccurs="1" maxOccurs="1" />
+      <xs:element name="parameters" type="tns:ScenarioParameters" minOccurs="1" maxOccurs="1" />
+      <xs:element name="results" type="tns:ScenarioResults" minOccurs="0" maxOccurs="1" />
+      <xs:element name="outputfile" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ScenarioParameters">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Described the parameters of the scenario execution.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="calculationMode" type="tns:CalculationMode" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ScenarioPerimeter">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The scenario perimeter describes on which position(s) the risk analysis needs to be calculated.
+It can be:
+- an extraction (cf. corresponding type)
+- a portfolio (cf. corresponding type)
+- an instrument, which does not have to be in the trades repository</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="folio:extraction" minOccurs="0" maxOccurs="1" />
+      <xs:element name="portfolio" type="folio:PortfolioForScenario" minOccurs="1" maxOccurs="1" />
+      <xs:element name="underlying" type="instrument:Underlyer" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CalculationMode">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type gives a possibility to define when the calculation is performed on Calculation Servers (calculation farm) or locally on the machine.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Local" />
+      <xs:enumeration value="Distributed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- Scenario Output specific : -->
+  <!-- Result -->
+  <xs:complexType name="PositionResult">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type is based on the 'Position' type and allows to output the risk analysis results with values/details for each position.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="folio:Position">
+        <xs:sequence>
+          <xs:element name="resultLine" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UnderlyingResult">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type allows to output the risk analysis results with details for each source of risk.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="instrument:Underlyer">
+        <xs:sequence>
+          <xs:element name="resultLine" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeletedPositionResult">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A ResultLine that estimates that a position should be closed (liquidated)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="underlyer" type="instrument:Identifier" />
+      <xs:element name="type" type="xs:int" minOccurs="0" />
+      <xs:element name="resultLine" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ResultLine">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type is a shared type which describes how different types of result of a risk analysis.
+Using 'ResultLine', each result figure has attributes to describe what result it is (e.g.P&amp;L, Delta, etc.) and to which group/subgroup of results (e.g. per currency, issuer, etc.) or to which bumped item (e.g. volatility, etc.).
+While it is easy to obtain number, since the 'ResultLine' is only a 'double' type, it contains a long list of 'optional' attributes which can correspond to a quite complex structure/hierarchy of results.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="A" use="optional" />
+        <xs:attribute name="B" use="optional" />
+        <xs:attribute name="BarrierLevel" use="optional" />
+        <xs:attribute name="Breakdown_Instrument" use="optional" />
+        <xs:attribute name="C" use="optional" />
+        <xs:attribute name="CalculationDate" use="optional" />
+        <xs:attribute name="Commodity" use="optional" />
+        <xs:attribute name="DataType" use="optional" />
+        <xs:attribute name="folioident" use="optional" />
+        <xs:attribute name="FutureMaturity" use="optional" />
+        <xs:attribute name="InPosition" use="optional" />
+        <xs:attribute name="InstrumentX" use="optional" />
+        <xs:attribute name="InstrumentX-id" use="optional" />
+        <xs:attribute name="InstrumentX-ref" use="optional" />
+        <xs:attribute name="InstrumentY" use="optional" />
+        <xs:attribute name="InstrumentY-id" use="optional" />
+        <xs:attribute name="InstrumentY-ref" use="optional" />
+        <xs:attribute name="ParentCommodity" use="optional" />
+        <xs:attribute name="SABRParameter" use="optional" />
+        <xs:attribute name="Unit" use="optional" />
+        <xs:attribute name="ValueType" use="optional" />
+        <xs:attribute name="WeightedVega" use="optional" />
+        <xs:attribute name="barrier" use="optional" />
+        <xs:attribute name="column" use="optional" />
+        <xs:attribute name="counterparty" use="optional" />
+        <xs:attribute name="credit" use="optional" />
+        <xs:attribute name="credit-currency" use="optional" />
+        <xs:attribute name="credit-defaultEvent" use="optional" />
+        <xs:attribute name="credit-issuer" use="optional" />
+        <xs:attribute name="credit-seniority" use="optional" />
+		    <xs:attribute name="credit-runningCoupon" use="optional" />
+        <xs:attribute name="creditRisk" use="optional" />
+        <xs:attribute name="currency" use="optional" />
+        <xs:attribute name="effect" use="optional" />
+        <xs:attribute name="expiry_bucket" use="optional" />
+        <xs:attribute name="expiry_date" use="optional" />
+        <xs:attribute name="family" use="optional" />
+        <xs:attribute name="folio" use="optional" />
+        <xs:attribute name="greek" use="optional" />
+        <xs:attribute name="indicator" use="optional" />
+        <xs:attribute name="inflationIndexName" use="optional" />
+        <xs:attribute name="inflationIndex" use="optional" />
+        <xs:attribute name="instrument" use="optional" />
+        <xs:attribute name="instrument-name" use="optional" />
+        <xs:attribute name="is_call" use="optional" />
+        <xs:attribute name="is_listed" use="optional" />
+        <xs:attribute name="maturity" use="optional" />
+        <xs:attribute name="mvtident" use="optional" />
+        <xs:attribute name="optionMaturities" use="optional" />
+        <xs:attribute name="option_code" use="optional" />
+        <xs:attribute name="option_ttm" use="optional" />
+        <xs:attribute name="option_type" use="optional" />
+        <xs:attribute name="option_volat" use="optional" />
+        <xs:attribute name="output" use="optional" />
+        <xs:attribute name="parentFolio" use="optional" />
+        <xs:attribute name="parentUnderlying" use="optional" />
+        <xs:attribute name="position" use="optional" />
+        <xs:attribute name="positionCode" use="optional" />
+        <xs:attribute name="positionCurrency" use="optional" />
+        <xs:attribute name="positionType" use="optional" />
+        <xs:attribute name="rate" use="optional" />
+        <xs:attribute name="result_name" use="optional" />
+        <xs:attribute name="result_type" use="optional" />
+        <xs:attribute name="risk_source_1" use="optional" />
+        <xs:attribute name="risk_source_2" use="optional" />
+        <xs:attribute name="Sensitivity_Type" use="optional" />
+        <xs:attribute name="spot" use="optional" />
+        <xs:attribute name="strike" use="optional" />
+        <xs:attribute name="subScenarios" use="optional" />
+        <xs:attribute name="swapMaturities" use="optional" />
+        <xs:attribute name="typeX" use="optional" />
+        <xs:attribute name="typeY" use="optional" />
+        <xs:attribute name="underlying" use="optional" />
+        <xs:attribute name="underlying-id" use="optional" />
+        <xs:attribute name="underlying-ref" use="optional" />
+        <xs:attribute name="underlying-shift" use="optional" />
+        <xs:attribute name="underlying-spot" use="optional" />
+        <xs:attribute name="underlying_future" use="optional" />
+        <xs:attribute name="underlying_price" use="optional" />
+        <xs:attribute name="volatility" use="optional" />
+        <xs:attribute name="volatility_type" use="optional" />
+        <xs:attribute name="yieldCurve" use="optional" />
+        <xs:attribute name="yieldCurve-currency" use="optional" />
+        <xs:attribute name="yieldCurve-family" use="optional" />
+        <xs:attribute name="yieldCurvePoint" use="optional" />
+        <xs:attribute name="calcType" use="optional" />
+        <xs:attribute name="infoType" use="optional" />
+        <xs:attribute name="nostroaccount" use="optional" />
+        <xs:attribute name="nostroaccountname" use="optional" />
+        <xs:attribute name="cashflowtype" use="optional" />
+        <xs:attribute name="date" use="optional" />
+        <xs:attribute name="breakdown-id" use="optional" />
+        <xs:attribute name="breakdown-ref" use="optional" />
+        <xs:attribute name="inflationIndex-currency" use="optional" />
+        <xs:attribute name="sensi_type" use="optional" />
+        <xs:attribute name="instrument-id" use="optional" />
+        <xs:attribute name="instrument-ref" use="optional" />
+        <xs:attribute name="yieldCurve-name" use="optional" />
+        <xs:attribute name="yieldCurve-inf-idx" use="optional" />
+       </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="GlobalResult">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This types describe a result of the risk analysis that is the global result for a some considered positions. In many cases, it corresponds to the total (e.g. for P&amp;L indicators) but in some cases, the global result is not linear w/r each position results. Note that, while this type describes only 1 global result, the global result might be a complex structure (e.g. table, etc.) and thus is can be composed of several result lines.
+</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="resultLine" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+	    <xs:element name="marketData" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="intermediateResult" type="tns:ResultLine" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BookResult">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This types describes of the 'global result' type is used to define a result at book level, for each book (portfolio) of the position(s) on which the risk analysis is applied. The result content is similar to the global result, but the additional information describes the portfolio (e.g. PortfolioForScenario, etc.)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="folio:PortfolioForScenario" />
+      <xs:element name="error" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="position" type="tns:PositionResult" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="underlying" type="tns:UnderlyingResult" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="deletedPosition" type="tns:DeletedPositionResult" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="value" type="folio:Value" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="global" type="tns:GlobalResult" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ScenarioResults">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The scenario results contains:
+- at list one global result, at book level corresponding to the scenario perimeter
+- some information regarding the calculation performance (local/distributed calculation, calculation start/end time, etc.)
+It also contains the error message, if any.
+</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="calculationMode" type="tns:CalculationMode" minOccurs="0" maxOccurs="1" />
+      <xs:element name="launchMode" type="xs:token" minOccurs="0" maxOccurs="1" />
+      <xs:element name="calculationStartTime" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+      <xs:element name="calculationTime" type="xs:time" minOccurs="0" maxOccurs="1" />
+      <xs:element name="book" type="tns:BookResult" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="error" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Parameters and derived types                    -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- TODO: RENAME THE TYPES FOR C++ CASTING -->
+  <!-- Base type for scenarios families -->
+  <xs:complexType name="ScenarioFamilyParameters">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes some scenario parameters which are shared by similar risk analysis. For example all risk analysis have a 'group' and a 'name'.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="scenarioGroup" type="xs:string" minOccurs="1" maxOccurs="1" />
+          <xs:element name="scenarioName" type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- IR and Inflation Rate Hedge and derived -->
+  <xs:complexType name="IRandInflationRateHedge">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR and Inflation Rate Hedge Scenario. IR and Inflation Rate Hedge is a group of scenarios that compute the exposure of a portfolio to Interest Rate Risk and Inflation Risk per maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="currency" minOccurs="0" maxOccurs="unbounded" type="instrument:Currency" />
+          <xs:element name="yieldCurve" minOccurs="0" maxOccurs="unbounded" type="tns:YieldCurve" />
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+          <xs:element name="maturityFromYieldCurve" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+          <xs:element name="iRDeltaUnit" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="dayCountBasis" minOccurs="0" maxOccurs="1" type="instrument:DayCountBasis" />
+          <xs:element name="yieldCalculationMode" minOccurs="0" maxOccurs="1" type="instrument:YieldCalculation" />
+		  <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="aggregatedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeltaZeroCoupon">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR and Inflation Rate Hedge / Delta Zero-Coupon Scenario. Delta Zero-Coupon is a scenario that computes the exposure of a portfolio to zero-coupon rates per currency, family and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+		<xs:extension base="tns:IRandInflationRateHedge">
+			<xs:sequence>
+				<xs:element name="yieldCurveTypeToBump" minOccurs="0" maxOccurs="1" type="tns:YieldCurveTypeToBump" />
+			</xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Derived From, but just because its the same ... -->
+  <xs:complexType name="DeltaReset">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR and Inflation Rate Hedge / Delta Reset Scenario. Delta Reset is a scenario that computes the exposure of a portfolio to forward Libor rates per currency, family and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:DeltaZeroCoupon" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ZCRhoByMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the ZC Rho/Maturity Scenario. ZC Rho/Maturity is similar to IR and Inflation Rate Hedge / Delta Zero-Coupon</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:DeltaZeroCoupon" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FamilyRhoByMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Family Rho/Maturity Scenario. Family Rho/Maturity is similar to IR and Inflation Rate Hedge / Delta Zero-Coupon, except that the resuts are only per family</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:DeltaZeroCoupon" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeltaSwap">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR and Inflation Rate Hedge / Delta Swap Scenario. Delta Swap is a scenario that computes the exposure of a portfolio to market rates per currency, family and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="currency" minOccurs="0" maxOccurs="1" type="instrument:Currency" />
+          <xs:element name="yieldCurveTypeToBump" minOccurs="0" maxOccurs="1" type="tns:YieldCurveTypeToBump" />
+          <xs:element name="yieldCurve" minOccurs="0" maxOccurs="unbounded" type="tns:YieldCurve" />
+          <xs:element name="ProgressiveMode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="IgnoreSwapUndRateFixing" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="ResultInAnalysisCurrency" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="iRDeltaUnit" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="computationMode" type="tns:ComputationMode" />
+		  <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="aggregatedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UnderlyingsJumpToDefault">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the scenario of jump to default of each underlying . Underlying Jump-to-default is a scenario that computes the price of a portfolio in each case one of delta risk source default to zero.</xs:documentation>
+    </xs:annotation>
+	<xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+		  <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="aggregatedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="relativeBump" minOccurs="0" maxOccurs="1" type="xs:double" />
+		  <xs:element name="evaluationType" minOccurs="0" type="tns:EvaluationType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeltaForward"> 
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR and Inflation Rate Hedge / Delta Forward Scenario. Delta Forward is a scenario that computes the exposure of a portfolio to a certain Forward Libor Rate per maturity (such as EUR3M)</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+          <xs:element name="interestRateIndex" minOccurs="0" maxOccurs="1" type="instrument:Identifier" />
+          <xs:element name="dayCountBasis" minOccurs="0" maxOccurs="1" type="instrument:DayCountBasis" />
+          <xs:element name="yieldCalculationMode" minOccurs="0" maxOccurs="1" type="instrument:YieldCalculation" />
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="iRDeltaUnit" minOccurs="0" maxOccurs="1" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>  
+  <xs:complexType name="ParRisk">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Par Risk Scenario. Par Risk is a scenario that computes the hedge quantities of a portfolio with respect to a series of IR/Inflation derivatives (money-market, swaps...)</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:IRandInflationRateHedge">
+        <xs:sequence>
+          <xs:element name="breakdownName" maxOccurs="1" minOccurs="0" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- CREDIT HEDGE and derived -->
+  <xs:complexType name="CreditHedgeZeroCoupon">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Hedge / Zero-Coupon Scenario. Zero-Coupon is a scenario that computes the exposure of a portfolio to zero-coupon spreads per issuer, currency, seniority, default event and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="dayCountBasis" minOccurs="0" maxOccurs="1" type="instrument:DayCountBasis" />
+          <xs:element name="yieldCalculationMode" minOccurs="0" maxOccurs="1" type="instrument:YieldCalculation" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="useMultiplicativeBump" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Derived From, but just because its the same ... -->
+  <xs:complexType name="CreditHedgeMarket">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Hedge / Market Scenario. Market is a scenario that computes the exposure of a portfolio to CDS spreads per issuer, currency, seniority, default event and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:CreditHedgeZeroCoupon" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditRiskExposure">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Exposure Scenario. Exposure is a scenario that computes the credit-risky notionals of a portfolio per issuer, currency and seniority.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Derived From, but just because its the same ... -->
+  <xs:complexType name="CreditHedgeRecoveryRate">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Hedge / Recovery Rate Scenario. Recovery Rate is a scenario that computes the exposure of a portfolio to instruments' recovery rates per issuer, seniority, and default event.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:CreditHedgeZeroCoupon" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditHedgeTotalLoss">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Hedge / Total Loss Scenario. Total Loss is a scenario that computes the value of a portfolio in case of default per issuer, currency and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditHedgeHedging">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Credit Hedge / Market Scenario. Market is a scenario that computes the hedge quantities of a portfolio in term of equivalent CDS per issuer, currency, seniority, default event and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="dayCountBasis" minOccurs="0" maxOccurs="1" type="instrument:DayCountBasis" />
+          <xs:element name="yieldCalculationMode" minOccurs="0" maxOccurs="1" type="instrument:YieldCalculation" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="useMultiplicativeBump" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="creditRiskCurveType" minOccurs="0" maxOccurs="1" type="tns:CreditRiskCurveType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Other Scenarios -->
+  <xs:complexType name="Riskmatrix">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of a Risk Matrix scenarion in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="X-Axis" type="AxisLabelsWithUnderlyer" />
+          <xs:element name="Y-Axis" type="AxisLabelsWithUnderlyer" />
+          <xs:element name="date" minOccurs="0" maxOccurs="1" type="tns:Maturity" />
+          <xs:element name="DeltaAdjustmentInScenarioPref" minOccurs="0" maxOccurs="1" type="tns:DeltaAdjustmentInScenarioPref" />
+          <xs:element name="result">
+            <xs:complexType>
+              <xs:annotation>
+                <xs:documentation xml:lang="en">List of results that may be computed by the Risk Matrix</xs:documentation>
+              </xs:annotation>
+              <xs:sequence>
+                <xs:element name="PnL" type="xs:boolean" minOccurs="0" />
+                <xs:element name="delta" type="xs:boolean" minOccurs="0" />
+                <xs:element name="gamma" type="xs:boolean" minOccurs="0" />
+                <xs:element name="vega" type="xs:boolean" minOccurs="0" />
+                <xs:element name="rho" type="xs:boolean" minOccurs="0" />
+				<xs:element name="convexity" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="deltaPnL" type="xs:boolean" minOccurs="0" />
+                <xs:element name="theta" type="xs:boolean" minOccurs="0" />
+                <xs:element name="totalDelta" type="xs:boolean" minOccurs="0" />
+                <xs:element name="partialDelta" type="xs:boolean" minOccurs="0" />
+                <xs:element name="deltaQuantity" type="xs:boolean" minOccurs="0" />
+                <xs:element name="deltaHedge" type="xs:boolean" minOccurs="0" />
+                <xs:element name="vanna" type="xs:boolean" minOccurs="0" />
+                <xs:element name="volga" type="xs:boolean" minOccurs="0" />
+                <xs:element name="weightedVega" type="xs:boolean" minOccurs="0" />
+                <xs:element name="assetValue" type="xs:boolean" minOccurs="0" />
+                <xs:element name="nav" type="xs:boolean" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resultsType" minOccurs="0" maxOccurs="1" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="WorstCase">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Worst Case scenario. Worst Case is a scenario that computes the lowest P&amp;L variations among a set of market data</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="X-Axis" type="AxisLabelsWithUnderlyer" />
+          <xs:element name="Y-Axis" type="AxisLabelsWithUnderlyer" />
+          <xs:element name="date" minOccurs="0" maxOccurs="1" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VegaMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Vega/Maturity scenario. Vega/Maturity is a scenario that computes the exposure of a portfolio to volatility risk per maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="bumpValue" type="xs:double" minOccurs="0" maxOccurs="1" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EpsilonMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Epsilon/Maturity scenario. Epsilon/Maturity is a scenario that computes the exposure of a portfolio to dividend risk per maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="bumpValue" type="xs:double" minOccurs="0" maxOccurs="1" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RepoMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Repo/Maturity scenario. Repo/Maturity is a scenario that computes the exposure of a portfolio to repo rate risk per maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="bumpValue" type="xs:double" minOccurs="0" maxOccurs="1" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VolMatrixMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="detailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="overVolatility" type="xs:double" minOccurs="0" maxOccurs="1" />
+          <xs:element name="strikeType" type="tns:ScenarioStrikeType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="strike" minOccurs="0" maxOccurs="unbounded" type="xs:double" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+		  <xs:element name="tenor" minOccurs="0" maxOccurs="1" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VegaMaturitySpot">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="UnderlyingCode" minOccurs="1" maxOccurs="1" type="instrument:Underlyer" />
+          <xs:element name="PivotSpot" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="StepSpot" minOccurs="1" maxOccurs="1" type="xs:double" />
+          <xs:element name="IncrementSpot" minOccurs="1" maxOccurs="1" type="xs:double" />
+          <xs:element name="IncrementSpotType" minOccurs="1" maxOccurs="1" type="tns:ScenarioIncrementSpotType" />
+          <xs:element name="BumpVol" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="shapeOfVariation" minOccurs="0" maxOccurs="1" type="tns:ShapeOfVariation" />
+          <xs:element name="BumpMarketPlot" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VolatilityHedge">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge Scenario. Volatility Hedge is a group of scenarios that compute the exposure of a portfolio to Interest Rate Risk and Inflation Risk per maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioFamilyParameters">
+        <xs:sequence>
+          <xs:element name="VegaOptionGrid" minOccurs="0" maxOccurs="1" type="xs:normalizedString" />
+          <xs:element name="DetailedResults" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="Currency" minOccurs="0" maxOccurs="1" type="instrument:Currency" />
+          <xs:element name="BumpValue" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="ResultInAnalysisCurrency" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InflationVegaPerMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge / Inflation Vega Per Maturity Scenario. Inflation Vega Per Maturity is a scenario that computes the exposure of a portfolio to the volatility based on a user defined maturity grid.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:VolatilityHedge">
+       <xs:sequence>
+          <xs:element name="InflationIndex" minOccurs="0" maxOccurs="1" type="xs:integer" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="InflationVolatilityMatrixHedge">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge / Inflation Volatility Matrix Scenario. Inflation Volatility Matrix is a scenario that computes the exposure of a portfolio to the volatility per strike and maturity.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:InflationVegaPerMaturity" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IRVegaSwaption">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge / IR Vega Swaption Scenario. IR Vega Swaption is a scenario that computes the exposure of a portfolio to swaption volatilities per currency, family, maturity and strike.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:VolatilityHedge">
+        <xs:sequence>
+          <xs:element name="yieldCurve" minOccurs="0" maxOccurs="1" type="tns:YieldCurve" />
+          <xs:element name="maturityOption" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+          <xs:element name="maturitySwap" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+          <xs:element name="progressiveMode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="bySwap" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="smileBumped" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IRVegaCap">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge / IR Vega Cap Scenario. IR Vega Cap is a scenario that computes the exposure of a portfolio to Cap volatilities per currency, family, maturity and strike.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:IRVegaSwaption" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IRVegaCaplet">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Volatility Hedge / IR Vega Caplet Scenario. IR Vega Caplet is a scenario that computes the exposure of a portfolio to Caplet volatilities per currency, family, maturity and strike.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:IRVegaSwaption" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Crossedgreeks">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Crossed Greeks Scenario. Crossed Greeks is a scenario that computes the gamma, vegas and crossed gamma/vega of a portfolio per underlying.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DetailedCorrelationMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Detailed Correlations/Maturity Scenario. Detailed Correlations/Maturity is a scenario that computes the exposure of a portfolio to correlation risk per underlying and maturity</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="maturity" minOccurs="0" maxOccurs="unbounded" type="tns:Maturity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeltaAdjustmentReport">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Delta Adjustment Report Scenario. Delta Adjustment Report is a scenario that computes the deltas of barrier options at barrier levels and the related jumps.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="UnderlyingCode" minOccurs="1" maxOccurs="1" type="instrument:Underlyer" />
+          <xs:element name="Spot" minOccurs="0" maxOccurs="1" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CommodityMonthlyRisk">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="DeltaType" minOccurs="0" maxOccurs="1" type="tns:FutureDeltaType" />
+          <xs:element name="AggregationProfile" minOccurs="0" maxOccurs="1" type="xs:string" />
+          <xs:element name="MeasureUnit" minOccurs="0" maxOccurs="1" type="xs:string" />
+          <xs:element name="WeightCurve" minOccurs="0" maxOccurs="1" type="xs:string" />
+          <xs:element name="BleedDate" minOccurs="0" maxOccurs="1" type="tns:Maturity" />
+          <xs:element name="RollIndex" type="xs:boolean" minOccurs="0" />
+          <xs:element name="ParentExpiredContract" minOccurs="0" maxOccurs="1" type="tns:ParentExpiredContractType" />
+          <xs:element name="IncludeCrossedGammas" type="xs:boolean" minOccurs="0" />
+          <xs:element name="GammasInCommodityCurrency" type="xs:boolean" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PinRiskAnalysis">
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="UnderlyingCode" minOccurs="0" maxOccurs="1" type="instrument:Underlyer" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+  <xs:complexType name="StrikeMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Strike/Maturity scenario. Strike/Maturity is a scenario that dispatches the Greeks of a set of positions per Strike and Maturity of the related instruments.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:VolMatrixMaturity" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FXVolMatrixMaturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:VolMatrixMaturity">
+        <xs:sequence>
+          <xs:element name="bumpMarketPlot" type="xs:boolean" minOccurs="0" />
+          <xs:element name="calculationType" type="tns:CalcType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="calculateVolga" type="xs:boolean" minOccurs="0" />
+          <xs:element name="calculateReserve" type="xs:boolean" minOccurs="0" />
+          <xs:element name="bidVolCurve" type="tns:VolatilityTypeInScenario" minOccurs="0" />
+          <xs:element name="askVolCurve" type="tns:VolatilityTypeInScenario" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="VolMatrixinDeltaMaturity">
+    <xs:complexContent>
+      <xs:extension base="tns:VolMatrixMaturity">
+        <xs:sequence>
+          <xs:element name="bumpMarketPlot" type="xs:boolean" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+  <xs:complexType name="PLJumpReport">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This type describes the parameters of the scenario in Sophis. The parameters corresponds to the user-interface parameters, as described in the Sophis Documentation. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="UnderlyingCode" minOccurs="0" maxOccurs="1" type="instrument:Underlyer" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SABRSensitivities">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the SABR Sensitivities scenario. SABR Sensitivities is a scenario that computes the exposure of a portfolio to the parameters of the SABR model per underlying.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="NuBumpValue" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="RhoBumpValue" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="AlphaBumpValue" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="BetaBumpValue" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="IsDetailed" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+   <xs:complexType name="CDSBasisUploader">
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="CleanIssuerBasis" minOccurs="0" maxOccurs="1"  type="xs:boolean"/>
+		  <xs:element name="Reference" minOccurs="0" maxOccurs="unbounded" type="instrument:Identifier"/>
+		  <xs:element name="Basis" minOccurs="0" maxOccurs="unbounded" type="xs:double"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Common Types for Parameters                     -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="Maturity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Maturity formats for inputs and outputs of scenarios. They follow the same formats as Volatility Curves, Rate Curves or Credit Curves</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Selection among Maturity Date Formats. It corresponds to the same formats are available in Credit or Rate Curves (1y, 20/05/2015, 2x3...)</xs:documentation>
+      </xs:annotation>
+      <xs:element name="relativeDate" type="common:DateInterval" />
+      <xs:element name="absoluteDate" type="xs:date" />
+      <xs:element name="specialDate" type="xs:string" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="YieldCurve">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">An item to identify a Yield Curves, or a set of Yield Curves, per currency, family and name</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="id" type="xs:integer" minOccurs="1" maxOccurs="1" />
+      <xs:element name="name" type="xs:normalizedString" minOccurs="0" maxOccurs="1" />
+      <xs:element name="family" type="xs:normalizedString" minOccurs="0" maxOccurs="1" />
+      <xs:element name="currency" type="instrument:Currency" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="ComputationMode">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Computation Mode for the scenarios per maturity: either points are bumped one at a time separately, or they are bumped by increasing series</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="By Plot" />
+      <xs:enumeration value="Progressive" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ShapeOfVariation">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Determines the shape of the bump applied to Volatility Curves, Rate Curves or Credit Curves. It is used in combination with a Maturity Grid</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Triangle" />
+      <xs:enumeration value="Rectangle" />
+      <xs:enumeration value="Normal" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="YieldCurveTypeToBump">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Determines the curve type (Interest rate, Inflation or both) to bump.  </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Interest Rate" />
+      <xs:enumeration value="Inflation" />
+      <xs:enumeration value="IR and Inflation" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="AxisLabelsWithUnderlyer">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Generic description of an axis for the resulting analysis grid. Used in particular by the Risk Matrix scenario</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Parameter" type="common:AxisLabels" use="optional" default="Underlying" />
+    <xs:attribute name="bump" use="optional" default="In Points">
+      <xs:simpleType>
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Bump value expressed in Points is additive. Bump value expressed in Percentage is multiplicative.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="In Points" />
+          <xs:enumeration value="In Percentage" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="axis" type="xs:double" use="required" />
+    <xs:attribute name="step" type="xs:double" use="required" />
+    <xs:attribute name="numberOfSteps" type="xs:integer" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="ScenarioStrikeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies the definition of the Strike parameter. Also see StrikeType in volatility.xsd</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="InPercent" />
+      <xs:enumeration value="Absolute" />
+      <xs:enumeration value="InDelta" />
+      <xs:enumeration value="DeltaCash" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ScenarioIncrementSpotType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Determines how the spot is incremented along a Spot axis</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="InPercent" />
+      <xs:enumeration value="InAmount" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DeltaAdjustmentInScenarioPref">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Select which delta adjustments is displayed, as described in Financial Documentation.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="NoAdjustment" />
+      <xs:enumeration value="DeltaAllIncluded" />
+      <xs:enumeration value="DeltaWithAgreement" />
+      <xs:enumeration value="DeltaWithInternalAgreement" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CalcType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Determines the type of volatility bumped in Scenario "FXVolMatrix/Maturity": Call, Butterfly and Risk Reversal...</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="CallPut" />
+      <xs:enumeration value="BFRR" />
+      <xs:enumeration value="Both" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VolatilityTypeInScenario">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies whether a Volatility analysis curve is Bid, Ask, Market... Also see SurfaceEnum in volatility.xsd</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="Result" />
+      <xs:enumeration value="Market" />
+      <xs:enumeration value="Management" />
+      <xs:enumeration value="Bid" />
+      <xs:enumeration value="Ask" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FutureDeltaType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes the different types of Delta to be displayed for Commodity Risk Analysis.
+Delta P&amp;L is the first order derivative of the P&amp;L w/r the risk source. For example 0.98 for an in-the-money option with 2% ZC until settlement.
+Delta Quantity is the quantity of Commodity which corresponds to the risk. Also known as 'undiscounted delta' or 'forward delta'. For example, it will always be 1.0 for an in-the-money option, regardless of the ZC until settlement.
+Delta Hedge is the quantity of the commodity to be purchased when hedging the 'Delta P&amp;L' risk with an instrument which has a Delta P&amp;L different from 1.0 (e.g. a Forward).
+As a rule of thumb:
+- Risk managers shall use Delta P&amp;L
+- Energy traders may prefer Delta Quantity
+- LME/Base Metals traders may prefer Delta Hedge
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Unknown" />
+      <xs:enumeration value="Quantity" />
+      <xs:enumeration value="PnL" />
+      <xs:enumeration value="Hedge" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParentExpiredContractType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of parent expired contract type available in scenario</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Unknown" />
+      <xs:enumeration value="ShiftToFirstNearby" />
+      <xs:enumeration value="AggregateOnExpiredContract" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VegaType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Selects which Vega risk should be displayed.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="Vega" />
+      <xs:enumeration value="WeightedVega" />
+      <xs:enumeration value="Volga" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ScenarioPortfolioIndicator">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This object defines the type of the indicator : price, quantity, PnL, delta, vega...</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="Price" />
+      <xs:enumeration value="Quantity" />
+      <xs:enumeration value="PnL" />
+      <xs:enumeration value="Delta" />
+      <xs:enumeration value="Vega" />
+      <xs:enumeration value="Gamma" />
+      <xs:enumeration value="Theta" />
+      <xs:enumeration value="Total" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="EvaluationType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This object defines the type of evaluation : result, result variation, NAV, AssetValue, theoretical...</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Result" />
+      <xs:enumeration value="Delta" />
+      <xs:enumeration value="Vega" />
+      <xs:enumeration value="Theta" />
+      <xs:enumeration value="Rho" />
+	  <xs:enumeration value="Convexity" />
+      <xs:enumeration value="Gamma" />
+      <xs:enumeration value="ResultVariation" />
+      <xs:enumeration value="DeltaPartial" />
+	  <xs:enumeration value="DeltaTotal" />
+	  <xs:enumeration value="DeltaQuantity" />
+	  <xs:enumeration value="DeltaHedge" />
+	  <xs:enumeration value="Vanna" />
+	  <xs:enumeration value="Volga" />
+	  <xs:enumeration value="WeightedVega" />
+	  <xs:enumeration value="AssetValue" />
+	  <xs:enumeration value="Nav" />
+	  <xs:enumeration value="EvaluationCount" />
+	  <xs:enumeration value="Theoretical" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CreditRiskCurveType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Selection among Mid, Bid or Ask for the Credit Curves to be bumped</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Mid-Market" />
+      <xs:enumeration value="Bid" />
+      <xs:enumeration value="Ask" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="StressTest">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the Stress Test scenario. Stress Test is a scenario that computes the P&amp;L of a portfolio for a flexible series of market data deformations described by the user.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="fileLine" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Scenarios for Risk Management                   -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="CreditAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This analysis is a scenario bumping the credit data in the RMM. The bump size is "bump" and the flag "useOnlyOneBump" indicates if the bump is applied on all the rate curve points.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="useOnlyOneBump" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="displayFairValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IRDeltaSwapAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Scenario used to stress the market rate curve points and to compute the IR delta values for the different rate curve families.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="bump" minOccurs="0" maxOccurs="1" type="xs:double" />
+          <xs:element name="useOnlyDefaultCurve" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="useOnlyOneBump" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="displayFairValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="useFixingForSwapPoints" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+  <xs:element name="yieldCurve" minOccurs="0" maxOccurs="unbounded" type="tns:YieldCurve"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DeltaGammaAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">This scenario computes the first order and the second order sensibilities.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters"></xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ForexAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The "Forex Analysis" scenario provides an extraction to display FX deals by couple of currencies in a portfolio. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters"></xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GreekByUnderlyingAnalysis">
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GreekByCurrencyAnalysis">
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CreditSpreadAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the position sensitivities to Credit Risk. It is used in particular to calculate the Performance Attribution</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters"></xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ThetaAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Scenarios used to define the impact of the time effect. The input paramaters are the day to compute, flags to include / exclude the coupons / dividends, the rate, volatility, repo curves.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="rate" type="tns:CurveForTheta" minOccurs="0" maxOccurs="1" />
+          <xs:element name="volatility" type="tns:CurveForTheta" minOccurs="0" maxOccurs="1" />
+          <xs:element name="repo" type="tns:CurveForTheta" minOccurs="0" maxOccurs="1" />
+          <xs:element name="spot" type="tns:SpotForTheta" minOccurs="0" maxOccurs="1" />
+          <xs:element name="includeDividends" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="includeCoupon" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="includeTreasury" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="dayToUse" type="tns:ThetaDateType" minOccurs="0" maxOccurs="1" />
+		  <xs:element name="currency" minOccurs="0" maxOccurs="1" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="CurveForTheta">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Methodology to build the Yield Curve at Theta Date, it follows the Theta Preferences</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Roll" />
+      <xs:enumeration value="Shift" />
+      <xs:enumeration value="RealShift" />
+      <xs:enumeration value="Same" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SpotForTheta">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Methodology to build the equity Spots at Theta Date, it follows the Theta Preferences</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Same" />
+      <xs:enumeration value="MinusDividend" />
+      <xs:enumeration value="Future" />
+      <xs:enumeration value="Arbitrage" />
+      <xs:enumeration value="ArbitrageMinusDividend" />
+      <xs:enumeration value="ArbitrageFuture" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ThetaDateType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Methodology to determine the Theta date with respect to current date, it follows the Theta Preferences</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="FollowingDay" />
+      <xs:enumeration value="FollowingDay_7_5" />
+      <xs:enumeration value="NextWeek" />
+      <xs:enumeration value="NextOpenDay" />
+      <xs:enumeration value="NextOpenDay_NbDays" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ColumnSetAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the a set of portfolio columns for a position. Values are expressed with position's quantity and in the currency of the portfolio.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="column" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ColumnSetAnalysisInvariantCCY">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the a set of portfolio columns for a position. Values are expressed with quantity 1 and in the currency of the instrument.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="column" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Hedging">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A Hedging instrument and ratio in the IR Breakdown Analysis scenario</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="hedgingLineInstru" type="instrument:Underlyer" minOccurs="0" maxOccurs="1" />
+      <xs:element name="hedgingLinePercentage" type="xs:double" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HedgingList">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of Hedging instruments and ratios in the IR Breakdown Analysis scenario</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hedging" type="tns:Hedging">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">List of hedging lines.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HedgingBreakdownLine">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A named list of Hedging instruments and ratios in the IR Breakdown Analysis scenario</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="hedgingHeader" type="xs:normalizedString" minOccurs="1" maxOccurs="1" />
+      <xs:element name="hedgingList" type="tns:HedgingList" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="IRBreakdownAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Input parameters of the IR Breakdown Analysis Scenario. IR Breakdown Analysi is a scenario that computes the hedge quantities of a portfolio with respect to a flexible series of IR derivatives.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="analysisCurrency" type="instrument:Currency" minOccurs="0" maxOccurs="1" />
+          <xs:element name="yieldCurve" type="tns:YieldCurve" minOccurs="0" maxOccurs="1" />
+          <xs:element name="sensitivityComputationType" type="xs:integer" minOccurs="0" maxOccurs="1" />
+          <xs:element name="ignoreSwapUndRateFixing" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element name="resultInAnalysisCurrency" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element name="useSpecificGrid" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element name="gridName" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="countPerLine" type="xs:integer" minOccurs="0" maxOccurs="1" />
+          <xs:element name="hedgingBreakdownLine" type="tns:HedgingBreakdownLine" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="StressTestAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Used for stress testing. The flags define the data which will be computed in stress testing : fair value, stressed value, delta PnL, delta, gamma, delta cash, gamma cash.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="xmlContent" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+          <xs:element name="xmlPreferences" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+          <xs:element name="dumpXMLContentInOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeFairValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeStressValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeStressTheo" 	minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+          <xs:element name="computeAssetValue" 	minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+          <xs:element name="computeDeltaPnLValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeDelta" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeGamma" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeDeltaCash" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="computeGammaCash" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="computeRho" 			minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeRhoConvexity"	minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeCreditRisk"		minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeCreditRiskConvexity"		minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeFxDelta" 		minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeFxGamma" 		minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+		  <xs:element name="computeFxVega" 			minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+          <xs:element name="computeCashBalance" 			minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+          <xs:element name="pivotCurrency" 		    minOccurs="0" maxOccurs="1" type="xs:string"/>
+		  <xs:element name="useBusinessDays"   		minOccurs="0" maxOccurs="1" type="xs:boolean" />
+		  <xs:element name="placeCode" 		   		minOccurs="0" maxOccurs="1" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ForwardCalculationAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="user" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="instance" type="xs:string" minOccurs="0" maxOccurs="1" />
+		  <xs:element name="scenarioId" type="xs:int" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="observationDate" type="xs:int" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="calculationId" type="xs:int" minOccurs="0" maxOccurs="1"/>
+		  <xs:element name="historicalDate" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+
+          <xs:element name="displayFairValue" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element name="yieldCurveFeederOnly" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element name="writeMarketData" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="FixedIncomeAnalysis">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the position sensitivities to Interest Rate Risk and MtM effects. It is used in particular to calculate the Performance Attribution</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters"></xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TradingReturn">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A scenario used by the Risk Management Module to capture the position sensitivities to Intraday Results. It is used in particular to calculate the Performance Attribution</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters"></xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+	<xs:complexType name="NostroDCB">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Nostro Detailed Cash Balance</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters">
+				<xs:sequence>
+					<xs:element name="currency" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="account" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="custodian" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="flags" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="nbOfDays" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="isCashFlowView" minOccurs="0" maxOccurs="1"  type="xs:boolean"/>
+					<xs:element name="reportingDate" type="tns:Maturity" minOccurs="0" maxOccurs="1" />
+					<xs:element name="excludeBlockedCash" minOccurs="0" maxOccurs="1"  type="xs:boolean"/>
+					<xs:element name="referenceDate" type="tns:Maturity" minOccurs="0" maxOccurs="1" />
+					<xs:element name="referenceCurrency" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="settings" type="xs:string" minOccurs="0" maxOccurs="1" />
+					<xs:element name="absoluteDateForOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+
+	</xs:complexType>
+
+	<xs:complexType name="IRGapAnalysis">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">IR Gap Report</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters">
+				<xs:sequence>
+					<xs:element name="bucketModelName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="bucket" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="currency" type="xs:int" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="folio" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="allotment" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="InflationHedgeDeltaGamma">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"></xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters">
+				<xs:sequence>
+					<xs:element name="inflationIndex" minOccurs="0" maxOccurs="1" type="xs:integer" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="IRBreakdownLoop">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"></xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters">
+				<xs:sequence>
+					<xs:element name="breakdownName" maxOccurs="1" minOccurs="0" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="NullScenario">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"></xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters" />
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="VaRAnalysis">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"></xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:ScenarioParameters">
+				<xs:sequence>
+					<xs:element name="scenarioId" minOccurs="0" maxOccurs="1" type="xs:int" />
+					<xs:element name="calculationId" minOccurs="0" maxOccurs="1" type="xs:int" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Recovery">
+	  <xs:sequence>
+      <xs:element   name="rating"       type="xs:string"/>
+      <xs:element   name="percentage"   type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RecoveryList">
+    <xs:sequence>
+      <xs:element   name="recovery"      maxOccurs="unbounded"   type="tns:Recovery"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Sector">
+    <xs:sequence>
+      <xs:element name="sectorName"   type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SectorList">
+    <xs:sequence>
+      <xs:element name="sector" maxOccurs="unbounded" type="tns:Sector"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MaturityList">
+    <xs:sequence>
+      <xs:element name="maturity" maxOccurs="unbounded" type="tns:Maturity"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SpreadRating">
+    <xs:sequence>
+      <xs:element name="rating" type="xs:string"/>
+      <xs:element name="spread"  maxOccurs="unbounded" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MatrixData">
+    <xs:sequence>
+      <xs:element name="spreadType"    type="xs:string"/>
+      <xs:element name="sectorList"    type="tns:SectorList"/>
+      <xs:element name="maturityList"    type="tns:MaturityList"/>
+      <xs:element name="spreadRating"  maxOccurs="unbounded" type="tns:SpreadRating"/>
+      <xs:element name="recoveryList"    type="tns:RecoveryList"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CreditRatingMigration">
+    <xs:complexContent>
+      <xs:extension base="tns:ScenarioParameters">
+        <xs:sequence>
+          <xs:element name="sectorType"  minOccurs="0" type="xs:string"/>
+          <xs:element name="ratingAgency"               minOccurs="0" type="xs:string"/>
+          <xs:element name="matrixData"  minOccurs="0" maxOccurs="unbounded" type="tns:MatrixData"/>
+          <xs:element name="absoluteDateForOutput" minOccurs="0" type="xs:boolean"/>
+          <xs:element name="date"    maxOccurs="unbounded" type="tns:Maturity"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+</xs:schema>

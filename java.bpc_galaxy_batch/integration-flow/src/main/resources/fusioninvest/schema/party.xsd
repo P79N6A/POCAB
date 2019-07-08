@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML Studio 1.0.8.0 (http://www.liquid-technologies.com) -->
+<xsd:schema xmlns:tns="http://www.sophis.net/party" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:common="http://sophis.net/sophis/common" xmlns:tag="http://www.sophis.net/Tag"  attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/party" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common"/>
+  <xsd:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument"/>
+  <xsd:import namespace="http://www.sophis.net/Tag" schemaLocation="Tag.xsd"/>
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en">supported partyIdScheme are:
+		"http://www.sophis.net/party/partyId/id" : Sophis internal party identifier
+		"http://www.sophis.net/party/partyId/name" :
+		"http://www.sophis.net/party/partyId/reference" :
+		"http://www.sophis.net/party/partyId/externalReference" :
+		"http://www.sophis.net/party/partyId/swiftCode" :
+		"http://www.sophis.net/party/partyId/shortCode" :
+		"http://www.sophis.net/party/partyId/custom" :</xsd:documentation>
+  </xsd:annotation>
+  <xsd:complexType name="Party">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type defining party information.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" ref="tns:partyId">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A party identifier, e.g. a S.W.I.F.T. bank identifier code (BIC).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="partyName" type="xsd:normalizedString">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The name of the party. A free format string. FpML does not define usage rules for this element.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="description" type="tns:PartyDescription"/>
+	  <xsd:element name="tags" type="tag:Tags" minOccurs="0" >
+        <xsd:annotation>
+          <xsd:documentation  source="http://www.sophis.net" xml:lang="en">Contains the tags applied to the party. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="optional">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.FpML.org" xml:lang="en">The id uniquely identifying the Party within the document.</xsd:documentation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">Slightly modified: made attribute id optional</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="href" type="xsd:IDREF" use="optional"/>
+    <xsd:attributeGroup ref="common:PersistentEntity.model">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Since 5.3.3 add persitenceType for import</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attributeGroup>
+  </xsd:complexType>
+  <xsd:element name="party" type="tns:Party"/>
+  <xsd:complexType name="PartyId">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">The data type used for party identifiers.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">changed the default scheme</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="partyIdScheme" type="xsd:anyURI"/>
+        <xsd:attribute name="searchPriority" type="xsd:int" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.FpML.org" xml:lang="en">search order for searchPolicy set to OR (begin to 1) </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:element name="partyId" type="tns:PartyId"/>
+  <xsd:complexType name="CustomPartyId">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The expected code scheme is http://www.sophis.net/party/partyId/custom</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:PartyId">
+        <xsd:attribute name="name" type="xsd:normalizedString"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:element name="customPartyId" substitutionGroup="tns:partyId" type="tns:CustomPartyId"/>
+  <xsd:complexType name="PartyReference">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A reference to a party element within this document or its identifiers.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Made the href attribute optional, and added the list of ids</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="1" name="searchPolicy" type="xsd:token">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Policy to resolve third party. possible values : "and" "or" </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" ref="tns:partyId"/>
+    </xsd:sequence>
+    <xsd:attribute name="href" type="xsd:IDREF" use="optional"/>
+    <xsd:attribute name="ID" type="xsd:ID" use="optional">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">Internal, for gxml simplified soap.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="partyReference" type="tns:PartyReference"/>
+  <xsd:complexType name="PartyRole">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A generic party role type. This can be extended to provide specialization of roles.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:annotation>
+        <xsd:documentation source="http://www.FpML.org" xml:lang="en">The party fulfilling this role can be identified either directly, or indirectly via the account used to fulfil this role.</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="party" type="tns:PartyReference" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The party fulfilling this role.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="account" type="tns:AccountReference">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The account fulfilling this role.</xsd:documentation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Not implemented, field ignored</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="AccountReference" mixed="false">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">Reference to an account.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Not implemented, field ignored</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent mixed="false">
+      <xsd:extension base="common:IntradocumentReference"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="AccountId">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.fpml.org" xml:lang="en">The data type used for party identifiers.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Not implemented, field ignored</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="accountIdScheme" type="xsd:anyURI">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.FpML.org" xml:lang="en">The identifier scheme used with this accountId. A unique URI to determine the authoritative issuer of these identifiers.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Account">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A generic account that represents any party's account at another party. Parties may be identified by the account at another party.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Not implemented, type unused</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:sequence maxOccurs="unbounded">
+        <xsd:element name="accountId" type="tns:AccountId">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.FpML.org" xml:lang="en">An account identifier. For example an Account number.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="accountName" type="xsd:normalizedString">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.FpML.org" xml:lang="en">The name by which the account is known.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:element minOccurs="0" name="accountBeneficiary" type="tns:PartyReference">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The beneficiary of the account.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="required">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.FpML.org" xml:lang="en">The unique identifier for the account within the document.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="PartyDescription">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Description of the third Party</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="parent" type="tns:PartyReference">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The parent of the party. No parent defined equals to ROOT.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="institution" type="tns:Institution">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					If section institution is not specified, nothing is updated, otherwise all non specified fields are cset to false
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="category" type="tns:Category">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					If section category is not specified, nothing is updated, otherwise all non specified fields are cset to false
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="bank" type="tns:Bank"/>
+      <xsd:element minOccurs="0" name="names" type="tns:Names"/>
+      <xsd:element minOccurs="0" name="issuedShare" type="instrument:Underlyer"/>
+      <xsd:element minOccurs="0" name="site" type="xsd:int"/>
+      <xsd:element minOccurs="0" name="reporting" type="tns:Reporting">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					If section reporting is not specified, nothing is updated, otherwise all non specified fields are considered as empty for strings and false for booleans
+					</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="ratings" type="instrument:Ratings"/>
+      <xsd:element minOccurs="0" name="customProperties" type="tns:Custom"/>
+      <xsd:element minOccurs="0" name="address" type="tns:Address"/>
+	  <xsd:element minOccurs="0" name="regulatoryReporting" type="tns:RegulatoryReporting"/>
+      <xsd:element minOccurs="0" name="advancedData" type="tns:AdvancedData"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Names">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			In creation : if fields not specified all fields are created empty except reference and external reference which are taken from party id.
+										If reference or/and externalReference are specified, they override values taken from party id.
+			In update : if fields not specified they are kept unchanged.
+									to erase a field, specify it with empty value.
+									If reference is not specified the reference of the third is not updated.
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="legalName">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">The legal name of the party under which the party conducts its operations</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="location">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">geographic location that the party conducts its operations in</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="39"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="domicile">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">geographic location that the party is domiciled in </xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="comment">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Comments field on party, max 200 characters</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="199"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="externalReference">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">optional key codes for external communication</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="39"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="reference">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+						Reference of the party. if this field is defined, it overrides party id (scheme=reference) defined above.
+						If not specified, the reference of the third is not updated. In creation, specifying partyId (scheme=reference) is enough
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">party reference</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Institution">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			If section institution is not specified, nothing is updated, otherwise all non specified fields are set to false
+			But set at least one type to true is mandatory because a third party must have a type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" default="false" name="group" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="counterparty" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="depositary" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="broker" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="customer" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="pset" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="clearingHouse" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="clearingMember" type="xsd:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Category">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			If section category is not specified, nothing is updated, otherwise all non specified fields are set to false
+			</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" default="false" name="entity" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="corporate" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="exchange" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="internationalInstitution" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="bank" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="other" type="xsd:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Bank">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Party category type of bank; A business establishment in which money is kept for saving or commercial purposes or is invested, supplied for loans, or exchanged.
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" default="false" name="custodian" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="investment" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="merchant" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="savings" type="xsd:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Reporting">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		If section reporting is not specified, nothing is updated, otherwise all non specified fields are considered as empty for language and false for booleans
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" default="false" name="marketTax" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="grossPrice" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" default="false" name="averagePrice" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" name="language">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">reporting 2 character language code</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Address">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Address details of the party including contact details  &amp; address </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="identification" type="tns:Identification"/>
+      <xsd:element minOccurs="0" name="contactNumbers" type="tns:ContactNumbers">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				If contactNumbers has to be updated, specified all its fields, else they will be erased.
+				Else don't specify this section.
+				In creation if a field is not specified it will be created empty.
+				</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					You can describe the address either fully or line by line (max 5 lines).
+					If addressLines is used, the maximum length for each line is 39.
+					If fullAddress is used, the maximum length is 199. It is splitted amongst each line (39 characters by lines).
+					fullAddress contains 199 (instead of 195) characters so that carrier return can be added between each line.
+					All lines are erased before being updated, even not specified lines.
+					</xsd:documentation>
+        </xsd:annotation>
+        <xsd:element minOccurs="0" name="fullAddress">
+          <xsd:simpleType>
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">full address type max 199 characters</xsd:documentation>
+            </xsd:annotation>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="199"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="5" name="addressLines">
+          <xsd:simpleType>
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">line by line address type. each line 39 chars. 5 lines max</xsd:documentation>
+            </xsd:annotation>
+            <xsd:restriction base="xsd:string">
+              <xsd:maxLength value="39"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:choice>
+      <xsd:element minOccurs="0" name="contacts" type="tns:Contacts"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Identification">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Short and swift code information of party
+		Short code a free, additional code, normally used as an internal
+reference for reports or an interface primary key.
+		Swift Code a unique identification code for both financial and non-financial institutions.
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="shortCode">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Short code a free, additional code, normally used as an internal reference for reports or an interface primary key.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="swiftCode">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">swiftCode will be transformed to upperCases.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Swift Code a unique identification code for both financial and non-financial institutions.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="40"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="comments">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">comments about the short and swift codes</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:normalizedString">
+            <xsd:maxLength value="12"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ContactNumbers">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		If a field is not specified, in creation it will be created empty in the party, in update it will be erased.
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="phone">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">telephone number of the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="fax">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">fax number of the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="telex">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">telex number of the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="email">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">email address of the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="119"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contact">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Details of contact people or persons within the party
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="title">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">title of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="39"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="name">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">name of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="39"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="address">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">address of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="254"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="phone">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">phone number of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="fax">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">fax number of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="telex">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">telex details of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="23"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" name="email">
+        <xsd:simpleType>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">email address of the contact person(s) at the party</xsd:documentation>
+          </xsd:annotation>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="119"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element minOccurs="0" default="false" name="defaultClient" type="xsd:boolean"/>
+      <xsd:element minOccurs="0" name="allotment" type="xsd:normalizedString"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contacts">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contact information of the party </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="contact" type="tns:Contact"/>
+    </xsd:sequence>
+    <xsd:attribute default="true" name="overwrite" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				if true (default value if not specified), overwrite the contact list with new list
+				if false, complete the contact list with new list
+				</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CustomProperty">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		custom defined properties of party
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:StringBounded140">
+        <xsd:attribute name="name" type="tns:StringBounded20"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Custom">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				custom attributes for the party
+				</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="property" type="tns:CustomProperty"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="StringBounded23">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">bounded string element of custom attributes. 23 characters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="23"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded19">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">bounded string element of custom attributes. 19 characters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="19"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded20">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">bounded string element of custom attributes. 20 characters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="20"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded140">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">bounded string element of custom attributes. 140 characters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="140"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="SettlementInstruction">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.fpml.org" xml:lang="en">
+			 An explicit specification of how a currency payment is to be made, when the payment is not netted and the route is other than the recipient's standard settlement instruction.
+				</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="ident" type="xsd:int"/>
+	  <xsd:element name="ssiPathId" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="financialInstitution" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="partyRole" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="workflow" type="xsd:int" minOccurs="0"/>
+
+	  <xsd:element name="workflowName" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="deliveryType" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="validFrom" type="xsd:date" minOccurs="0"/>
+      <xsd:element name="validTo" type="xsd:date" minOccurs="0"/>
+      <xsd:element name="currency" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="market" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="depositary" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="sign" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="allotment" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="accountType" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="paymentMethod" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="treasuryID" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="underlyingAllotment" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="underlyingCurrency" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="underlyingMarket" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="businessEvent" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="settlementPlace" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="accountName" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="custodianID" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="custodianCode" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="accountCustodian" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="agentID" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="agentCode" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="accountAgent" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="countryCode" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition2" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition3" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="userColumnsData" type="tns:UserColumnsData" minOccurs="0"/>
+	  <xsd:element name="carveOut" type="xsd:int" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DocumentGenerationRule">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			 Rules regarding the generation of documents for a party
+				</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="allotment" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="templateName" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="messageStatus" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="currency" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="entity" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="depositary" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="event" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="sign" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="recipientType" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="sendingMethod" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="amountType" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="postingDate" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="contact" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="address" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition1" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition2" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="condition3" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UserColumn">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		toolkit column
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="columnName" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="columnIndex" type="xsd:int" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UserColumnsData">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		toolkit column data
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="userColumn" type="tns:UserColumn"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Agreement">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">specify the legal compliance characteristics of a master agreement which is agreed between the entity and the Party. This agreement is used for each confirmation message that is sent to the Client.</xsd:documentation>
+      <xsd:documentation source="http://www.fpml.org" xml:lang="en">An agreement that references the related party.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="allotment" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="allotmentString" type="xsd:string" minOccurs="0" />
+      <xsd:element name="childAllotment" type="xsd:string" minOccurs="0" />
+	  <xsd:element name="terminationCurrency" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="entity" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="effectiveDate" type="xsd:date" minOccurs="0"/>
+      <xsd:element name="amendmentDate" type="xsd:date" minOccurs="0"/>
+      <xsd:element name="agreementVersionDate" type="xsd:date" minOccurs="0"/>
+      <xsd:element name="agreement" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="law" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="contactName" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="contactPhone" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="contactFax" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="terminationComment" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="note" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="creditDetails" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="creditDocument" type="xsd:string" minOccurs="0"/>
+	  <xsd:element name="clearingHouse" type="xsd:int" minOccurs="0"/>
+	  <xsd:element name="clearingMember" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="userColumnsData" type="tns:UserColumnsData" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="NettingRule">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			group messages that share certain characteristics in to single netted messages
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="entity" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="currency" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="allotment" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="paymentMethod" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="market" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="samePosition" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="sign" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="group" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="sameInstrument" type="xsd:int" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="Categorization">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Catergory of party for Markets in Financial Instruments Directive
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="XXX"/>
+      <xsd:enumeration value="Retail"/><xsd:enumeration value="Professional"/>
+
+      <xsd:enumeration value="Eligible Counterparty"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Reporter">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Trade reporting for MiFID
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="XXX"/>
+      <xsd:enumeration value="Third"/>
+      <xsd:enumeration value="Entity"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TradingCapacity">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Account used for trading for MiFID
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="XXX"/>
+      <xsd:enumeration value="Own Account"/>
+      <xsd:enumeration value="Proprietary Account"/>
+      <xsd:enumeration value="Client Account"/>
+      <xsd:enumeration value="All"/>
+      <xsd:enumeration value="DEAL"/>
+      <xsd:enumeration value="MTCH"/>
+      <xsd:enumeration value="AOTC"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="MiFID">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Markets in Financial Instruments Directive party information </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="categorization" type="tns:Categorization" minOccurs="0"/>
+      <xsd:element name="reporter" type="tns:Reporter" minOccurs="0"/>
+      <xsd:element name="tradingCapacity" type="tns:TradingCapacity" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BrokerFee">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			group messages that define a the rule for broker fee
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="numero" type="xsd:int"/>
+      <xsd:element name="option" type="xsd:int"/>
+      <xsd:element name="detailedFeeName" type="xsd:string" default="None"/>
+      <xsd:element name="currency" type="xsd:int"/>
+      <xsd:element name="market" type="xsd:int"/>
+      <xsd:element name="entity" type="xsd:int"/>
+      <xsd:element name="allotment" type="xsd:int"/>
+      <xsd:element name="kindofFees" type="xsd:string"/>
+      <xsd:element name="amount" type="xsd:string"/>
+      <xsd:element name="marginCall" type="xsd:double"/>
+      <xsd:element name="minimum" type="xsd:double"/>
+      <xsd:element name="depositary" type="xsd:int" default="-1"/>
+      <xsd:element name="broker" type="xsd:int" default="-1"/>
+      <xsd:element name="businessEvent" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingAllotment" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingCurrency" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingMarket" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingReference" type="xsd:int" default="-1" />
+			<xsd:element name="operatorID" type="xsd:int" default="-1"/>
+      <xsd:element name="condition1" type="xsd:string" default="Vote Yes"/>
+      <xsd:element name="condition2" type="xsd:string" default="Vote Yes"/>
+      <xsd:element name="condition3" type="xsd:string" default="Vote Yes"/>
+      <xsd:element name="maturityFrom" type="xsd:string" default=""/>
+      <xsd:element name="maturityTo" type="xsd:string" default=""/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MarketFee">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			group messages that define a the rule for broker fee
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="option" type="xsd:int"/>
+      <xsd:element name="market" type="xsd:int"/>
+      <xsd:element name="entity" type="xsd:int"/>
+	  <xsd:element name="futureFeeType" type="xsd:int"/>
+	  <xsd:element name="futureFee" type="xsd:double"/>
+	  <xsd:element name="spreadFeeType" type="xsd:int"/>
+	  <xsd:element name="spreadFee" type="xsd:double"/>
+	  <xsd:element name="minimum" type="xsd:double"/>
+	  <xsd:element name="maximum" type="xsd:double"/>
+      <xsd:element name="allotment" type="xsd:int" default="-1"/>
+      <xsd:element name="businessEvent" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingAllotment" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingCurrency" type="xsd:int" default="-1"/>
+      <xsd:element name="underlyingMarket" type="xsd:int" default="-1"/>
+      <xsd:element name="currency" type="xsd:int"/>
+      <xsd:element name="broker" type="xsd:int" default="-1"/>
+      <xsd:element name="condition1" type="xsd:string" default="Vote Yes"/>
+      <xsd:element name="condition2" type="xsd:string" default="Vote Yes"/>
+      <xsd:element name="condition3" type="xsd:string" default="Vote Yes"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="AdvancedData" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">unbound list of non mandatory information of the party including settlement instructiosn, document generation, MiFID, agreement, netting rule and toolkitable tab</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="settlementInstruction" type="tns:SettlementInstruction"/>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="documentGenerationRule" type="tns:DocumentGenerationRule"/>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="agreement" type="tns:Agreement"/>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="nettingRule" type="tns:NettingRule"/>
+      <xsd:element minOccurs="0" name="mifid" type="tns:MiFID"/>
+      <xsd:element minOccurs="0" maxOccurs="1" name="extraFields" type="common:ExtraFields"/>
+      <xsd:element minOccurs="0" maxOccurs="1" name="useFeesFrom" type="xsd:int"/>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="brokerFees" type="tns:BrokerFee"/>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="marketFees" type="tns:MarketFee"/>
+    </xsd:sequence>
+    <xsd:attribute default="true" name="overwrite" type="xsd:boolean">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				if true (default value if not specified), overwrite the contact list with new list
+				if false, complete the contact list with new list
+				</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+   <xsd:simpleType name="SwapRole">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		Swap Role
+		</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="XXX"/>
+      <xsd:enumeration value="End User"/>
+      <xsd:enumeration value="Major Swap Participant"/>
+	  <xsd:enumeration value="Swap Dealer"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="RegulatoryReporting">
+  <xsd:sequence>
+    <xsd:element name="lei" type="xsd:string" minOccurs="0" />
+    <xsd:element name="usiNamespace" type="xsd:string" minOccurs="0" />
+    <xsd:element name="jurisdiction" type="xsd:string" minOccurs="0"/>
+    <xsd:element name="role" type="tns:SwapRole" minOccurs="0"/>
+    <xsd:element name="designatedReportingParty" type="xsd:boolean" minOccurs="0"/>
+    <xsd:element name="executionVenue" type="xsd:boolean" minOccurs="0"/>
+    <xsd:element name="tradeRepositary" type="xsd:boolean" minOccurs="0"/>
+  </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

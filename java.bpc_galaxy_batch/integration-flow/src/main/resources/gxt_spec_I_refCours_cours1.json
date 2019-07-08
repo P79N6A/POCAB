@@ -1,0 +1,54 @@
+{
+	"Format": {
+		"Header" :{
+			"TransformationOrder": "Filter,Transcodification,Enrichment",
+			"Bloc": "/quotation"
+
+
+		},
+		"Source": {
+			"XSD": "/QuotationEventValidated.xsd"
+		},
+		"Target": {
+			"Name": "Quotation_Cours",
+			"Format": "XML",
+			" ": ""
+		},
+		"Condition" : [
+			{
+				"Name":"condition1",
+				"Operands" :"Filter1,Filter2",
+				"Operator":"AND"
+			}
+		]
+
+	},
+	"Transformation": [{
+		"FieldSourceInfos": {
+			"AbsolutePath": "/quotatnIdntfctn/$placeOfListng==449?/quotatnIdntfctn/securtyIdntfctn/isin",
+			"Index": "",
+			"Type": "TEXT",
+			"SourceTaille": 15,
+			"IsMandatory": true
+		},
+		"Target": {
+			"Name": "/quotations/quotationsByInstrument/identifier/reference",
+			"Index": ""
+		},
+		"Transcodification": {
+
+			"Transco": false
+		},
+		"Filter": {
+			"Name": "Filter1",
+			"DataSource": "getInstrumentIdentifiers",
+			"Operator": "==",
+			"key" : "isin"
+		},
+		"Enrichment": {
+			"Enrichment": false
+		}
+	}
+
+	]
+}

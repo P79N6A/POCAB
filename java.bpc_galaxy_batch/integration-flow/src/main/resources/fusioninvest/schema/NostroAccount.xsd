@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/NostroAccount"
+	elementFormDefault="qualified"
+	attributeFormDefault="qualified" 
+	xmlns:tns="http://www.sophis.net/NostroAccount"
+	xmlns:party="http://www.sophis.net/party"
+	xmlns:instrument="http://www.sophis.net/Instrument"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:common="http://sophis.net/sophis/common"
+	xmlns:folio="http://www.sophis.net/folio"
+	xmlns:NostroAccountRef="http://www.sophis.net/NostroAccountReference"
+	>
+	
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+	<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/NostroAccountReference" schemaLocation="NostroAccountReference.xsd"/>  
+
+  <xsd:complexType name="BOAccountGroupList">
+	<xsd:sequence>
+		<xsd:element name="accountGroup" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+	</xsd:sequence>
+  </xsd:complexType>
+	
+	<xsd:complexType name="NostroAccount">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">A type defining nostro account.</xsd:documentation>
+    </xsd:annotation>
+
+
+      <xsd:sequence>
+        <xsd:element name="accountId" type="xsd:int" minOccurs="1" ></xsd:element>
+        <xsd:element name="accountName" type="xsd:normalizedString" minOccurs="1" ></xsd:element>
+        <xsd:element name="entity"  minOccurs="1">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element ref="party:partyReference">
+						<xsd:annotation>
+							<xsd:documentation source="http://www.FpML.org" xml:lang="en">Entity of the nostro account.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+        <xsd:element name="refPlace" type="xsd:string" ></xsd:element>
+        <xsd:element name="custodian" type="xsd:string" ></xsd:element>
+        <xsd:element name="openDate" type="xsd:date" minOccurs="1" ></xsd:element>
+        <xsd:element name="closeDate" type="xsd:date" ></xsd:element>
+        <xsd:element name="currency" type="xsd:string" minOccurs="0" ></xsd:element>
+        <xsd:element name="agentCode" type="xsd:string" ></xsd:element>
+        <xsd:element name="countryCode" type="xsd:string"></xsd:element>
+        <xsd:element name="accountAtCustodian" type="xsd:string" ></xsd:element>
+        <xsd:element name="accountAtAgent" type="xsd:string" ></xsd:element>
+        <xsd:element name="depositary">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element ref="party:partyReference">
+						<xsd:annotation>
+							<xsd:documentation source="http://www.FpML.org" xml:lang="en">Depository of the nostro account.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+        <xsd:element name="comments" type="xsd:string" ></xsd:element>
+        <xsd:element name="blockedCash" type="xsd:boolean" ></xsd:element>
+        <xsd:element name="accountType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="Both" />
+              <xsd:enumeration value="Instrument" />
+              <xsd:enumeration value="Cash" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="cashFrequency" type="xsd:string" />
+        <xsd:element name="cashRemunerationMethod">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="None" />
+              <xsd:enumeration value="Manual" />
+              <xsd:enumeration value="Automatic" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="cashAccrualMethod">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="FELI" />
+              <xsd:enumeration value="FILE" />
+              <xsd:enumeration value="FILI" />
+              <xsd:enumeration value="FELE" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="cashRemunPaymentOffset" type="xsd:int" />
+        <xsd:element name="cashRemunDayAfterOffset" type="xsd:int" />
+        <xsd:element name="accountCostPaymentFreq" type="xsd:string" ></xsd:element>
+        <xsd:element name="accountCostPaymentMethod">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="None" />
+              <xsd:enumeration value="Manual" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+
+	<xsd:element name="nostroAccountParameters" type="tns:NostroAccountParameterList" />
+        <xsd:element name="boAccountRenumerationList" type="tns:BoAccountRenumerationList" />
+        <xsd:element name="boExternalReferencesList" type="NostroAccountRef:BoExternalReferencesList" />
+		<xsd:element name="boAccountGroupList" type="tns:BOAccountGroupList" />
+      </xsd:sequence>
+    <xsd:attributeGroup ref="common:PersistentEntity.model">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">PersitenceType for import through GXML</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attributeGroup>
+  </xsd:complexType>
+
+  <xsd:element name="nostroAccount" type="tns:NostroAccount"/>
+
+
+
+  <xsd:complexType name="CashRenumeration">
+    <xsd:sequence>
+      <xsd:element name="startDate" type="xsd:date" />
+      <xsd:element name="shortSpread" type="xsd:double" />
+      <xsd:element name="longSpread" type="xsd:double" />
+      <xsd:element name="shortLimit" type="xsd:double" />
+      <xsd:element name="longLimit" type="xsd:double" />
+      <xsd:element name="currency" type="xsd:string" />
+      <xsd:element name="rate" type="instrument:Underlyer" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Interest renumeration rate</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="BoAccountRenumerationList">
+      <xsd:sequence>
+        <xsd:element name="renumeration" type="tns:CashRenumeration" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+  </xsd:complexType>
+	
+  <xsd:complexType name="NostroAccountParameter">
+    <xsd:sequence>
+      <xsd:element name="treasuryMovementType">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="TreasuryMovementAdjustment" />
+            <xsd:enumeration value="TreasuryMovementRetail" />
+            <xsd:enumeration value="TreasuryMovementLevel" />
+            <xsd:enumeration value="TreasuryMovementAccountRemuneration" />
+            <xsd:enumeration value="TreasuryMovementAccountCost" />
+            <xsd:enumeration value="TreasuryMovementSecurityTransfer" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="folio" minOccurs="0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element ref="folio:folioReference" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="businessEvent" type="xsd:normalizedString" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="NostroAccountParameterList">
+      <xsd:sequence>
+        <xsd:element name="nostroAccountParameter" type="tns:NostroAccountParameter" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

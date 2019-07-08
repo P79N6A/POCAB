@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by GIE BNP PARIBAS ASSURANCE (GIE BNP PARIBAS ASSURANCE) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by BNP PARIBAS ASSURANCE (BNP PARIBAS ASSURANCE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.3">
+	<!--3.0.3 (04/05/2011, DTA) : Création du pivot FixingDump de structure identique à FixingModified et FixingValidated pour mise en place du flux image-->
+	<!--3.0.3 (31/07/2009, FTSAT ETL) - MàJ / correction automatique d'encodage vers ISO-8859-1 -->
+	<!--3.0.2 (11/05/2009/ FTSAT PWCT) - MàJ / correction automatique d'encodage vers ISO8859-1 -->
+	<!--Normalisation Cours - Taux de Change - Version V 2.00 du 14/03/2008 - CM-->
+	<!--06/04/2009 - DTA : remplacement des types nonNegativeInteger et positiveInteger par integer suite à bug informatica de la nouvelle version 8.6-->
+	<!--V3.0.0 (27/11/08, CMO) : Revue du bloc Anmly : Suppression de la sequence itérative dans le bloc Anomly.Source (remontée des tags ProvdrAnmlyType et Desc), suppression de l'itération sur la sequence après Target et ajout d'une itération sur Anomly.-->
+	<!--V3.0.0 (21/10/08, CMO) : Remplacement des xs:decimal par xs:double et passage à la nouvelle numérotation des pivots - remplacement connecteur All de ExchangeRateValue en sequence-->
+	<!--V2.04 (30/05/08, CMO) : Modification de FixingType suite aux abbréviations des balises du type complexe ObjectIdentificationType + Format EventInpuDate + Ajout du Bloc FileIdntfctn + Rattachement Status à un type-->
+	<!--V2.03 (22/05/08, DTAS) : Ajout du top EmtyFileIndic permettant d'indiquer si le fichier est vide ou non. La collection d'objets Fixing devient facultative.-->
+	<!--T1.00 16/04/08 new names-->
+	<!--V2.02 : Renommage de l'objet en fixing  + Revue générale bloc InitiatingEvent (STD) et Context (ajout du N° CRE) + Création d'une collection d'événements fixing-->
+	<!--V2.01 : Ajout du bloc facultatif InitiatingEvent, renommage bloc Identifier en CurrencyExchangeIdentification - Context pointe sur le nouveau type DataContext et création blocs Status et Provider.-->
+	<!--V2.00 - Mises aux normes techniques (ICE)-->
+	<!--V1.22 - Passage en obligatoire du taux de change ExchangeRate-->
+	<!--V1.22 - Ajout du bloc Anomaly pour le Réf.cours (gestion des flux au statut EnAnomalie) + Création CurrencyExchangeDump + ajout données CreationDate, UpdateDate et CurrencyExchangeStatus-->
+	<xs:include schemaLocation="FixingType.xsd"/>
+	<xs:element name="FixingDump">
+		<xs:annotation>
+			<xs:documentation>Collection d'Evenements de Fixing (Ensemble de valeurs mesurées pour un taux de change)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Fixing" type="FixingType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="EmptyFileIndic" type="YesNoIndicator" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Top indquant si le fichier est vide (YES: fichier vide/No fichier non vide)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FileIdntfctn" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Bloc d'identification du fichier</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Idntfctn" type="IdentificationInformation" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Identifiant du fichier</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CreatnDate" type="ISODateTime" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Date de création</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

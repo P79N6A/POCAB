@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:common="http://sophis.net/sophis/common"
+            xmlns:instrument="http://www.sophis.net/Instrument"
+            xmlns:reconciliation="http://www.sophis.net/reconciliation"
+            xmlns:tns="http://www.sophis.net/reconciliation"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            targetNamespace="http://www.sophis.net/reconciliation"
+            elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xsd:import namespace="http://www.sophis.net/Instrument"
+	            schemaLocation="instrument.xsd"/>
+	<xsd:element name="reconciliationPositionSnapShot"
+	             type="tns:ReconciliationPositionSnapShot"/>
+	<xsd:complexType name="ReconciliationPositionSnapShot">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This is the top level structure for a reconciliation result. It contains information regarding the reconciliation session as well the map of all reconciled positions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sessionInfos" type="tns:SessionInfos"/>
+			<xsd:element name="positionMap" type="tns:PositionMap"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SessionInfos">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Contains information regarding the external system and the reporting date used for the reconciliation session.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="externalSystemName" type="xsd:string"/>
+			<xsd:element name="externalSystemID" type="xsd:int"/>
+			<xsd:element name="formatName" type="xsd:string"/>
+			<xsd:element name="reportingDate" type="xsd:date"/>
+			<xsd:element name="generationDate" type="xsd:date"/>
+			<xsd:element name="generationStartTime" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PositionMap">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains the map of reconciled positions as well as a list of criteria used in the process, and a header for session information display.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="header" type="tns:Header"/>
+			<xsd:element name="criteriaSequence" type="tns:CriteriaSequence"/>
+			<xsd:element name="positions" type="tns:Positions"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Header">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains information that be used to display information regarding the reconciliation session: the external system's name and the reporting date.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="externalSystemName" type="xsd:string"/>
+			<xsd:element name="reportingDate" type="xsd:date"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CriteriaSequence">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that contains  a list of criteria used to extract data from Sophis.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="criteria" type="tns:Criteria" minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Criteria">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that defines extraction criteria used to extract data from Sophis for the reconciliation process.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="icon" type="xsd:int"/>
+	</xsd:complexType>
+	<xsd:complexType name="Positions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that is a sequence of Folios. It is the top level of the Sophis portfolio hierarchy.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="folio" type="tns:Folio" minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Folio">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that defines a node in the portfolio hierarchy: a Folio contains a sequence of Folios and Positions</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="folio" type="tns:Folio" minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="position" type="tns:Position" minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="keyCode" type="xsd:int"/>
+		<xsd:attribute name="keyLevel" type="xsd:int"/>
+		<xsd:attribute name="keyIcon" type="xsd:int"/>
+		<xsd:attribute name="keyName" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="Position">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains the information regarding a position that is part of the reconciliation process, such as data used from Sophis and the external system and the differences between them.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="provider" type="tns:Provider" minOccurs="0"
+			             maxOccurs="unbounded"/>
+			<xsd:element name="differences" type="tns:Differences" minOccurs="0"/>
+			<xsd:element name="additionalInfos" type="tns:AdditionalInfos"/>
+			<xsd:element name="statusInfos" type="tns:StatusInfos"/>
+		</xsd:sequence>
+		<xsd:attribute name="level" type="xsd:token"/>
+		<xsd:attribute name="name" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="Provider">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains the values of a  position or of a list of aggregated positions extracted from Sophis or an external system.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="values" type="tns:Values" minOccurs="0"/>
+			<xsd:element name="drillDown" type="tns:DrillDown" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="number" type="xsd:int"/>
+	</xsd:complexType>
+	<xsd:complexType name="Differences">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains information regarding eventual differences found between providers.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="positionStatus" type="tns:PositionStatus"/>
+			<xsd:element name="positionState" type="tns:PositionState"/>
+			<xsd:element name="positionComment" type="xsd:string"/>
+			<xsd:element name="columnStatus" type="tns:ColumnStatus"
+			             minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="values" type="tns:Values"/>
+			<xsd:element name="nthMulti" type="xsd:int"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AdditionalInfos">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains additional information regarding the position.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instrumentType" type="xsd:string"/>
+			<xsd:element name="instrumentAllotment" type="xsd:string"/>
+			<xsd:element name="instrumentReference" type="xsd:string"/>
+			<xsd:element name="fund" type="xsd:string"/>
+			<xsd:element name="depositary" type="xsd:string"/>
+			<xsd:element name="account" type="xsd:string"/>
+			<xsd:element name="instrumentName" minOccurs="0" type="xsd:string"/>
+			<xsd:element name="instrumentCurrency" minOccurs="0" type="xsd:string"/>
+		    <xsd:element name="instrumentCode" minOccurs="0" type="xsd:int"/>
+		    <xsd:element name="instrumentIdentifier" minOccurs="0" maxOccurs="1" type="instrument:Identifier"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatusInfos">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that contains information regarding back office workflow status.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="wfStatus" type="xsd:string"/>
+			<xsd:element name="criticalStatus" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DrillDown">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type is used to list all of the positions used to create the aggregated position that is used in the reconciliation process.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="drillDownKey" type="tns:DrillDownKey"
+			             minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DrillDownKey">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type is for identifiying a position that is in the drill down of aggregated positions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="values" type="tns:Values"/>
+		</xsd:sequence>
+		<xsd:attribute name="keyCode" type="xsd:int"/>
+		<xsd:attribute name="keyLevel" type="xsd:int"/>
+		<xsd:attribute name="keyIcon" type="xsd:int"/>
+		<xsd:attribute name="keyName" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ColumnStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains the status of a column in the reconciliation result. It contains information regarding the matching status and the pertinence status.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="matchingStatus" type="tns:MatchingStatus"/>
+			<xsd:element name="pertinenceStatus" type="tns:PertinenceStatus"/>
+		</xsd:sequence>
+		<xsd:attribute name="column" type="tns:Column"/>
+		<xsd:attribute name="name"  type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:simpleType name="PositionStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that defines a position reconciliation status.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Match">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Match" means the positions match.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OnlyInSophis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"OnlyInSophis" means the position was only found on the Sophis side.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OnlyInImport">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"OnlyInImport" means the position was only found in the external system.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Pending">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Pending" means the reconciliation has not completed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Break">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Break" means there is a mismatch.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MultiMatch">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"MultiMatch" means that a position on one side matches multiple positions on the other and the reconciliation engine is therefore unable to match.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NullPosition">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"NullPosition" means a position on one side is empty.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PositionState">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that describes if the position is flagged or not.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Unflagged">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The position is not flagged.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Flagged">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The position is flagged.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="MatchingStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that contains the matching status of the position., ,  and</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Match">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Match" means the values match.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Tolerance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Tolerance" means the positions do not match exactly but within the configured threshold</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Break">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"Break" means the values do not match.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OnlyOneValue">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">"OnlyOneValue" means that there is a value missing on one side.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PertinenceStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines the pertinence status of the position.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Undefine">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Default pertinence status (when no</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Pertinent">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The reconciliation status of the position is pertinent.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NotPertinent">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The reconciliation status of the position is not pertinent.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Column">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that defines a column used to display the reconciliation result.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+				
+			<xsd:enumeration value="Quantity"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Quantity (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AveragePrice"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Average Price (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AccruedAmount"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Accrued Amount (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NotionalAmount"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Notional Amount (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MarketPrice"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Market Price (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AssetValue"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Asset Value (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Balance"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Balance (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="UnsettledBalance"> 
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Unsettled Balance (Retrocompatibility before 4.3.0)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration> 
+			
+			<xsd:enumeration value="quantity">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Quantity</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="spot">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Average price</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="accrued">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Accrued amount</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="notionalAmount">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Notional amount</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="marketPrice">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Market price</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="assetValue">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Asset value</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="balance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Balance</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="unsettledBalance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Unsettled balance</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="customColumn1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Custom Column 1</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="customColumn2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Custom Column 2</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="customColumn3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Custom Column 3</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+      <xsd:enumeration value="customColumn4">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 4</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn5">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 5</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn6">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 6</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn7">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 7</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn8">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 8</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn9">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 9</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn10">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 10</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn11">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 11</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn12">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 12</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn13">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 13</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn14">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 14</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn15">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 15</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn16">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 16</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn17">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 17</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn18">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 18</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn19">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 19</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="customColumn20">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Custom Column 20</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="CustomColumnValue">
+	  <xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains a a custom column value.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="id" type="xsd:normalizedString" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Values">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This type contains a position's values (spot, quantity, accrued amount, notional amount, market price, asset value, balance and unsettled balance).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="spot" type="xsd:double"/>
+			<xsd:element name="quantity" type="xsd:double"/>
+			<xsd:element name="accrued" type="xsd:double"/>
+			<xsd:element name="notionalAmount" type="xsd:double"/>
+			<xsd:element name="marketPrice" type="xsd:double"/>
+			<xsd:element name="assetValue" type="xsd:double"/>
+			<xsd:element name="balance" type="xsd:double"/>
+			<xsd:element name="unsettledBalance" type="xsd:double"/>
+			<xsd:element name="customColumn" minOccurs="0" maxOccurs="unbounded" type="tns:CustomColumnValue"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="positionReconciliation"
+	             type="tns:PositionReconciliationType"/>
+	<xsd:complexType name="PositionReconciliationType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Top level node for asset position XML import.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:details"/>
+			<xsd:element ref="tns:importPositions"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="details" type="tns:DetailsType"/>
+	<xsd:complexType name="DetailsType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that contains details regarding the XML import (date of import).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:date"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="date" type="xsd:date"/>
+	<xsd:element name="importPositions" type="tns:ImportPositionsType"/>
+	<xsd:complexType name="ImportPositionsType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that describes a list of imported positions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" ref="tns:importPosition"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="importPosition" type="tns:ImportPositionType"/>
+	<xsd:complexType name="ImportPositionType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that describes an imported position as (key,values) couple.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:key"/>
+			<xsd:element name="values" type="tns:Values"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="key" type="tns:KeyType"/>
+	<xsd:complexType name="KeyType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A type that describes the key in the imported position, containing information regarding the account and the instrument of the position.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:account"/>
+			<xsd:element ref="tns:instrument"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="account" type="xsd:string"/>
+	<xsd:element name="instrument" type="instrument:Identifier"/>
+</xsd:schema>

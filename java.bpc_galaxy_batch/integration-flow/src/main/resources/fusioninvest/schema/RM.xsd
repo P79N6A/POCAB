@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema targetNamespace="http://www.sophis.net/rm" xmlns="http://www.sophis.net/rm" xmlns:tns="http://www.sophis.net/rm" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" >
+
+	<!-- Root element -->
+	<xs:element name="RMSGlobalResult" type="RMSGlobalResult"/>
+	
+	<xs:complexType name="RMSGlobalResult">
+		<xs:sequence>
+			<xs:element name="RMSParameters" type="tns:RMSParameters" />
+			<xs:element name="RMSDayResults" type="tns:RMSDayResults" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMSParameters">
+		<xs:sequence>
+			<xs:element name="Currency" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMSDayResults">
+		<xs:sequence>
+			<xs:element name="RMSDayResult" type="tns:RMSDayResult" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMSDayResult">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+			<xs:element name="FolioResult" type="tns:RMFolioResult" minOccurs="0" maxOccurs="unbounded"  />
+			<xs:element name="PositionResult" type="tns:RMPositionResult" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>		
+	</xs:complexType>
+	
+	<xs:complexType name="RMFolioResult">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:int" minOccurs="1" maxOccurs="1" />
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="FundId" type="xs:int" minOccurs="1" maxOccurs="1" />
+			<xs:element name="Result" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Realised" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Unrealised" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Income" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Treasury" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ForexTreasury" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Financing" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="MarketFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="BrokerFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CounterpartyFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Theoretical" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="AssetValue" type="xs:double" minOccurs="0" maxOccurs="1" />	
+			<xs:element name="MarketValue" type="xs:double" minOccurs="0" maxOccurs="1" />		
+			<xs:element name="Notional" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="LastPrice" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Entity" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Balance" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="UnsettledBalance" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="AveragePrice" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ForexFinancing" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="DeliveredInstrumentCount" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Valuation" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CriterionCode" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Quantity" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ContractSize" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="FolioScenarioResults" type="tns:RMScenarioResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="FolioEffectResults" type="tns:RMEffectResults" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMPositionResult">
+		<xs:sequence>      
+			<xs:element name="Instrument" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="InstrumentID" type="xs:int" minOccurs="1" maxOccurs="1" />
+			<xs:element name="PositionID" type="xs:int" minOccurs="1" maxOccurs="1" />
+			<xs:element name="FolioName" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="FolioID" type="xs:int" minOccurs="1" maxOccurs="1" />
+			<xs:element name="NumberOf" type="xs:double" minOccurs="1" maxOccurs="1" />  
+			<xs:element name="Result" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Realised" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Unrealised" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Income" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Treasury" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ForexTreasury" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Financing" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="MarketFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="BrokerFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CounterpartyFees" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Theoretical" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="AssetValue" type="xs:double" minOccurs="0" maxOccurs="1" />			
+			<xs:element name="MarketValue" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Notional" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="LastPrice" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Entity" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Balance" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="UnsettledBalance" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="AveragePrice" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ForexFinancing" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="DeliveredInstrumentCount" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Valuation" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CriterionCode" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Quantity" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="ContractSize" type="xs:double" minOccurs="0" maxOccurs="1" />
+			<xs:element name="PositionScenarioResults" type="tns:RMScenarioResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="PositionEffectResults" type="tns:RMEffectResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="PositionClassifiers" type="tns:RMPositionClassifiers" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>		
+	</xs:complexType>
+	
+	<xs:complexType name="RMScenarioResults">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioResults" type="tns:RMScenarioResult" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMEffectResults">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="EffectResults" type="tns:RMEffectResult" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMScenarioResult">
+	  <xs:sequence>
+			<xs:element name="ScenarioName" type="xs:string" />
+			<xs:element name="ScenarioId" type="xs:int" />
+			<xs:element name="SensitivityName" type="xs:string" />
+			<xs:element name="SensitivityValue" type="xs:double" />
+			<xs:element name="SensitivityRiskFactors" type="tns:RMScenarioRiskFactors" />
+	  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMEffectResult">
+	  <xs:sequence>
+			<xs:element name="EffectName" type="xs:string" />
+			<xs:element name="EffectValue" type="xs:double" />
+			<xs:element name="EffectRiskFactors" type="tns:RMEffectRiskFactors" />
+	  </xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="RMScenarioRiskFactors">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioRiskFactor" type="tns:RMScenarioRiskFactor" />
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="RMEffectRiskFactors">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="EffectRiskFactor" type="tns:RMEffectRiskFactor" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMEffectRiskFactor">
+	  <xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Value" type="xs:string" />
+			<xs:element name="EffectsExtraFields" type="tns:RMEffectsExtraFields" />
+	  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMScenarioRiskFactor">
+	  <xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Value" type="xs:string" />
+			<xs:element name="ScenariosExtraFields" type="tns:RMScenariosExtraFields" />
+	  </xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="RMEffectsExtraFields">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="EffectExtraField" type="tns:RMExtraField" />
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="RMScenariosExtraFields">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioExtraField" type="tns:RMExtraField" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMExtraField">
+	  <xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Value" type="xs:string" />
+			<xs:element name="Type" type="xs:string" />
+	  </xs:sequence>
+	</xs:complexType>
+			
+	<xs:complexType name="RMPositionClassifiers">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="PositionClassifiers" type="tns:RMPositionClassifier" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RMPositionClassifier">
+	  <xs:sequence>
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="Value" type="xs:string" />
+	  </xs:sequence>
+	</xs:complexType>
+	
+	
+</xs:schema>	

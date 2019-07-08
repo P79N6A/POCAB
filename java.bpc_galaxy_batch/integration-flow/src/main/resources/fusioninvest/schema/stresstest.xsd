@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:tns="http://sophis.net/sophis/var" 
+           xmlns:stress="http://sophis.net/sophis/var/stress" 
+           xmlns:constraint="http://sophis.net/sophis/var/constraint" 
+           xmlns:parameter="http://sophis.net/sophis/var/parameter" 
+           xmlns:preference="http://sophis.net/sophis/var/preference" 
+           xmlns:computation="http://sophis.net/sophis/var/computation" 
+           targetNamespace="http://sophis.net/sophis/var" 
+           elementFormDefault="qualified" 
+           attributeFormDefault="qualified">
+  <xs:import namespace="http://sophis.net/sophis/var/stress" schemaLocation="stress.xsd" />
+  <xs:import namespace="http://sophis.net/sophis/var/constraint" schemaLocation="constraint.xsd" />
+  <xs:import namespace="http://sophis.net/sophis/var/parameter" schemaLocation="parameter.xsd" />
+  <xs:import namespace="http://sophis.net/sophis/var/preference" schemaLocation="preference.xsd" />
+  <xs:import namespace="http://sophis.net/sophis/var/computation" schemaLocation="computation.xsd" />
+  <xs:element name="StressTest">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">A stress test from the Risk Management Module consists in a list of scenarios, each leading to an evaluation of portfolios</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element ref="tns:Scenario" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Scenario">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Specifies the computations to be performed and the stressed market data to use</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Description" type="tns:DescriptionType" />
+        <xs:element name="Computation" type="computation:ComputationsType" minOccurs="0" />
+	<xs:element name="Toolkit"  type="tns:ToolkitType"   minOccurs="0"/>
+        <xs:element name="Parameters" type="parameter:ParametersType" minOccurs="0" />
+        <xs:element name="Preferences" type="preference:PreferencesType" minOccurs="0" />
+        <xs:element name="Stresses" type="tns:StressesType" />
+	<xs:element name="Correlation"  type="tns:IdType"					minOccurs="0"/>  
+      </xs:sequence>
+      <xs:attribute name="Id" type="tns:IdType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="IdType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Id of the scenario.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger" />
+  </xs:simpleType>
+  <xs:simpleType name="DescriptionType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Type of scenario, ex. "Stress test scenario" of stress testing.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="StrikeInPercentType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Flag on the type of strikes : absolute / percentage. The values are "true" / "false".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="true" />
+      <xs:enumeration value="false" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ToolkitType">
+    <xs:attribute name="Name" type="xs:string"/>
+    <xs:attribute name="Param" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="StressesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of stresses applied to current Market Data, per type of Market Data</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="tns:Spot" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:CommoditySpot" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:PowerCommoditySpot" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:ExchangeRate" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:InstrumentSpread" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:CreditSpread" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:CreditDefaultSwap" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:StockVolatilityWithStrike" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:StockVolatilityAtTheMoney" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:CommodityVolatilityWithStrike" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:CommodityVolatilityAtTheMoney" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:InterestRateVolatility" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:FutureVolatilityWithStrike" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:FutureVolatilityAtTheMoney" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:ExchangeRateVolatility" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:InterestRateCurve" minOccurs="0" maxOccurs="unbounded" />
+	  <xs:element ref="tns:InflationCurve" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="tns:InflationRateVolatility" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:InstrumentCorrelation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:InstrumentExchangeRateCorrelation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:ExchangeRateCorrelation" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:Dividend" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="tns:RepoMargin" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Spot">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Equities and Indices</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentSpread">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">InstrumentSpread bumps the corresponding spread of the instrument.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreditSpread">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">CreditSpread has been depreciated. The bump to apply is InstrumentSpread.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRate">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Forex Pairs</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CommoditySpot">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Commodities or Commodity Futures</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PowerCommoditySpot">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Power/Gas Commodities</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityLoadDeliveryStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreditDefaultSwap">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied the CDS Spreads of Reference Entities</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturitySeniorityEventStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StockVolatilityAtTheMoney">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the ATM volatility curve of Equities or Indices</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CommodityVolatilityAtTheMoney">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the ATM volatility curve of Commodities</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+				<xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FutureVolatilityAtTheMoney">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the ATM volatility curve of Future instruments</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Dividend">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Equity and Index dividends</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepoMargin">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the Repo Rates of Equities or Indices</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentCorrelation">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the correlations between two Instruments</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentExchangeRateCorrelation">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the correlations between Instruments and Forex Pairs</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InterestRateVolatility">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Cap/Floor and Swaption volatility cubes</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:Maturity1Maturity2StressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="type" type="xs:anySimpleType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InflationRateVolatility">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Cap/Floor and Swaption volatility cubes</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:Maturity1Maturity2StressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="type" type="xs:anySimpleType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StockVolatilityWithStrike">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the smile volatility curve of Equities or Indices</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStrikeStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="strikeInPercent" type="tns:StrikeInPercentType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CommodityVolatilityWithStrike">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the smile volatility curve of Commodities</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStrikeStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="StrikeInPercent" type="tns:StrikeInPercentType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FutureVolatilityWithStrike">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the smile volatility curve of Future instruments</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+      <xs:attribute name="StrikeInPercent" type="tns:StrikeInPercentType" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InterestRateCurve">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to Interest Rate Yield curves</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+				<xs:element name="Stress" type="stress:MaturityStressInterestRateCurveType" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InflationCurve">
+    <xs:complexType>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressInflationCurveType" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRateVolatility">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the volatility matrices of Forex Pairs</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:MaturityStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRateCorrelation">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a stress applied to the correlations between Forex Pairs</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+				<xs:element name="Constraints" type="constraint:GenericConstraintsFilterGroupType" minOccurs="0"/>
+        <xs:element name="Stress" type="stress:GenericStressType" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="description" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

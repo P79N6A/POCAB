@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/accessRights" 
+	xmlns:tns="http://www.sophis.net/accessRights" 
+	elementFormDefault="qualified" attributeFormDefault="qualified" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:simpleType name="EntitlementType">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="notEntitled"/>
+			<xsd:enumeration value="read"/>
+			<xsd:enumeration value="write"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="RecursiveEntitlements">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="notEntitled">
+				<xsd:annotation>
+					<xsd:documentation>No access to any of the children</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="entitled">
+				<xsd:annotation>
+					<xsd:documentation>Some access for some the children (not all of them are forbidden)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="likeParent">
+				<xsd:annotation>
+					<xsd:documentation>Same access (EntitlementType) as the parent for all the children</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="Entitlement">
+		<xsd:sequence>
+			<xsd:element name="objectType" type="xsd:string"/>
+			<xsd:element name="objectReference" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="entitlement" type="tns:Entitlement"/>
+
+	<xsd:complexType name="EntitlementResult">
+		 <xsd:simpleContent>
+        	<xsd:extension base="tns:EntitlementType">
+          		<xsd:attribute name="objectType" type="xsd:string" use="required"/>
+				<xsd:attribute name="objectReference" type="xsd:string" use="required"/>
+				<xsd:attribute name="recursiveEntitlements" type="tns:RecursiveEntitlements" use="required"/>
+        	</xsd:extension>
+      	</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="entitlementResult" type="tns:EntitlementResult"/>
+	
+	<xsd:complexType name="EntitlementResultList">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="0" ref="tns:entitlementResult"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="entitlementResultList" type="tns:EntitlementResultList"/>
+
+	<xsd:simpleType name="AccessType">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="fullAccess"/>
+			<xsd:enumeration value="readOnly"/>
+			<xsd:enumeration value="noAccess"/>
+			<xsd:enumeration value="onQuery"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="RightResult">
+		<xsd:simpleContent>
+        	<xsd:extension base="tns:AccessType">
+				<xsd:attribute name="category" type="xsd:string" use="optional"/>
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="rightResult" type="tns:RightResult"/>
+	
+	<xsd:complexType name="RightResultList">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="0" ref="tns:rightResult"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="rightResultList" type="tns:RightResultList"/>
+</xsd:schema>

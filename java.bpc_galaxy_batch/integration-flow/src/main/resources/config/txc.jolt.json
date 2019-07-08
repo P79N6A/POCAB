@@ -1,0 +1,31 @@
+[
+
+  {
+    "operation": "default",
+    "spec": {
+      "idName": "REFEXT",
+      "idModifiable": "UniquePrioritary"
+    }
+  },
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "fixngIdntfctn": {
+        "id": "=concat(@(1,unitCurr), '#', @(1,quotdCurr), '#', @(1,placeOfListng))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "idName": "identifier.reference[#].name",
+      "idModifiable": "identifier.reference[#].modifiable",
+      "fixngIdntfctn": {
+        "id": "identifier.reference[#].value",
+        "valdtyDate": "quotesByDate[#0].quotationDate"
+      }
+    }
+  }
+
+]

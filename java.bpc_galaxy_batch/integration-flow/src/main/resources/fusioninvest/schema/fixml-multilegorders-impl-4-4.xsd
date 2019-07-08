@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Revision: FIXML 4.4 Schema Version - 20040109
+    Copyright 2003,2004 FIX Protocol Limited.  All rights reserved.
+
+    This Schema represents FIXML vocabulary based on version 4.4 of the FIX Protocol
+
+    Comments should be posted on the FIX protocol web-site
+    www.fixprotocol.org
+-->
+
+<xs:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4"
+           xmlns:common="http://sophis.net/sophis/common"
+           xmlns:instrument="http://www.sophis.net/Instrument"
+           xmlns:exec="http://www.sophis.net/execution"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.fixprotocol.org/FIXML-4-4"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:include schemaLocation="fixml-multilegorders-base-4-4.xsd"/>
+
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+  <xs:import namespace="http://www.sophis.net/execution" schemaLocation="execution.xsd"/>
+
+  <!-- ************************************************************ -->
+  <!-- New Order Multileg sophis message definition                 -->
+  <!-- ************************************************************ -->
+
+  <xs:group name="Sph_NewOrderMultilegElements">
+    <xs:sequence>
+      <xs:element name="Pty" type="Parties_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <!-- PreAllocMleg not used in sophis -->
+      <xs:element name="PreAllocMleg" type="PreAllocMlegGrp_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="TrdSes" type="TrdgSesGrp_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Instrmt" type="Instrument_Block_t" />
+      <xs:element name="Undly" type="UndInstrmtGrp_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="SphOrd"  maxOccurs="unbounded"/>
+      <xs:element name="OrdQty" type="OrderQtyData_Block_t" />
+      <xs:element name="Comm" type="CommissionData_Block_t" minOccurs="0" />
+      <xs:element name="PegInstr" type="PegInstructions_Block_t" minOccurs="0" />
+      <xs:element name="DiscInstr" type="DiscretionInstructions_Block_t" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+
+  <!-- Sophis Order message with extended  elements and attributes -->
+  <xs:complexType name="Sph_NewOrderMultileg_message_t" >
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Sophis single Order message
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:group ref="Sph_NewOrderMultilegElements"/>
+          <!-- New sophis fields ???? -->
+          <xs:element name="SphCustomFields" type="SphCustomFields_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="SphProperties" type="SphProperties_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="common:PersistentEntity.model"></xs:attributeGroup>
+        <xs:attributeGroup ref="NewOrderMultilegAttributes" />
+        <xs:attributeGroup ref="Sph_OrderAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element  name="SphNewOrdMleg" type="Sph_NewOrderMultileg_message_t" substitutionGroup="Message" />
+
+  <xs:complexType name="Sph_LegOrdGrp_Block_t" final="#all">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Pty not used in legs
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="LegOrdGrpElements"/>
+      <xs:element name="SphLegInstrmt" type="instrument:Underlyer" minOccurs="0" maxOccurs="1" />
+      <xs:element name="SphExecutions" type="exec:Execution" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="LegOrdGrpAttributes"/>
+  </xs:complexType>
+  <xs:element  name="SphOrd" type="Sph_LegOrdGrp_Block_t"   />
+
+  <!-- ************************************************************ -->
+  <!-- New Order Multileg  Ack sophis message definition            -->
+  <!-- ************************************************************ -->
+
+  <xs:complexType name="Sph_NewOrderMultileg_acknowledge_t">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:element ref="SphOrderAck" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attributeGroup ref="OrderMessageAcknowledgeAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element  name="SphOrdMlegAck" type="Sph_NewOrderMultileg_acknowledge_t" substitutionGroup="Message" />
+
+</xs:schema>

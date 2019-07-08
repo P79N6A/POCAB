@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.sophis.net/instruction" xmlns:ns0="http://www.sophis.net/trade" xmlns:ns1="http://www.sophis.net/party" xmlns:ns2="http://www.sophis.net/folio" xmlns:ns3="http://www.sophis.net/Instrument" xmlns:ns4="http://sophis.net/sophis/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/instruction" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import schemaLocation="trade.xsd" namespace="http://www.sophis.net/trade" />
+	<xs:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument" />
+	<xs:import schemaLocation="folio.xsd" namespace="http://www.sophis.net/folio" />
+	<xs:import schemaLocation="party.xsd" namespace="http://www.sophis.net/party" />
+	<xs:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common" />
+	<xs:complexType name="instructionDetail" mixed="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Instruction message</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Unique ID of an instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Unique version ID of the instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GenerationDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Insertion Oracle date of the processed entry.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InstructionDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Date at which the message has been prepared.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EffectiveDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Date at which the message is forecast to be effective.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Status of the instruction, resulting from the workflow transitions</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Status of the instruction, resulting from the workflow transitions.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TradeId" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the linked movement_ident.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradeVersion" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the linked movement_version.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WorkflowId" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the Workflow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryType">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Defines the delivery type of the contract</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedByte" />
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">DVP, FOP or N/A</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Clearer">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Clearer defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the clearer or depositary in the deal.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of the clearer or depositary in the deal.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Counterpart">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Counterparty defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of counterparty.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of counterparty.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Quantity" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The settled quantity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Settled amount.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccruedAmount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The accrued amount, linked with the settlement of the securities.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Settled Currency</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Adjustment" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Info field concerning fees or more generally adjustments possibly linked with a settlement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdjustmentType" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Type of adjustment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MessageId" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the message if a message has been physically created by the SML server in the BO_MESSAGE table, while creating the current version of the instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternalStatus" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Internal status of the current version of the instruction. Possible values: Hold, Pending, Sent, Ready, To send again.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WorkflowDefinitionId" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of workflow definition used for instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TemplateId" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of template used to generate message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NettingType" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">In case of a netted instruction, the value is 1 of NETTING_ID points to an instruction, 2 if it points to a payment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NettingId" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">'In case of a netted instruction, this points to the netting instruction or the netting payment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NostroPhysicalAccount">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Nostro Physical Account defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of Nostro Physical Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of Nostro Physical Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="NostroCashAccount">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Nostro Cash Account defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of Nostro Cash Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of Nostro Cash Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LostroPhysicalAccount">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Lostro Physical Account defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of Lostro Physical Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of Lostro Physical Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LostroCashAccount">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Lostro Cash Account defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of Lostro Cash Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of Lostro Cash Account.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PlaceOfSettlement">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">The place of settlement of the trade </xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Id of place where settlement occurs</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of place where settlement occurs</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BusinessEvent">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">define the business event</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">ID of the business event</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of the business event</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Nostro1" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The swift code of the entity of the deal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nostro2" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Second NOSTRO value, obtained from the entity Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nostro3" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Third NOSTRO value, obtained from the entity Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nostro_account1" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">First NOSTRO account value, obtained from the entity Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nostro_account2" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Second NOSTRO account value, obtained from the entity Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lostro1" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The swift code of the counterparty of the deal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lostro2" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Second LOSTRO value, obtained from the counterparty Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lostro3" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Third LOSTRO value, obtained from the counterparty Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lostro_account1" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">First LOSTRO account value, obtained from the counterparty Settlement Information setup.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lostro_account2" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Account of the custodian (or of the counterparty if Nostro 2 and Nostro account1 not filled) by its agent - should correspond to the Account@agent column of the settlement instructions tab of the counterparty.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Remarks on message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CounterpartyReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Reference of the counterparty. Usually received from an external message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClearerReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Reference of the clearer. Usually received from an external message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reason_code" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Free text field, for SWIFT standard reason codes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Type of instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Entity">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Entity defined in the message</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="id" type="xs:unsignedLong">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of entity.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of entity.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InstrumentId" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Identity number of instrument.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trade_amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Settled amount.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trade_quantity" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Quantity of instrument involved in trade.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value_date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Settlement date for instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trade_date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Date trade occured.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Delivery_date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">From the deal related to the instruction. Delivery date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trade_nominal" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Trade Nominal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Total_quantity" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The total settled quantity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Total_amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The total settled amount.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Total_nominal" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Total settled nominal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="instructionDesc">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Description of the instruction</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trade" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en"/>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns0:trade" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="instrument" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Insrument of the message deal instrument</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns3:instrument" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InstrumentIssuer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Insrument issuer of the message deal instrument.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en"/>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="instrument" minOccurs="0">
+							<xs:complexType mixed="true">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">Insrument issuer of the message deal </xs:documentation>
+								</xs:annotation>
+								<xs:sequence>
+									<xs:element ref="ns3:instrument" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="UnderlyingInstrument" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Underlying instrument of Insrument issuer of the message deal instrument.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType mixed="true">
+								<xs:annotation>
+									<xs:documentation xml:lang="en"/>
+								</xs:annotation>
+								<xs:sequence>
+									<xs:element name="instrument" minOccurs="0">
+										<xs:complexType mixed="true">
+											<xs:annotation>
+												<xs:documentation xml:lang="en">bop3</xs:documentation>
+											</xs:annotation>
+											<xs:sequence>
+												<xs:element ref="ns3:instrument" />
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="entity" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Entity defined in the instuctions</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns1:party" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="clearer" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Clearing house defined in the instructions</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns1:party" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="counterparty" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Counterparty defined in the instructions</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns1:party" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="pset" minOccurs="0" maxOccurs="1">
+				<xs:complexType mixed="true">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Place of settlement</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element ref="ns1:party" minOccurs="1" maxOccurs="1" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="instruction" type="tns:instructionDetail" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="instructionCreationTimestamp" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="documentCreationTimestamp" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="instruction" type="tns:instructionDesc"/>
+
+	<xs:complexType name="InstructionIdentifier">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Identifier of the instruction message to be exported.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="xs:unsignedLong">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Unique ID of an instruction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>		
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="instructionIdentifier" type="tns:InstructionIdentifier" />
+
+</xs:schema>

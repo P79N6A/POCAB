@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/preferences" xmlns:tns="http://www.sophis.net/preferences" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xsd:element name="preferences" type="tns:Preferences" />
+  <xsd:complexType name="Preferences">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of SOPHIS user preferences</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" name="preference" type="tns:Preference" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Preference">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The properties and values of a SOPHIS user preference</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="name" type="tns:Name">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Name of the property</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="preferenceValue" type="tns:PreferenceValue">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Value of the property, might be a short (valueShort), long (valueLong), double (valueDouble), a string (valueStr) or a color (valueColor)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="PreferenceValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Value of the property, might be a short (valueShort), long (valueLong), double (valueDouble), a string (valueStr) or a color (valueColor)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">Selection among available Formats for values of User Preferences</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="valueStr" type="tns:Name" />
+      <xsd:element name="valueColor" type="tns:ValueColor" />
+      <xsd:element name="valueShort" type="xsd:short" />
+      <xsd:element name="valueLong" type="xsd:int" />
+      <xsd:element name="valueDouble" type="xsd:double" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="ValueColor">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Description of a color in 16-bits RGB format</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="red" type="xsd:unsignedShort" />
+      <xsd:element name="green" type="xsd:unsignedShort" />
+      <xsd:element name="blue" type="xsd:unsignedShort" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="Name">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The name of a SOPHIS User Preference</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="40" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

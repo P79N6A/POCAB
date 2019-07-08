@@ -1,0 +1,2767 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://sophis.net/sophis/gxml/dataExchange" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:tns="http://sophis.net/sophis/gxml/dataExchange"
+            xmlns:common="http://sophis.net/sophis/common" xmlns:fpml="http://www.fpml.org/2005/FpML-4-2"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:party="http://www.sophis.net/party"
+            xmlns:trade="http://www.sophis.net/trade"  xmlns:instrument="http://www.sophis.net/Instrument"
+            xmlns:folio="http://www.sophis.net/folio" xmlns:user="http://www.sophis.net/user"
+            xmlns:valuation="http://www.sophis.net/valuation" xmlns:sophis="http://www.sophis.net/sophis"
+            xmlns:reporting="http://www.sophis.net/reporting" xmlns:quot="http://www.sophis.net/quotation"
+            xmlns:exec="http://www.sophis.net/execution" xmlns:cr="http://www.sophis.net/CreditRisk"
+            xmlns:div="http://www.sophis.net/dividend" xmlns:vol="http://www.sophis.net/volatility"
+            xmlns:yc="http://www.sophis.net/yieldCurve" xmlns:ca="http://www.sophis.net/CorporateActions"
+            xmlns:sphfixml44="http://www.fixprotocol.org/FIXML-4-4" xmlns:corr="http://www.sophis.net/correlation"
+            xmlns:repo="http://www.sophis.net/repo_margin" xmlns:listedmarket="http://www.sophis.net/listedmarket" xmlns:position="http://www.sophis.net/position"
+            xmlns:factorModel="http://www.sophis.net/FactorModels" xmlns:accountingposition="http://www.sophis.net/accountingposition"
+            xmlns:dailyData="http://www.sophis.net/dailyData" xmlns:mca="http://www.sophis.net/MisysCorporateActions"
+            xmlns:inflation="http://www.sophis.net/inflation" xmlns:basket_adjustment="http://www.sophis.net/basket_adjustment"
+            xmlns:staticData="http://www.sophis.net/StaticData" xmlns:sr="http://www.sophis.net/sr"
+            xmlns:instruction="http://www.sophis.net/instruction">
+
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      Definitions of messages
+      for import (resp. export) Fpml style data into (resp. from) Sophis.
+      The supported messageIdScheme are:
+      http://www.sophis.net/gxml/exchange/messageIdScheme/simple :
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/quotation" schemaLocation="quotation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/CorporateActions" schemaLocation="CorporateActions.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/CreditRisk" schemaLocation="CreditRiskData.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/dividend" schemaLocation="dividend.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/reporting" schemaLocation="Reporting.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/execution" schemaLocation="execution.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/yieldCurve" schemaLocation="YieldCurve.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/correlation" schemaLocation="correlation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/repo_margin" schemaLocation="repo_margin.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/sophis" schemaLocation="sophis.xsd"/>
+  <xsd:import namespace="http://www.fixprotocol.org/FIXML-4-4" schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/listedmarket" schemaLocation="ListedMarket.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/position" schemaLocation="position.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/FactorModels" schemaLocation="FactorModelTypes.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/accountingposition" schemaLocation="accountingposition.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/dailyData" schemaLocation="dailyData.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/MisysCorporateActions" schemaLocation="MisysCorporateActions.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/inflation" schemaLocation="inflation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/basket_adjustment" schemaLocation="BasketAdjustment.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/StaticData" schemaLocation="StaticData.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/instruction" schemaLocation="instruction.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/sr" schemaLocation="sr.xsd"/>
+
+  <xsd:element name="message" type="fpml:Message"/>
+
+  <xsd:complexType name="ImportMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting import
+        into Sophis of one or more entities like parties, portfolios, trades and instruments.
+
+        Depending on the attribute common:persistenceType, different operations can be executed on an entity :
+
+        Up to 5.3:
+        ==========
+        Anonymous(=Create)
+        Universal(=FindOrCreate)
+        Shared(=UpdateOrCreate)
+        Check(=CheckOrCreate)
+
+        Since 6.1:
+        ==========
+        Create
+        UpdateOrCreate
+        FindOrCreate
+        CheckOrCreate
+        Update
+        Cancel
+        Replace
+
+        Update, Cancel and Replace are available with external tickets only.
+        UpdateOrCreate, FindOrCreate, CheckOrCreate are not available with external tickets.
+        Anonymous, Universal, Shared and Check are deprecated but kept for backward compatibility.
+
+
+        The corresponding action depends on the namespace of entry.
+
+        Order in which entities are processed is not correlated to the order in the xml file, but in the
+        dependency order instead. For instance, let 3 instruments be defined: "index1" (depending on "share1" and "share2")
+        and "share1" plus "share2". The order of processing will be "share1", "share2" (or "share2" then
+        "share1") then "index1". Order in which entities with same rank of precedence are processed is not guaranteed.
+
+        If the element "expiryTimestamp" has been set in the message header, a timeout will be set on each query so that
+        the message doesn't expire. This is mostly useful if the session mode is turned on. Would the message expire, a MessageExpired failure
+        will be returned. If session mode is turned off, a warning is issued.
+
+
+        ---------------------------
+        BatchType Modifications:
+        ---------------------------
+        --- Removed Modes :
+        None disappears
+
+        --- Supported but deprecated Modes :
+        AllRegardlessOfErrors -> NoSession
+        AllRegardlessOfErrorsSession -> Session
+        FullSession -> AllOrNothing
+
+        --- New Modes :
+        NoSession
+        AllOrNothing
+
+        Warning Session mode changed : becomes old AllRegardlessOfErrorsSession
+
+
+      </xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 2.3.1.10 : Added element extensibleElement.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3 : Message header has been made optional in parent type fpml:Message
+        Since 5.3 : Replaced the sequence by a sequence of choices allowing the order not to be specified in advance.
+      </xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 6.1 : external tickets can be imported.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="party:party">
+              <xsd:annotation>
+                <xsd:documentation>party description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:portfolio">
+              <xsd:annotation>
+                <xsd:documentation>Portfolio description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrument">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Instrument description to be imported. This includes value funds since Fund extends Instrument complex type.
+                  The Fund.xsd still has to be added at deploy time.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:generic">
+              <xsd:annotation>
+                <xsd:documentation>Instrument for lookup</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="basket_adjustment:basketAdjustment">
+              <xsd:annotation>
+                <xsd:documentation>Basket adjustment</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ric">
+              <xsd:annotation>
+                <xsd:documentation>Description of the instrument's CTRL+J data to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:trade">
+              <xsd:annotation>
+                <xsd:documentation>Trade description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeKernelEvent">
+              <xsd:annotation>
+                <xsd:documentation>Trade kernel event to be imported (update).</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:postTradeEvent">
+              <xsd:annotation>
+                <xsd:documentation>Post Trade Event to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:bsTradeRematch">
+              <xsd:annotation>
+                <xsd:documentation>Basket swap trade rematch</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:userComment">
+              <xsd:annotation>
+                <xsd:documentation>User Comment to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="valuation:market">
+              <xsd:annotation>
+                <xsd:documentation>Market data description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="position:position">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="accountingposition:accountingposition">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="exec:ticket">
+              <xsd:annotation>
+                <xsd:documentation>
+                  On a ticket only the following operations are available:Create, Update, Cancel and Replace.
+                  These operations refer to the execution contained in the ticket not to the ticket itself.
+                  Ex: when we have a ticket with Update, we don't update the ticket but the target execution
+                  referred by the ticket.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="exec:confirmationClearing">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Clearing confirmation received after an execution from external platform
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="listedmarket:listedMarket">
+              <xsd:annotation>
+                <xsd:documentation>listed market description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphOrder">
+              <xsd:annotation>
+                <xsd:documentation>
+                  sophis FIXML4.4 order single
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphNewOrdList">
+              <xsd:annotation>
+                <xsd:documentation>
+                  sophis FIXML4.4 order group
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphNewOrdMleg">
+              <xsd:annotation>
+                <xsd:documentation>
+                  sophis FIXML4.4 multileg order
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrumentIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>To update universal references of an instrument, No persistence type -> will always update reference</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:csmFactorModelData">
+              <xsd:annotation>
+                <xsd:documentation>to import factor model data from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:timeDensityDataMDH">
+              <xsd:annotation>
+                <xsd:documentation>to import TimeDensity independentely from volatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="dailyData:dailyDataHistory">
+              <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="inflation:lpiVolatility">
+              <xsd:annotation>
+                <xsd:documentation>to import LPIVolatility from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="inflation:inflationSeasonality">
+              <xsd:annotation>
+                <xsd:documentation>to import inflation seasonality from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="inflation:inflations">
+              <xsd:annotation>
+                <xsd:documentation>to import inflation historical values from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sr:sr">
+              <xsd:annotation>
+                <xsd:documentation>Subscription Redemptions to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Entity description to be imported, but for which the grammar is only loaded at deploy time (aka not in "import" section).
+                  For instance value SRs.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+        <xsd:attribute name="session" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">deprecated since gxml 2.3.1.8, use batchType instead</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="site" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3.5. use to change the site during process of ImportMessage.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="publishExternalIds" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">switch for retrieving external ids</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="import" type="tns:ImportMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ExtensibleElement">
+    <xsd:annotation>
+      <xsd:documentation>
+        Defines an extra element or reference, with eventually grammar provided (and loaded) at deploy time (aka not in "import" section).
+        Typically this is used for value entities like SRs: Since grammar is still checked, the fund.xsd and sr.xsd must be added in the gxml ini file.
+        Note : for technical internal reason in GXML, an extensible element can only contain sub element being a complex type with complex content, and
+        not a simple type nor a complex type with simple content.
+        Can contain an old definition of convertible bonds (derivative_message)
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="##any" processContents="lax" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="BatchType">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Type describing the behavior if multiple entities are specified.
+        In any mode, the order of processing is not predictable.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="AllRegardlessOfErrors">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            deprecated since 6.1, becomes NoSession
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NoSession">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Since 6.1.
+            In this mode, any entity causing a failure is skipped and the batch is continued, and a ImportMessagePartiallyAccepted is issued.
+            Each entity is committed if successful. The message contains all the successful entities identifiers, as well as the faulty ones (either directly or due to dependency).
+            If no error occurs, an ImportMessageAccepted is issued containing all the entities identifiers.
+            If a very early error occurs (invalid fpml or xml) or if the connector couldn't contact the gateway, and if no entity could be processed, a message MessageRejected is still issued.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AllRegardlessOfErrorsSession">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            deprecated since 6.1, becomes Session
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Session">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Session mode changed since 6.1.
+            Select successul and fault entities processing previous successful entities N times until to obtain an entity list with only success processing.
+            Commit the successul entities list one times.
+            If there is still entity processing failures after N times, send MessageRejected.
+            If all succeed, all is commited. In this case, A ImportMessageAccepted is issued.
+            If there is entity failures, all other successfull entities are comited and  ImportMessagePartiallyAccepted is issued with failures and success.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FullSession">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            deprecated since 6.1, becomes AllOrNothing
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+
+      <xsd:enumeration value="AllOrNothing">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Since 6.1.
+            All entities are processed even if there is a failure.
+            If all succeed, all is commited one times at the end of the session. In this case, A ImportMessageAccepted is issued containing all the entities identifiers.
+            If at least one fails, all is rolled back. A ImportMessagePartiallyAccepted is issued with attribute commited=false and the list of errors
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="ExportMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting export
+        from Sophis of one or more entities like parties, portfolios, trades and instruments.
+        Note : attribute batchType set to Session is invalid and will be rejected.
+      </xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 2.3.1.10 : Added extensibleElement
+        Since 5.3 : Message header has been made optional in parent type fpml:Message
+        Since 5.3 : Export message now stands a batchType attribute similar to Import Message. Note: the value "Session" is not accepted.
+        Since 5.3 : Replaced the sequence by a sequence of choices allowing the order not to be specified in advance.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="party:partyReference">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the party to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:folioReference">
+              <xsd:annotation>
+                <xsd:documentation>References to the portfolios to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrumentIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Identifiers of the instrument to be exported.
+                  This includes funds since Fund identifier is the same as regular instruments'.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="instrument:ric">
+              <xsd:annotation>
+                <xsd:documentation>Description of the instrument's CTRL+J data.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeReference">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the trade to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:postTradeEvent">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the trade to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeDocumentation">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the trade to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeAllocationDetailsExport">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the trade to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:detailedCashReportExport" >
+              <xsd:annotation>
+                <xsd:documentation>Reference to the position whose detailed cash flow report is to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="valuation:market">
+              <xsd:annotation>
+                <xsd:documentation>Market data description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="listedmarket:listedMarket">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the listedMarket to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:csmFactorModelData">
+              <xsd:annotation>
+                <xsd:documentation>to export factor model data from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:factorModelsKey">
+              <xsd:annotation>
+                <xsd:documentation>to export factor model key from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="vol:timeDensity">
+              <xsd:annotation>
+                <xsd:documentation>reference of time density (id and name combined)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="dailyData:dailyDataExport">
+       <xsd:annotation>
+                <xsd:documentation>Export dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+
+       <xsd:element ref="sphfixml44:sphOrderId">
+              <xsd:annotation>
+                <xsd:documentation>
+                  sophis FIXML4.4 order references
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="inflation:lpiVolatility">
+       <xsd:annotation>
+                <xsd:documentation>Identifier of the LPIVolatility to be exported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="staticData:currencyIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of the currency to be exported</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+            <xsd:element name="extensibleElement" minOccurs="0" maxOccurs="unbounded" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Identifier of the Entity to be exported, for which the grammar is only loaded at deploy time (aka not in "import" section).
+                  This is typically the place for Srs identifier.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instruction:instructionIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>Identifier of the instruction message to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="followDependencies" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3 : if true, instead of describing references of an element (underlyer, folio, party, trade),
+              add a href attribute aiming to the real description of referenced object
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="dependenciesLevel" type="xsd:int" use="optional" >
+      <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 6.1.2 : linked to followDependencies;
+        number of level to export for followDependencies if >= 1; export all level otherwise ( if 0 or 1)
+        default will be 0;
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+        <xsd:attribute name="instrumentDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false instruments will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+  <xsd:attribute name="folioDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false folio will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+  <xsd:attribute name="partyDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false parties will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="exportReferencesOnly" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3.3 : if true, instead of exporting the whole entity,
+              only their references will be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="exportThirdPartiesCustomProps" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 7.1.2 : IT ONLY APPLIES TO TRADES EXPORT !
+              If true, exports the third parties custom properties in the trade description
+              If false, exports only the id, name, reference and external reference (if defined)
+              If missing, the behavior is the same as it was true
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportTradeBlockID" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportJurisdiction" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportSwiftCode" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportUserComments" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportTagMetadata" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportCustomExternalReference" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportKernelStatusGroups" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="loadTransactionFees" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="export" type="tns:ExportMessage" substitutionGroup="tns:message"/>
+
+
+   <!-- *********************** AutoCompletion ******************************** -->
+
+
+
+
+  <xsd:complexType name="InstrumentCompletion">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+  <xsd:sequence>
+         <xsd:element name="prefix" type="xsd:string"/>
+     <xsd:element name="univRef" type="xsd:string"/>
+     <xsd:element name="nbMax" type="xsd:int"/>
+  </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="instrumentCompletion" type="tns:InstrumentCompletion"/>
+
+  <xsd:complexType name="CurrencyCompletion">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+  <xsd:sequence>
+         <xsd:element name="prefix" type="xsd:string"/>
+     <xsd:element name="nbMax" type="xsd:int"/>
+  </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="currencyCompletion" type="tns:CurrencyCompletion"/>
+
+  <xsd:complexType name="ThirdPartyCompletion">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+  <xsd:sequence>
+         <xsd:element name="prefix" type="xsd:string"/>
+     <xsd:element name="nbMax" type="xsd:int"/>
+     <xsd:element name="propName" type="xsd:string"/>
+     <xsd:element name="type" type="xsd:short"/>
+  </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="thirdPartyCompletion" type="tns:ThirdPartyCompletion"/>
+
+  <xsd:complexType name="FolioCompletion">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+  <xsd:sequence>
+         <xsd:element name="prefix" type="xsd:string"/>
+     <xsd:element name="nbMax" type="xsd:int"/>
+  </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="folioCompletion" type="tns:FolioCompletion"/>
+
+ <xsd:complexType name="AutoCompletion">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+    in 7.2 AutoCompletion is available in DataExchangeService
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:choice>
+          <xsd:element name="instrumentCompletion" type="tns:InstrumentCompletion"/>
+      <xsd:element name="currencyCompletion" type="tns:CurrencyCompletion"/>
+      <xsd:element name="thirdPartyCompletion" type="tns:ThirdPartyCompletion" />
+      <xsd:element name="folioCompletion" type="tns:FolioCompletion"/>
+        </xsd:choice>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="autoCompletion" type="tns:AutoCompletion" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="AutoCompletionResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Concrete message notifying the result of an autoCompletion request.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+         <xsd:element name="completionResult" type="tns:CompletionResult" maxOccurs="unbounded" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="autoCompletionResult" type="tns:AutoCompletionResult" substitutionGroup="tns:message"/>
+
+
+  <xsd:complexType name="CompletionResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Corresponds to the result of an autocompletion.
+        Reference is returned by (instrumentCompletion - thirdPartyCompletion)
+    Name is returned by  (instrumentCompletion - currencyCompletion - thirdPartyCompletion - folioCompletion)
+    Type is returned by  (instrumentCompletion )
+    Sico is returned by  (instrumentCompletion - currencyCompletion)
+    Ident is returned by  (folioCompletion - thirdPartyCompletion)
+    IdentFolio is returned by  (folioCompletion)
+    FullName is returned by  ( folioCompletion)
+    </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+          <xsd:element name="reference" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="sico" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="ident" type="xsd:short" minOccurs="0"/>
+      <xsd:element name="identFolio" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="fullName" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="ccmpletionResult" type="tns:CompletionResult" />
+
+  <!-- *********************************************************************** -->
+
+
+  <xsd:complexType name="QueryMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting exporting a list of entities which is the result of an SQL query
+        Note : The SQL query has to return a list of entity codes
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="party" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>SQL query returning a list of party codes.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="folio" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>SQL query returning a list of folio codes.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="instrument" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>SQL query returning a list of instrument codes.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="trade" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>SQL query returning a list of trade codes.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="sr" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>SQL query returning a list of extensible element codes.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element name="currency" type="xsd:string">
+        <xsd:annotation>
+        <xsd:documentation>SQL query returning a list of currency codes</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="instruction" type="xsd:string">
+        <xsd:annotation>
+        <xsd:documentation>SQL query returning a list of instruction codes</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="followDependencies" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3 : if true, instead of describing references of an element (underlyer, folio, party, trade),
+              add a href attribute aiming to the real description of referenced object
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="dependenciesLevel" type="xsd:int" use="optional" >
+    <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                    Since 6.1.2 : linked to followDependencies;
+        number of level to export for followDependencies if >= 1; export all level otherwise ( if 0 or 1)
+        default will be 0;
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:attribute>
+  <xsd:attribute name="instrumentDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false instruments will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+    <xsd:attribute name="folioDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false folio will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+    <xsd:attribute name="partyDependency" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        chose which feature or type of data of dependency to export
+        if set to false parties will not be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="entitiesPerQuery" type="xsd:int" use="optional" default="10">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Specifies how many entities resulting from one SQL query will be put at maximum
+              in an export message. If the attribute is missing or 0, all entities of an SQL
+              request will be put in one message.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="exportReferencesOnly" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3.3 : if true, instead of exporting the whole entity,
+              only their references will be exported
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="exportThirdPartiesCustomProps" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 7.1.2 : IT ONLY APPLIES TO TRADES EXPORT !
+              If true, exports the third parties custom properties in the trade description
+              If false, exports only the id, name, reference and external reference (if defined)
+              If missing, the behavior is the same as it was true
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportTradeBlockID" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportJurisdiction" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportSwiftCode" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      <xsd:attribute name="exportUserComments" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportTagMetadata" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportCustomExternalReference" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="exportKernelStatusGroups" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+    <xsd:attribute name="loadTransactionFees" type="xsd:boolean" use="optional" default="true">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Impact trade export performance , only set to true when necessary.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="queryMessage" type="tns:QueryMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="QueryAsynchMessage">
+   <xsd:complexContent>
+      <xsd:extension base="tns:QueryMessage">
+      </xsd:extension>
+   </xsd:complexContent>
+   </xsd:complexType>
+  <xsd:element name="queryAsynchMessage" type="tns:QueryAsynchMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="QueryAsynchMessageAccepted">
+      <xsd:complexContent>
+          <xsd:extension base="tns:MessageAccepted">
+          <xsd:sequence>
+              <xsd:element name="requestId" type="xsd:int" />
+              <xsd:element name="resultsNumber" type="xsd:int" />
+          </xsd:sequence>
+          </xsd:extension>
+     </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="queryAsynchMessageAccepted" type="tns:QueryAsynchMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="GetPartialResultMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting a partial result of a asynchronous request
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element name="requestId" type="xsd:int" />
+          <xsd:element name="partialResultId" type="xsd:int" />
+         </xsd:sequence>
+       </xsd:extension>
+     </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="getPartialResultMessage" type="tns:GetPartialResultMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="GetPartialResultMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Response to GetPartialResultMessage : ask for a new GetPartialResultMessage with same requestId and partialResultId
+        Detail : error message
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+            <xsd:element name="requestId" type="xsd:int" />
+            <xsd:element name="partialResultId" type="xsd:int" />
+            <xsd:element name="detail" type="xsd:string"  />
+         </xsd:sequence>
+       </xsd:extension>
+     </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="getPartialResultMessageAccepted" type="tns:GetPartialResultMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ExceptionDetails">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Contains details about the exception that caused
+        an entity to be rejected.
+      </xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : The element "xsd:any" between element "exception" and "faultElement" has been removed.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="exception" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Name of the exception.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="faultReference" type="tns:FaultReference" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Since 5.3.4 / If an import of an entity
+            fails because of a unknown reference (underlyer, party, ...), this element contains this unknown one.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="faultElement" type="tns:FaultElement" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Element from the input message that caused the rejection. This
+            can be useful when multiples entities are imported/exported in the message.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="source" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Whole source message as it was processed by the gateway.
+            This element may be omitted in case of PartialSuccess message.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FaultElement">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : FaultElement can now contain references and not only descriptions (used for ExportPartialSuccess)</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : Replaced the sequence by a sequence of choices allowing the order not to be specified in advance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <!-- Case of an export -->
+      <xsd:element ref="party:party">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty party as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="folio:portfolio">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty portfolio as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="instrument:instrument">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty instrument as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="instrument:ric">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty CTRL+J data instrument as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:trade">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty trade as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:tradeKernelEvent">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty Trade kernel event as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:postTradeEvent">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty post trade event as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:bsTradeRematch">
+        <xsd:annotation>
+          <xsd:documentation>Basket swap trade rematch</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+  <xsd:element ref="trade:tradeDocumentation">
+      <xsd:annotation>
+        <xsd:documentation>Description of a faulty trade documentation as provided to GXML.</xsd:documentation>
+      </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:tradeAllocationDetailsExport">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty trade allocation export as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="folio:detailedCashReportExport">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty detail cash report export as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="folio:userComment">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty user comment import as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="exec:ticket">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty ticket as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="valuation:market">
+        <xsd:annotation>
+          <xsd:documentation>Market data description to be imported.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="quot:quotations">
+        <xsd:annotation>
+          <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="inflation:lpiVolatility">
+        <xsd:annotation>
+          <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="inflation:inflationSeasonality">
+    <xsd:annotation>
+            <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="inflation:inflations">
+    <xsd:annotation>
+            <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <!-- Case of a valuation request -->
+      <xsd:element ref="valuation:valuation">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty valuation as provided to GXML.</xsd:documentation>
+          <xsd:documentation>Deprecated since 5.3.3, replaced by a valuationSet in MessageRejected of ValuationRequest</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="valuation:valuationSet">
+        <xsd:annotation>
+          <xsd:documentation>Since 5.3.3 a the fault element is a valuationSet (valuation + asset) instead a valuation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <!-- Case of an import -->
+      <xsd:element ref="party:partyReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty party as provided to GXML in an Export Message.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="folio:folioReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty folio as provided to GXML in an Export Message.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="instrument:instrumentIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty instrument as provided to GXML in an Export Message.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:tradeReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty trade as provided to GXML in an Export Message.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="exec:ticketReference">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty ticket as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+        <xsd:annotation>
+          <xsd:documentation>Description or reference of a faulty entity as provided to GXML in an import or export Message.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element ref="sphfixml44:SphOrder">
+        <xsd:annotation>
+          <xsd:documentation>
+            sophis FIXML4.4 single order
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element ref="sphfixml44:SphNewOrdList">
+        <xsd:annotation>
+          <xsd:documentation>
+            sophis FIXML4.4 order group
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element ref="sphfixml44:SphNewOrdMleg">
+        <xsd:annotation>
+          <xsd:documentation>
+            sophis FIXML4.4 multileg order
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <!-- Case of an soa Method Designer -->
+      <xsd:element ref="reporting:soaMethod">
+        <xsd:annotation>
+          <xsd:documentation>faulted Soa Method</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+    <xsd:element ref="reporting:soaMethodTemplate">
+        <xsd:annotation>
+        <xsd:documentation>faulted Soa Method Template</xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element ref="reporting:templateReference">
+      <xsd:annotation>
+        <xsd:documentation>faulted Soa Method Template reference</xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+
+      <!-- case of import market data message -->
+      <xsd:element ref="corr:correlation">
+        <xsd:annotation>
+          <xsd:documentation>description of correlation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="ca:corporateActions">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty corporate actions</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="mca:CorporateAction">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty standard corporate actions</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="cr:creditData">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty credit data</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="cr:creditDataHistoric">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty credit data historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="div:dividends">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty dividends</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="div:dividendHistoric">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty dividend historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="repo:repoMargins">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty repo margins</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="repo:repoMarginHistoric">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty repo margin historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="vol:volatilityData">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty volatility</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="vol:volatilityHistoric">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty volatility historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="yc:yieldCurve">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty yield curve</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="yc:yieldCurveHistoric">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty yield curve historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="instrument:ratings">
+        <xsd:annotation>
+          <xsd:documentation>description of faulty ratings</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <!-- case of export market data message -->
+      <xsd:element ref="corr:correlationIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported correlation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="ca:corporateActionsIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported corporate actions</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="cr:creditDataIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported credit data</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="cr:creditDataHistoricIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported credit data historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="div:dividendsIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to successfully imported dividends</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="div:dividendHistoricIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to successfully imported dividend historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="repo:repoMarginsIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to successfully imported repo margins</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="repo:repoMarginHistoricIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to successfully imported repo margin historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="vol:volatilityIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported volatility</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="vol:volatilityHistoricIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported volatility historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="yc:yieldCurveIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported yield curve</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="yc:yieldCurveHistoricIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported yield curve historic</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="instrument:ratingsIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported ratings</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="vol:timeDensity">
+          <xsd:annotation>
+             <xsd:documentation>reference of time density (id and name combined)</xsd:documentation>
+          </xsd:annotation>
+      </xsd:element>
+
+    <xsd:element ref="dailyData:dailyDataHistory">
+       <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+       </xsd:element>
+     <xsd:element ref="staticData:currencyIdentifier">
+      <xsd:annotation>
+        <xsd:documentation>identifier code for currencies.</xsd:documentation>
+      </xsd:annotation>
+     </xsd:element>
+
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="FaultReference">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3.4 / If an import of an entity
+        fails because of a unknown reference (underlyer, party, ...), this element contains this unknown one.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <!-- Case of an import -->
+      <xsd:element ref="party:partyReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty party</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="folio:folioReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty folio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="instrument:instrumentIdentifier">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty instrument at instrument import or universal reference update</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="instrument:ric">
+        <xsd:annotation>
+          <xsd:documentation>Description of a faulty CTRL+J data of an instrument as provided to GXML.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:tradeReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty trade</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:postTradeEvent">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty post trade event</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+   <xsd:element ref="trade:tradeDocumentation">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty trade documentation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:tradeKernelEvent">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty Trade kernel event.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="trade:bsTradeRematch">
+        <xsd:annotation>
+          <xsd:documentation>Basket swap trade rematch</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="exec:ticketReference">
+        <xsd:annotation>
+          <xsd:documentation>Identifier of a faulty trade.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="sphfixml44:SphOrderSingleAck">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported single order.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="sphfixml44:SphOrdMlegAck">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported multileg order.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="sphfixml44:SphOrdListAck">
+        <xsd:annotation>
+          <xsd:documentation>References to a successfully imported group order.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    <xsd:element ref="inflation:lpiVolatility">
+        <xsd:annotation>
+        <xsd:documentation></xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    <xsd:element ref="inflation:inflationSeasonality">
+      <xsd:annotation>
+      <xsd:documentation></xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    <xsd:element ref="inflation:inflations">
+    <xsd:annotation>
+            <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+        <xsd:annotation>
+          <xsd:documentation>Description or reference of a faulty entity</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="reporting:templateReference">
+        <xsd:annotation>
+        <xsd:documentation>faulted Soa Method Template reference</xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="MessageRejected">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message notifying the failure of another
+        message.
+        If this message is issued due to a critical failure (aka severe GXML internal error) or an xml parse error
+        (the input message couldn't be parsed) then the "sentBy" element of the header is empty and the "inReplyTo",
+        "conversationId" and "sentTo" fields are omitted.
+      </xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : Message header has been made optional in parent type fpml:NotificationMessage</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3 : Content of field "Reason" (see parent type fpml:MessageRejected) is filled in a more compliant way than before:
+        reasonCode:
+        InvalidXml : The document provided can not be parsed (does not comply to schema definitions)
+        InvalidInput : The document provided or contains invalid elements (not existing currency for instance)
+        TransformationFailure : The document couldn't be transformed with the xsl before treatment (either due to xsl problem, or invalid input)
+        NoPermission : The document is valid, but integrity validation rules have been breached preventing any database saving.
+        InternalError : The server faced a runtime failure which can either be a malfunction or an system error (database connection, network...)
+        NoLicense : xxxx
+
+        DuplicateDeal : A trade is being created, while another with same reference already exist in database
+        NoSuchDeal : No trade can be found with the given reference
+        DuplicateInstrument :
+        NoSuchInstrument :
+        DuplicateFolio :
+        NoSuchFolio :
+        DuplicateParty :
+        NoSuchParty :
+
+        location:
+        indicates where the error occured during processing of incoming message (same as previously).
+        location may now take the following values (which may give an hint on the nature of the error):
+        "http://sophis.net/sophis/gxml/dataExchange/ImportJob/process" : error in the content of the entity during import
+        "http://sophis.net/sophis/gxml/dataExchange/AllRegardlessOfErrorsImportJob/process" : error due to error propagation
+        "http://sophis.net/sophis/gxml/dataExchange/ExportJob/process" : error in the content of the entity during export
+        "http://sophis.net/sophis/gxml/dataExchange/ValuationJob/process" : error during the valuation of the entity
+        "http://sophis.net/sophis/gxml/dataExchange/FpmlEngine_exchange" : error during message parse or response building
+
+        description:
+        This field was not filled previously, and contains additional informations on the nature of the error.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:MessageRejected">
+        <xsd:sequence>
+          <xsd:element name="details" type="tns:ExceptionDetails" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">Details about the failure, noticeably the element that provoked the error.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="messageRejected" type="tns:MessageRejected" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="MessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Abstract message notifying the success of another message.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : Message header has been made optional in parent type fpml:NotificationMessage</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:NotificationMessage">
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="messageAccepted" type="tns:MessageAccepted" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ImportMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an Import</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : Replaced the sequence by a sequence of choices allowing the order not to be specified in advance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="party:partyReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported party.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:folioReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported folio.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported trade.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:postTradeEvent">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported postTradeEvent.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeKernelEvent">
+              <xsd:annotation>
+                <xsd:documentation>References of a successfully Trade kernel event.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:bsTradeRematch">
+          <xsd:annotation>
+            <xsd:documentation>Basket swap trade rematch</xsd:documentation>
+          </xsd:annotation>
+          </xsd:element>
+            <xsd:element ref="folio:userComment">
+              <xsd:annotation>
+                <xsd:documentation>References of a successfully imported User Comment.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="exec:ticketReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported ticket.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="listedmarket:listedMarket">
+              <xsd:annotation>
+                <xsd:documentation>Reference to a successfully imported listedMarket.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphOrder">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 single order</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphNewOrdList">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 order group</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphNewOrdMleg">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 multileg order</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphOrderSingleAck">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported order.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphOrdMlegAck">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported multileg order.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="sphfixml44:SphOrdListAck">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported group order.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrumentIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>
+      Identifiers of a successfully imported instruments (eventually including funds)
+                  or Sucessfully universal ref import
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ric">
+              <xsd:annotation>
+                <xsd:documentation>Identifiers of a an instrument whom CTRL+J data was successfully imported</xsd:documentation>
+            </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="valuation:market">
+              <xsd:annotation>
+                <xsd:documentation>Market data description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="position:identifier">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element ref="vol:timeDensity">
+              <xsd:annotation>
+                <xsd:documentation>reference of time density (id and name combined)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+
+            <xsd:element ref="accountingposition:identifier">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:csmFactorModelData">
+              <xsd:annotation>
+                <xsd:documentation>factor model data from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:factorModelsKey">
+              <xsd:annotation>
+                <xsd:documentation>factor model key from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>List of references to successfully imported entity for which the grammar is provided at deploy time.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="exec:confirmationClearingResponse">
+              <xsd:annotation>
+                <xsd:documentation>response to the clearing confirmation message received by IS</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:lpiVolatility">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="importMessageAccepted" type="tns:ImportMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ElementRejected">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Defines the failure of an element in a ImportMessagePartiallyAccepted message.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="reason" type="fpml:Reason" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.fpml.org" xml:lang="en">
+            An instance of the Reason type used to record the nature of any errors associated with a message.
+            If an entity is not directly in cause of a failure, but a dependency is the reasonCode field is set to "Dependency failure"
+          </xsd:documentation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">See documentation about MessageRejected type for possible values populated of the reason fields.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="details" type="tns:ExceptionDetails" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+            Details about the faulty element.
+            Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ImportMessagePartiallyAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Concrete message notifying the partial success of an Import.
+        Contains all the successful entities identifiers (as described in parent type ImportMessageAccepted) and the faulty elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:ImportMessageAccepted">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="commited" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3.4. Output parameter only.
+              Because of new mode FullSession, an ImportMessagePartiallyAccepted can be returned even if all successful entities have been rolled back.
+              In this case this attribute is equal to "false" ; "true" otherwise
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="importMessagePartiallyAccepted" type="tns:ImportMessagePartiallyAccepted" substitutionGroup="tns:messageAccepted"/>
+
+
+  <xsd:complexType name="ExportMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an export</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3 : Replaced the sequence by a sequence of choices allowing the order not to be specified in advance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="party:party">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully exported party.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="party:partyReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully exported party.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:portfolio">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported folio.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:folioReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully exported folio.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:trade">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported trade.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instruction:instruction">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported instruction.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeReference">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully exported trade.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:postTradeEvent">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully exported post trade event.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeDocumentation">
+              <xsd:annotation>
+                <xsd:documentation>Reference to the trade to be exported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="trade:tradeAllocationDetails">
+              <xsd:annotation>
+                <xsd:documentation>Description of a trade allocation details.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="folio:detailedCashReport">
+              <xsd:annotation>
+                <xsd:documentation>Detailed cash flow report.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="valuation:market">
+              <xsd:annotation>
+                <xsd:documentation>Market data description to be imported.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported entity for which the grammar is only provided at deploy time.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrument">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported instrument.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:instrumentIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>Identifiers of a successfully exported instruments (eventually including funds).</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="instrument:ric">
+            <xsd:annotation>
+              <xsd:documentation>Description of a successfully imported instrument's CTRL+J data</xsd:documentation>
+            </xsd:annotation>
+        </xsd:element>
+            <xsd:element ref="listedmarket:listedMarket">
+              <xsd:annotation>
+                <xsd:documentation>Reference to a successfully exported listedMarket.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="factorModel:csmFactorModelData">
+              <xsd:annotation>
+                <xsd:documentation>factor model data from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="vol:timeDensityData">
+              <xsd:annotation>
+                <xsd:documentation>factor model data from external system (APT, axiome, northfield)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="dailyData:dailyDataHistory">
+       <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element ref="sphfixml44:SphOrder">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 single order</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element ref="sphfixml44:SphNewOrdList">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 order group</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element ref="sphfixml44:SphNewOrdMleg">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 multileg order</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element ref="sphfixml44:sphOrderId">
+              <xsd:annotation>
+                <xsd:documentation>sophis FIXML4.4 sophis rorder reference</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="inflation:lpiVolatility">
+              <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation></xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+          </xsd:choice>
+        </xsd:sequence>
+        <xsd:attribute name="responseId" type="xsd:int" use="optional" />
+        <xsd:attribute name="nbResponse" type="xsd:int" use="optional" />
+        <xsd:attribute name="requestId"  type="xsd:int" use="optional" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="exportMessageAccepted" type="tns:ExportMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ExportMessagePartiallyAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3
+        Concrete message notifying the partial success of an Export.
+        Contains all the successful entities description (as described in parent type ExportMessageAccepted) and the faulty elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:ExportMessageAccepted">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="exportMessagePartiallyAccepted" type="tns:ExportMessagePartiallyAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ValuationRequest">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3
+        Message requesting valuation of a set of valuable entities (instrument, folio, scenario...).
+        Such a message receives either a ValuationResult message as a response or a MessageRejected.
+        Note : attribute batchType set to Session is invalid and will be rejected.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element ref="valuation:valuationSet" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="exportMarketData" type="xsd:boolean" use="optional" default="false">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3.3 ; if true export market data used from pricing in ValuationResult message</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="valuationRequest" type="tns:ValuationRequest" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ValuationResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Since 5.3
+        Concrete message notifying the result of a valuation request.
+        It contains a list of both successful and failed valuations.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:element ref="valuation:valuationSet"/>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="valuationResult" type="tns:ValuationResult" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="SoaMethodsExportMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Message used to export all soa methods</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaMethodsExportMessage" type="tns:SoaMethodsExportMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="SoaMethodsExportMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an Soa methods export</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:element ref="reporting:soaMethod" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>Description of a soa method : name + parameters</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaMethodsExportMessageAccepted" type="tns:SoaMethodsExportMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="SoaMethodsRequest">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting execution of a set of soa methods.
+        Such a message receives either a SoaMethodsResult message as a response or a MessageRejected.
+        Note : attribute batchType set to Session is invalid and will be rejected.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element ref="reporting:soaMethod" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaMethodsRequest" type="tns:SoaMethodsRequest" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="SoaMethodsResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Concrete message notifying the result of a soa methods.
+        It contains a list of both successful and failed soa methods.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:element ref="reporting:soaMethodResult" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaMethodsResult" type="tns:SoaMethodsResult" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="SoaTemplateImportMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Message requesting import of SOA method templates.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element name="SoaMethodTemplate" type="reporting:SoaMethodTemplate" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaTemplateImport" type="tns:SoaTemplateImportMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="SoaTemplateImportMessageResult">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Import result of SOA method templates.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:element name="elementRejected" type="tns:ElementRejected" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the list of failed elements and the reason of failure for each of them.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaTemplateImportMessageResult" type="tns:SoaTemplateImportMessageResult" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="SoaTemplateExportMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Message requesting export of SOA method templates.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element ref="reporting:templateReference" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaTemplateExport" type="tns:SoaTemplateExportMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="SoaTemplateExportMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an Soa method templates export</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:element name="SoaMethodTemplate" type="reporting:SoaMethodTemplate" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>Description of a soa method template: name + parameters + sources</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="soaTemplateExportMessageAccepted" type="tns:SoaTemplateExportMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <!-- market data -->
+
+  <xsd:complexType name="ImportMarketDataMessage">
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="corr:correlation">
+              <xsd:annotation>
+                <xsd:documentation>correlation to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="ca:corporateActions">
+              <xsd:annotation>
+                <xsd:documentation>corporate actions to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="mca:CorporateAction">
+              <xsd:annotation>
+                <xsd:documentation>standard corporate actions to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditData">
+              <xsd:annotation>
+                <xsd:documentation>credit data to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataHistoric">
+              <xsd:annotation>
+                <xsd:documentation>credit data historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividends">
+              <xsd:annotation>
+                <xsd:documentation>dividends to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendHistoric">
+              <xsd:annotation>
+                <xsd:documentation>dividend historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMargins">
+              <xsd:annotation>
+                <xsd:documentation>repo margins to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginHistoric">
+              <xsd:annotation>
+                <xsd:documentation>repo margin historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityData">
+              <xsd:annotation>
+                <xsd:documentation>volatility to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityHistoric">
+              <xsd:annotation>
+                <xsd:documentation>volatility historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurve">
+              <xsd:annotation>
+                <xsd:documentation>yield curve to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveHistoric">
+              <xsd:annotation>
+                <xsd:documentation>yield curve historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ratings">
+              <xsd:annotation>
+                <xsd:documentation>ratings to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation>price history to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="vol:timeDensityDataMDH">
+       <xsd:annotation>
+                <xsd:documentation>to import TimeDensity independentely from volatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="dailyData:dailyDataHistory">
+       <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:lpiVolatility">
+       <xsd:annotation>
+                <xsd:documentation>to import LPIVolatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation>to import inflation seasonality</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation>to import inflation historical values from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Entity description to be imported, but for which the grammar is only loaded at deploy time (aka not in "import" section).
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="importMarketData" type="tns:ImportMarketDataMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ImportMarketDataMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an ImportMarketDataMessage</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="corr:correlationIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported correlation</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="ca:corporateActionsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported corporate actions</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported credit data</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported credit data historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported dividends</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported dividend historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported repo margins</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported repo margin historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported volatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported volatility historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported yield curve</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported yield curve historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ratingsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported ratings</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported price history</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+       <xsd:element ref="vol:timeDensity">
+              <xsd:annotation>
+                <xsd:documentation>reference of time density (id and name combined)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+      <xsd:element ref="dailyData:dailyDataHistory">
+       <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:lpiVolatility">
+       <xsd:annotation>
+                <xsd:documentation>References to a successfully imported LPIVolatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation>References to a successfully imported inflation seasonality</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation>Reference to successfully imported inflation historical values from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>List of references to successfully imported entity for which the grammar is provided at deploy time.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="importMarketDataMessageAccepted" type="tns:ImportMarketDataMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ImportMarketDataMessagePartiallyAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Concrete message notifying the partial success of an ImportMarketDataMessage.
+        Contains all the successful entities identifiers (as described in parent type ImportMessageAccepted) and the faulty elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:ImportMarketDataMessageAccepted">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="commited" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+              Since 5.3.4. Output parameter only.
+              Because of new mode FullSession, an ImportMessagePartiallyAccepted can be returned even if all successful entities have been rolled back.
+              In this case this attribute is equal to "false" ; "true" otherwise
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="importMarketDataMessagePartiallyAccepted" type="tns:ImportMarketDataMessagePartiallyAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ExportMarketDataMessage">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Message requesting export
+        from Sophis of one or more market data entities.
+        Note : attribute batchType set to Session is invalid and will be rejected.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="corr:correlationIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported correlation</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="ca:corporateActionsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported corporate actions</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported credit data</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported credit data historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported dividends</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported dividend historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully repo margins</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References of repo margin historic to be exported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported volatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported volatility historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported yield curve</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveHistoricIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported yield curve historic</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ratingsIdentifier">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported ratings</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation>References to a successfully imported price history</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="vol:timeDensity">
+              <xsd:annotation>
+                <xsd:documentation>reference of time density (id and name combined)</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="dailyData:dailyDataExport">
+       <xsd:annotation>
+                <xsd:documentation>to import dailyData</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:lpiVolatility">
+       <xsd:annotation>
+                <xsd:documentation>to export LPIVolatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation>to export inflation seasonality</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation>to export inflation historical values</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="extensibleElement" minOccurs="0" maxOccurs="unbounded" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>
+                  Identifier of the Entity to be exported, for which the grammar is only loaded at deploy time (aka not in "import" section).
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+        <xsd:attribute name="batchType" type="tns:BatchType" use="optional" default="NoSession">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the expected behavior in case of batch import message (multiple entities to be created in same message)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="exportMarketData" type="tns:ExportMarketDataMessage" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ExportMarketDataMessageAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete message notifying the success of an export</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MessageAccepted">
+        <xsd:sequence>
+          <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="corr:correlation">
+              <xsd:annotation>
+                <xsd:documentation>correlation to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="ca:corporateActions">
+              <xsd:annotation>
+                <xsd:documentation>corporate actions to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="mca:CorporateAction">
+              <xsd:annotation>
+                <xsd:documentation>standard corporate actions to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditData">
+              <xsd:annotation>
+                <xsd:documentation>credit data to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="cr:creditDataHistoric">
+              <xsd:annotation>
+                <xsd:documentation>credit data historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividends">
+              <xsd:annotation>
+                <xsd:documentation>dividends to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="div:dividendHistoric">
+              <xsd:annotation>
+                <xsd:documentation>dividend historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMargins">
+              <xsd:annotation>
+                <xsd:documentation>repo margins to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="repo:repoMarginHistoric">
+              <xsd:annotation>
+                <xsd:documentation>repo margin historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityData">
+              <xsd:annotation>
+                <xsd:documentation>volatility to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="vol:volatilityHistoric">
+              <xsd:annotation>
+                <xsd:documentation>volatility historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurve">
+              <xsd:annotation>
+                <xsd:documentation>yield curve to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="yc:yieldCurveHistoric">
+              <xsd:annotation>
+                <xsd:documentation>yield curve historic to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="instrument:ratings">
+              <xsd:annotation>
+                <xsd:documentation>ratings to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="quot:quotations">
+              <xsd:annotation>
+                <xsd:documentation>price history to be imported</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:lpiVolatility">
+       <xsd:annotation>
+                <xsd:documentation>References to a successfully exported LPIVolatility</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflationSeasonality">
+       <xsd:annotation>
+                <xsd:documentation>References to a successfully exported inflation seasonality</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+      <xsd:element ref="inflation:inflations">
+       <xsd:annotation>
+                <xsd:documentation>Reference to successfully exported inflation historical values from external system</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+
+            <xsd:element name="extensibleElement" type="tns:ExtensibleElement">
+              <xsd:annotation>
+                <xsd:documentation>Description of a successfully imported entity for which the grammar is only provided at deploy time.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="exportMarketDataMessageAccepted" type="tns:ExportMarketDataMessageAccepted" substitutionGroup="tns:messageAccepted"/>
+
+  <xsd:complexType name="ExportMarketDataMessagePartiallyAccepted">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+        Concrete message notifying the partial success of an Export.
+        Contains all the successful entities description (as described in parent type ExportMarketDataMessageAccepted) and the faulty elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:ExportMarketDataMessageAccepted">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="elementRejected" type="tns:ElementRejected">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+                Describes the list of failed elements and the reason of failure for each of them.
+                Noticeably the source element is omitted to save a copy of the same information for each faulty element.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="exportMarketDataMessagePartiallyAccepted" type="tns:ExportMarketDataMessagePartiallyAccepted" substitutionGroup="tns:messageAccepted"/>
+
+</xsd:schema>

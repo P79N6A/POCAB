@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 sp1 U (http://www.xmlspy.com) by Cobena Gregory (SOPHIS TECHNOLOGY FRANCE) -->
+<xs:schema targetNamespace="http://www.sophis.net/CreditRisk" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:tns="http://www.sophis.net/Instrument" xmlns:crns="http://www.sophis.net/CreditRisk"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+
+  <xs:element name="creditData" type="crns:CreditData"/>
+  <xs:element name="creditDataIdentifier" type="tns:Identifier" />
+
+  <xs:complexType name="Row">
+      <xs:annotation>
+      <xs:documentation>One line in the table of recovery rates. Each row defines a triplet Seniority, Default Event and the corresponding expected recovery rate</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="seniority" type="tns:Identifier" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Markit : Tier - see comment in the other "Seniority" element</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+			<xs:element name="seniorityName" type="xs:normalizedString" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Seniority Name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+      <xs:element name="defaultEvent" type="tns:Identifier" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : DocClause - see comment in ther other "DefaultEvent" element
+            [WARNING] This field is optional in 452 because not supported in Risque 452
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+	  <xs:element name="defaultEventName" type="xs:normalizedString" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Default Event Name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+      <xs:element name="recoveryRate" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : field "Recovery"
+            Again, note that having here a list of recovery values for different seniority and default events
+            means that various pieces of XML data from markit have been aggregated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+	  <xs:element name="assumedRecoveryRate" type="xs:decimal" minOccurs="0" />
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="TableOfRecoveryRates">
+    <xs:annotation>
+      <xs:documentation>
+		List of Expected Recovery Rates per seniority and default Events.
+		Note that the currency does not appear here. When gathering data from Markit,
+		it is however possible that the different documents corresponding to different currencies for one issuer might give different recovery rate values.
+		In this case, the average will be computed and put in here.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="row" type="crns:Row" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="SroIsinRow">
+      <xs:annotation>
+      <xs:documentation>One line in the table of SRO ISIN. Each row defines a quadruplet Seniority and the corresponding sro ISIN and bond ISIN and a boolean indicating if it use SRO</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="seniority" type="tns:Identifier" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Markit : Tier - see comment in the other "Seniority" element</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+	  <xs:element name="seniorityName" type="xs:normalizedString" minOccurs="0">
+	    <xs:annotation>
+		  <xs:documentation>Seniority Name</xs:documentation>
+	    </xs:annotation>
+	  </xs:element>
+	  <xs:element name="isSro" type="xs:boolean" minOccurs="0">
+		<xs:annotation>
+		  <xs:documentation>Markit : field "issro"</xs:documentation>
+		</xs:annotation>
+	  </xs:element>
+	  <xs:element name="sroIsin" type="xs:normalizedString" minOccurs="0">
+		<xs:annotation>
+		  <xs:documentation>Markit : field "sroisin"</xs:documentation>
+		</xs:annotation>
+	  </xs:element>
+	  <xs:element name="isin" type="xs:normalizedString" minOccurs="0">
+		<xs:annotation>
+		  <xs:documentation>Markit : field "isin"</xs:documentation>
+		</xs:annotation>
+	  </xs:element>
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="TableOfSroIsins">
+    <xs:annotation>
+      <xs:documentation>
+		List of SRO ISIN per seniority.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="sroIsinRow" type="crns:SroIsinRow" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MarketPlot">
+      <xs:annotation>
+      <xs:documentation xml:lang="en">Contains market rates (bid, ask) on a credit source. Defined for a triplet currency, seniority, default event.
+A set of market plot constitues a credit curve for the triplet currency, seniority, default event.</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="maturity" type="common:AdjustableOrRelativeDate" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : the value is obtained by extracting the maturity from the Spread1y or
+            Spread5y tag name in the markit documents.
+
+            In each markit document, there is a list of Spreadxxx tags with values.
+            This will correspond, in the sophis XML, to a list of market points with one seniority, one default event
+            and the many maturities and a CDS Rate for each of them.
+
+            In Markit, the 1y, 2y, ... maturities correspond to precise dates according to market rules (e.g. the 20th of the month).
+
+            Question for JND : Do we ask for explicit date or will we implement the market rules for '1y' '2y' ... ?
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="rate" type="xs:decimal" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : value in the Spread1y  or Spread5y or ... tag.
+            See comment on Maturity.
+
+            Question for JND : Is the CDS Rate is Sophis identical to the Spread given by markit or do we need
+            a mathematical transformation.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="bidRate" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="askRate" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="runningCoupon" type="xs:int" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="confidence" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="dayCountBasis" type="tns:DayCountBasis" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="yieldCalculation" type="tns:YieldCalculation" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="periodicityType" type="tns:PeriodicityType" minOccurs="0" maxOccurs="1"/>
+	  <xs:element name="isUsed" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+	  <xs:element name="liquidityLevel" type="xs:int" minOccurs="0" maxOccurs="1"/>
+
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="CurveDefinition">
+    <xs:annotation>
+      <xs:documentation>
+        A credit risk source is uniquely identified by the issuer, currency,  seniority and default event (default event only in 50).
+        For each credit risk source, there is a credit risk curve.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="seniority" type="tns:Identifier" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : Tier
+            Again, note that markit provides only one "Tier" field in each XML fragment.
+            This means that the multiple "seniority" entries in sophis XML are the result of the aggregation of markit data by issuer and by currency.
+          </xs:documentation>
+        </xs:annotation>
+	  </xs:element>
+	  <xs:element name="seniorityName" type="xs:normalizedString" minOccurs="0">
+		<xs:annotation>
+			<xs:documentation>Seniority Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="defaultEvent" type="tns:Identifier" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Markit : DocClause
+            In a similar way to "Seniority", the multiple entries here are the result of the aggregation of markit data.
+            Note that the DocClause is probably a limited choice field : Mod-R, Mod-Mod-R, Old-R, No-R
+
+            [WARNING] This field is optional in 452 because not supported in Risque 452
+          </xs:documentation>
+        </xs:annotation>
+	  </xs:element>
+	  <xs:element name="defaultEventName" type="xs:normalizedString" minOccurs="0">
+	    <xs:annotation>
+		  <xs:documentation>Default Event Name</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="marketPlot" type="crns:MarketPlot" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CurvesByCurrency">
+    <xs:annotation>
+      <xs:documentation>
+        Markit : field "Ccy"
+        Note that sophis XML has all currency for one issuer in the same XML document.
+        Thus, the data service process needs to aggregate markit xml by issuer.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="currency" type="tns:Currency"/>
+      <xs:element name="curveDefinition" type="crns:CurveDefinition" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TableOfCDSMarketPlots">
+    <xs:annotation>
+      <xs:documentation>
+        This table will give all credit risk curves for the issuer that we consider.
+        The curves are grouped by currency.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="curvesByCurrency" type="crns:CurvesByCurrency" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  
+  <xs:complexType name="CDSBasis">
+    <xs:all>
+      <xs:element name="currency" type="tns:Currency"/>
+      <xs:element name="seniority" type="tns:Identifier"/>
+      <xs:element name="defaultEvent" type="tns:Identifier"/>
+      <xs:element name="maturity" type="common:AdjustableOrRelativeDate" />
+      <xs:element name="basis" type="xs:decimal"/>
+    </xs:all>
+  </xs:complexType>
+
+
+  <xs:complexType name="TableOfCDSBasis">
+    <xs:sequence>
+      <xs:element name="cdsBasis" type="crns:CDSBasis" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CreditData">
+    <xs:annotation>
+      <xs:documentation>
+        This XML grammar is a language for the credit risk data of one ISSUER.
+        To describe credit risk data about several issuers, for example the issuers of some Equity, several XML documents conforming to this grammar might be necessary.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="issuer" type="tns:Identifier" minOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Markit : field "Ticker"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0" maxOccurs="1" />
+			<xs:element name="CDSFixedRate" type="xs:decimal" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="upfrontInCleanPrice" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="isUsed" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="CDSInterpolationModel" type="xs:normalizedString" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="defaultSeniority" type="tns:Identifier" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="defaultSeniorityName" type="xs:normalizedString" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="CDSMaturityModelId" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="CDSMaturityModel" type="xs:normalizedString" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="CDSMaturityModelSerieId" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="marketPlotType" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="defaultRunningCoupon" type="xs:short" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="cdsBasisDefiniton" type="xs:short" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="cdsBasisInterpolation" type="xs:short" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="tableOfRecoveryRates" type="crns:TableOfRecoveryRates"/>
+      <xs:element name="tableOfSroIsins" type="crns:TableOfSroIsins" minOccurs="0"/>
+      <xs:element name="tableOfCDSMarketPlots" type="crns:TableOfCDSMarketPlots"/>
+      <xs:element name="tableOfCDSBasis" type="crns:TableOfCDSBasis" minOccurs="0"/>
+    </xs:all>
+    <xs:attributeGroup ref="common:PersistentEntity.model"/>
+  </xs:complexType>
+
+  <xs:complexType name="CreditBasketComponent">
+      <xs:annotation>
+      <xs:documentation xml:lang="en">Components of a Basket in model "Credit Risk", used for instance to modelize iTraxx or CDX indices</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="issuer" type="tns:Underlyer"/>
+      <xs:element name="creditData" type="crns:Row"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+	<xs:complexType name="CreditBasketSyntheticComponent">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Components of a Basket in model "Credit Risk" and Credit Risk Method is "Very Synthetic"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="numberOfIssuers" type="xs:short"/>
+			<xs:element name="numberOfDefaults" type="xs:short"/>
+			<xs:element name="defaultedAmount" type="xs:double"/>
+		</xs:sequence>
+	</xs:complexType>  
+
+  <xs:simpleType name="CreditRiskMethod">
+      <xs:annotation>
+      <xs:documentation xml:lang="en">Quantitative Model to calculate Default Probabilities and Credit Risk for a Credit Basket (such as CDX or iTraxx)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:normalizedString">
+      <xs:enumeration value="Components"/>
+      <xs:enumeration value="Index"/>
+      <xs:enumeration value="Index + Components"/>
+      <xs:enumeration value="Components + Index"/>
+  <xs:enumeration value="Components Spread"/>
+	<xs:enumeration value="Very Synthetic"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:complexType name="CreditBasketStandardComposition">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Composition of a Basket in model "Credit Risk", used for instance to modelize iTraxx or CDX indices</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="component" type="crns:CreditBasketComponent"/>
+		</xs:sequence>
+  </xs:complexType>
+	<xs:complexType name="CreditBasketSyntheticComposition">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Synthetic composition for "Credit Risk" indexews whith Credit Risk Method "Very Synthetic"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="numberOfIssuers" type="xs:short"/>
+			<xs:element name="numberOfDefaults" type="xs:short"/>
+			<xs:element name="defaultedAmount" type="xs:double"/>
+		</xs:sequence>
+	</xs:complexType>  
+  <xs:complexType name="CreditRiskModelData">
+      <xs:annotation>
+      <xs:documentation xml:lang="en">The specific parameters of a Basket in model "Credit Risk", used for instance to modelize iTraxx or CDX indices</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:IndexModelData">
+        <xs:sequence>
+					<xs:choice minOccurs="0">
+						<xs:element minOccurs="0" name="standardComposition" type="crns:CreditBasketStandardComposition"/>
+						<xs:element minOccurs="0" name="syntheticComposition" type="crns:CreditBasketSyntheticComposition"/>
+					</xs:choice>
+					<xs:element minOccurs="0" name="creditRiskMethod" type="crns:CreditRiskMethod"/>
+				</xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="creditRiskModelData" substitutionGroup="tns:indexModelData" type="crns:CreditRiskModelData"/>
+
+  <xs:complexType name="CreditDataHistoricElement">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">couple date / credit data</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="histoDate" type="xs:date"/>
+      <xs:element ref="crns:creditData"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="creditDataHistoricElement" type="crns:CreditDataHistoricElement"/>
+
+  <xs:complexType name="CreditDataHistoric">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">historic of credit data</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="issuer" type="tns:Identifier" minOccurs="1" />
+      <xs:element ref="crns:creditDataHistoricElement" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="common:PersistentEntity.model"/>
+  </xs:complexType>
+  <xs:element name="creditDataHistoric" type="crns:CreditDataHistoric"/>
+
+  <xs:complexType name="CreditDataHistoricIdentifier">
+    <xs:sequence>
+      <xs:element name="issuer" type="tns:Identifier" minOccurs="1" />
+      <xs:element name="histoDate" type="xs:date" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="creditDataHistoricIdentifier" type="crns:CreditDataHistoricIdentifier"/>
+
+</xs:schema>

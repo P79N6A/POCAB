@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings
+        xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:annox="http://annox.dev.java.net"
+        xmlns:simplify="http://jaxb2-commons.dev.java.net/basic/simplify"
+        jaxb:extensionBindingPrefixes="xjc annox"
+        version="2.1">
+
+    <!-- Simplify XmlElementRefs into XmlElement generation with simplify -->
+    <jaxb:bindings schemaLocation="../fusioninvest/schema/dataExchange.xsd" node="/xsd:schema">
+
+        <jaxb:bindings node="xsd:complexType[@name='ImportMessage']">
+            <simplify:property name="partyOrPortfolioOrInstrument">
+                <simplify:as-element-property/>
+            </simplify:property>
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="import"/>
+            </annox:annotate>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="xsd:complexType[@name='ImportMarketDataMessage']">
+            <simplify:property name="correlationOrCorporateActionsOrCorporateAction">
+                <simplify:as-element-property/>
+            </simplify:property>
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="importMarketData"/>
+            </annox:annotate>
+        </jaxb:bindings>
+
+    </jaxb:bindings>
+
+    <!-- Add XMLRootElement annotation with annox -->
+    <jaxb:bindings schemaLocation="../fusioninvest/schema/quotation.xsd" node="/xsd:schema">
+        <jaxb:bindings node="xsd:complexType[@name='QuotationsByInstrument']">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="quotationsByInstrument"/>
+            </annox:annotate>
+        </jaxb:bindings>
+        <jaxb:bindings schemaLocation="../fusioninvest/schema/quotation.xsd" node="xsd:complexType[@name='Quotations']">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="quotations"/>
+            </annox:annotate>
+        </jaxb:bindings>
+    </jaxb:bindings>
+
+    <!-- Unbox JAXBElement into known type -->
+    <jaxb:bindings>
+        <jaxb:globalBindings generateElementProperty="false"/>
+    </jaxb:bindings>
+
+</jaxb:bindings>

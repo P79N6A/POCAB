@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Clients",
+  "description": "clients",
+  "type": "object",
+  "properties": {
+    "clients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for a client",
+            "type": "integer"
+          },
+          "firstName": {
+            "description": "Name of the product",
+            "type": "string"
+          },
+          "lastName": {
+            "description": "Name of the product",
+            "type": "string"
+          },
+          "email": {
+            "description": "Name of the product",
+            "type": "string"
+          },
+          "phone": {
+            "description": "Name of the product",
+            "type": "string"
+          },
+          "dept": {
+            "description": "Name of the product",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "phone",
+          "dept"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/sr" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:tns="http://www.sophis.net/sr" xmlns:party="http://www.sophis.net/party" xmlns:fund="http://www.sophis.net/fund" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:otcMessage="http://www.sophis.net/otc_message">
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en"></xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd" />
+  <xsd:import namespace="http://www.sophis.net/fund" schemaLocation="fund.xsd" />
+  <xsd:import namespace="http://www.sophis.net/otc_message" schemaLocation="otc_message.xsd" />
+  <xsd:complexType name="SR">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">A type defining a Subscription Redemption.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="identifier" type="tns:Identifier" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="product" type="tns:Product" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="investor" type="party:PartyReference" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="investorDepositary" type="party:PartyReference" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="investorDepositaryCashAccount" type="tns:investorDepositaryAccount" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="investorDepositaryInstrAccount" type="tns:investorDepositaryAccount" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="businessPartner" type="party:PartyReference" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="primeBroker" type="party:PartyReference" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="cashAccount" type="fund:CashAccountReference" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Cash account for SR.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="comments" type="xsd:string" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="optional">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">Identifier of the entity within the xml document. Useful for entities cross referencing.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="workflowEventId" use="optional" type="xsd:int">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">SR Workflow Event identifier to be applied during update/creation.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="workflowEventName" use="optional" type="xsd:token">
+      <xsd:annotation>
+        <xsd:documentation source="http://www.sophis.net" xml:lang="en">SR Workflow Event name to be applied during update/creation. 
+				Alternative with (hence exclusive to) workflowEventId. The lookup is case insensitive.</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attributeGroup ref="common:PersistentEntity.model" />
+  </xsd:complexType>
+  <xsd:element name="sr" type="tns:SR" />
+  <xsd:complexType name="Fund">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">This can be either an href pointing to an instrument defined elsewhere or the identifiers of the instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="instrument:Underlyer"></xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Product">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Concrete product denoting a SR.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fund" type="tns:Fund" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="details" type="tns:Details" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="fees" type="tns:Fees" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Details">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Details concerning Subscription Redemptions: Net and Gross amount,nb of units...</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="unitsAndAmount" type="tns:UnitsAndAmount" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="lastGAV" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="limitGAV" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="frozenGAV" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="issueDate" type="xsd:date" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="NAVDate" type="xsd:date" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="includeInNAVAfter" type="xsd:date" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="settlementDate" type="xsd:date" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="paymentDate" type="xsd:date" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="operatorName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="unitsAdjustment" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Fees">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Fees applied to the subscription / redemption.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="externalFees" type="tns:FeesInAmountOrPercentage" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="internalFees" type="tns:FeesInAmountOrPercentage" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="highWatermarkFees" type="tns:HighWatermarkFees" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="businessPartnerFees" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FeesInAmountOrPercentage">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Type of Fees in the application : fees can be defined in percentage or in amount.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="percentage" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="amount" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="HighWatermarkFees">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the high-water mark fees impacting the S/R (after EOD).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="equalisationCredit" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="highwatermark" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="performanceFees" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="valueDatePerformanceFees" type="xsd:date" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="correspondingSubscriptionIdentifier" type="tns:Identifier" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UnitsAndAmount">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the way the amount of the S/R is described : as a number of units, as a net amount or as a gross amount.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="numberOfUnits" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="netAmount" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="grossAmount" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="Identifier">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">An SR identifier.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="srId" type="tns:SrId" />
+	  <xsd:element name="BOStatus" type="xsd:string" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="srIdentifier" type="tns:Identifier" />
+  <xsd:complexType name="SrId">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Identifier of the S/R</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="source" type="xsd:string" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="investorDepositaryAccount">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Cash or instrument account of investor depositary.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="accountId" type="xsd:int" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="accountName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SRSourceType">
+		<xsd:complexContent>
+			<xsd:extension base="otcMessage:AbstractSourceType">
+				<xsd:sequence>
+					<xsd:element ref="tns:sr" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="srSource" type="tns:SRSourceType" substitutionGroup="otcMessage:abstractSource"/>
+
+</xsd:schema>

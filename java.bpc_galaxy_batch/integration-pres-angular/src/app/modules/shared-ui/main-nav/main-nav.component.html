@@ -1,0 +1,19 @@
+<nav class="navbar fixed-top navbar-toggleable-sm navbar-inverse bg-primary tsp-brand-navbar p-2">
+  <div class="flex-row d-flex">
+    <a class="navbar-brand" href="#">{{label}}</a>
+  </div>
+
+  <div class="navbar-nav ml-auto" id="navbarNavDropdown"  >
+
+
+      <li class="nav-item active">
+          <a class="nav-link" routerLink="demo" routerLinkActive="active"><i class="fa fa-sign-out" aria-hidden="true"></i>Demo</a>
+      </li>
+      <li class="nav-item active">
+          <a class="nav-link" routerLink="configuration" routerLinkActive="active"><i class="fa fa-sign-out" aria-hidden="true"></i>Configuration</a>
+      </li>
+      <li class="nav-item active">
+          <a class="nav-link" (click)="this.logout()" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+      </li>
+  </div>
+</nav>

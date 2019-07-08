@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:tns="http://www.sophis.net/quotation" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" targetNamespace="http://www.sophis.net/quotation" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+  <xsd:element name="quotations" type="tns:Quotations"/>
+  <xsd:complexType name="Quotations">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A list of Historical Price Quotations</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="historyTable" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="useFidInfos" type="xsd:boolean" minOccurs="0"/>
+      <xsd:element name="quotationsByInstrument" type="tns:QuotationsByInstrument" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="optional"></xsd:attribute>
+    <xsd:attributeGroup ref="common:PersistentEntity.model"/>
+  </xsd:complexType> 
+  <xsd:complexType name="QuotationsByInstrument">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A list of Price Quotations for an Instrument, Currency or Forex Pair</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Quotation may be the one of an Instrument (eg Share), Currency with respect to its master currency (eg JPY with master currency USD) or Forex Pair (eg CHF/KRW)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:element name="identifier" type="instrument:Identifier"/>
+        <xsd:element name="currency" type="instrument:Currency"/>
+        <xsd:element name="quotedCurrencyPair" type="instrument:QuotedCurrencyPair"/>
+      </xsd:choice>
+      <xsd:element name="quotesByDate" type="tns:QuotesByDate" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">quotation list for this instrument</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>  
+  <xsd:complexType name="QuotesByDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Quotes List for a given date</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence> 
+    	<xsd:choice>
+	    	<xsd:element name="quotationDate" type="xsd:date">
+	      	<xsd:annotation>
+	         <xsd:documentation source="http://www.sophis.net" xml:lang="en">Quotation date (to keep for compatibility purpose)</xsd:documentation>
+	       	</xsd:annotation>
+	      </xsd:element>
+	      <xsd:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0">
+	     	 <xsd:annotation>
+	        <xsd:documentation source="http://www.sophis.net" xml:lang="en">Baseline to use in case of snaphost data with date+time+saveInHistoTable</xsd:documentation>
+	       </xsd:annotation>
+	      </xsd:element>
+      </xsd:choice>
+      <xsd:element name="quote" type="tns:Quote" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Quotes list</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Quote">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Some kind of numerical measure about an asset, eg. its price or NPV, together with characteristics of that measure</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Quotation may be destinated to a standard historical column of SOPHIS or to a user-defined historical column</xsd:documentation>
+        </xsd:annotation>
+        <xsd:element name="side" type="common:QuotationSideEnum">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">The standard side (open,close,last,...) of the measure.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sideString" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation source="http://www.sophis.net" xml:lang="en">The side as a string for user defined historique (NEW_HISTORY_COLUMN).</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+      <xsd:element name="value" type="xsd:double" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The value of the the quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The currency of the quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="forex" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The value of the forex between the quotation currency and the master currency if set in cuurency or global master currency by default.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

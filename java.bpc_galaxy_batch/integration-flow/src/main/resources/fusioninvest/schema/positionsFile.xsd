@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://www.sophis.net/Instrument" xmlns:tns="http://www.sophis.net/positionsFile" 
+xmlns:fund="http://www.sophis.net/fund" xmlns:folio="http://www.sophis.net/folio" xmlns:common="http://sophis.net/sophis/common" xmlns:ns1="http://www.sophis.net/sophis" targetNamespace="http://www.sophis.net/positionsFile" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/fund" schemaLocation="fund.xsd"/>
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/sophis" schemaLocation="sophis.xsd"/>
+	<xsd:include schemaLocation="positionsFileUnivReferences.xsd"/>
+	<xsd:element name="PositionsFile" type="tns:PositionFileType"/>
+	<xsd:complexType name="PositionFileType">
+		<xsd:sequence>
+			<xsd:element name="Header" type="tns:HeaderType" minOccurs="0"/>
+			<xsd:element name="Positions" type="tns:PositionsType"/>
+			<xsd:element name="RegroupedInstruments" type="tns:RegroupedInstrumentsType" minOccurs="0"/>
+			<xsd:element name="Footer" type="tns:FooterType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="HeaderType">
+		<xsd:sequence>
+			<xsd:element name="GenerationDate" type="xsd:NMTOKEN"/>
+			<xsd:element name="GenerationStartTime" type="xsd:NMTOKEN"/>
+			<xsd:element name="ReportingDate" type="xsd:NMTOKEN"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+
+	<xsd:complexType name="PositionsType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="Position"
+			             type="tns:PositionType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="FooterType">
+		<xsd:sequence>
+			<xsd:element name="GenerationEndTime" type="xsd:NMTOKEN"/>
+			<xsd:element name="NbPositions" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PositionType">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="PositionInfos" type="tns:PositionInfosType" minOccurs="0"/>
+			<xsd:element name="BasicInstrument" type="tns:BasicInstrumentType" minOccurs="0"/>
+			<xsd:element name="BasicPosition" type="tns:BasicPositionType" minOccurs="0"/>
+			<xsd:element name="completeInstrument" type="tns:CompleteInstrumentType" minOccurs="0"/>
+			<xsd:element name="CompletePosition" type="tns:CompletePositionType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="PositionInfosType">
+		<xsd:sequence>
+			<xsd:element name="EntityName" type="xsd:string"/>
+			<xsd:element name="Account" type="xsd:string"/>
+			<xsd:element name="Custodian" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CustodianAccount" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Portfolio" type="xsd:string"/>
+			<xsd:element name="underlyer" type="ins:Underlyer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="BasicInstrumentType">
+		<xsd:sequence>
+			<xsd:element name="InstrumentInternalCode" type="xsd:integer"/>
+			<xsd:element name="InstrumentReference" type="xsd:string"/>
+			<xsd:element name="InstrumentName" type="xsd:string"/>
+			<xsd:element name="InstrumentCCY" type="xsd:NCName"/>
+			<xsd:element name="InstrumentPriceFactor" type="xsd:double"/>
+			<xsd:element name="Quotity" type="xsd:double"/>
+			<xsd:element name="InstrumentAllotment" type="xsd:string"/>
+			<xsd:element name="InstrumentType" type="xsd:string"/>
+			<xsd:element minOccurs="0" name="Notional" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="IssueDate" type="xsd:NMTOKEN"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="StartDate" type="xsd:NMTOKEN"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="ExpiryDate" type="xsd:NMTOKEN"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="FixedRate" type="xsd:double"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="FloatRate" type="xsd:double"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="Basis" type="xsd:NCName"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="Frequency" type="xsd:NCName"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="Strike" type="xsd:double"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="CallPut" type="xsd:NCName"/>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="OptionStyle" type="xsd:NCName"/>
+			<xsd:element name="Reference" type="tns:ReferenceType"/>
+			<xsd:element name="UnderlyingReference" type="tns:ReferenceType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="ReferenceType">
+		<xsd:sequence>
+			<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<xsd:complexType name="BasicPositionType">
+		<xsd:sequence>
+			<xsd:element name="Quantity" type="xsd:double"/>
+			<xsd:element name="AveragePrice" type="xsd:double"/>
+			<xsd:element name="AccruedAmount" type="xsd:double"/>
+			<xsd:element name="Notional" type="xsd:double"/>
+			<xsd:element name="Balance" type="xsd:double"/>
+			<xsd:element name="UnsettledBalance" type="xsd:double"/>
+			<xsd:element name="Last" type="xsd:double"/>
+			<xsd:element name="AssetValue" type="xsd:double"/>
+			<xsd:element minOccurs="0" name="ESCounterpartyReference"
+			             type="xsd:string"/>
+			<xsd:element name="ESEntityReference" type="xsd:string"/>
+			<xsd:element name="CounterpartFees" type="xsd:double"/>
+			<xsd:element name="BrokerFees" type="xsd:double"/>
+			<xsd:element name="MarketFees" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CompletePositionType">
+		<xsd:sequence>
+			<xsd:element name="Position" type="tns:FolioPositionType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FolioPositionType">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="underlyer" type="ins:Identifier"/>
+			<xsd:element name="type" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="instrumentCount" type="xsd:double"/>
+			<xsd:element name="value" type="folio:Value" minOccurs="0"
+			             maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CompleteInstrumentType">
+			<xsd:sequence>
+				<xsd:element ref="tns:Description"/>
+				<xsd:element minOccurs="0"
+			             maxOccurs="unbounded" ref="tns:UnderlyingsSet"/>
+				<xsd:element minOccurs="0"
+			             maxOccurs="unbounded" ref="tns:Issuer"/>
+			</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="Description">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="tns:instrument"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="instrument" type="ins:InstrumentBase"></xsd:element>
+
+	<xsd:element name="UnderlyingsSet">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="tns:Underlying"/>
+        <xsd:element name="underlying_Dummy" minOccurs="0"  type="xsd:string" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Issuer">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="completeInstrument" type="tns:CompleteInstrumentType"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Underlying">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="completeInstrument" type="tns:CompleteInstrumentType"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Instrument">
+	<xsd:complexType>
+		<xsd:sequence>
+			<xsd:element ref="tns:instrument"/>
+		</xsd:sequence>
+	</xsd:complexType>
+  </xsd:element>
+  
+	<xsd:complexType name="RegroupedInstrumentsType">
+	<xsd:sequence  minOccurs="0" maxOccurs="unbounded">
+		<xsd:element ref="tns:Instrument"/>
+	</xsd:sequence>
+	</xsd:complexType>
+  
+  
+	<xsd:element name="index" substitutionGroup="tns:instrument"
+	             type="ins:Index"/>
+	<xsd:element name="indexWithModel" substitutionGroup="tns:instrument"
+	             type="ins:IndexWithModel"/>
+	<xsd:element name="share" substitutionGroup="tns:instrument"
+	             type="ins:Share"/>
+	<xsd:element name="issuer" substitutionGroup="tns:instrument"
+	             type="ins:Issuer"/>
+	<xsd:element name="debtInstrument" substitutionGroup="tns:instrument"
+	             type="ins:DebtInstrument"/>
+	<xsd:element name="bond" substitutionGroup="tns:instrument" type="ins:Bond"/>
+	<xsd:element name="equityFuture" substitutionGroup="tns:instrument"
+	             type="ins:EquityFuture"/>
+	<xsd:element name="equityForward" substitutionGroup="tns:instrument"
+	             type="ins:EquityForward"/>
+	<xsd:element name="interestRateFuture" substitutionGroup="tns:instrument"
+	             type="ins:InterestRateFuture"/>
+	<xsd:element name="notionalFuture" substitutionGroup="tns:instrument"
+	             type="ins:Future"/>
+	<xsd:element name="equityOption" substitutionGroup="tns:instrument"
+	             type="ins:EquityOption"/>
+	<xsd:element name="package" substitutionGroup="tns:instrument"
+	             type="ins:Package"/>
+	<xsd:element name="loanFacility" substitutionGroup="tns:instrument"
+	             type="ins:LoanFacility"/>
+	<xsd:element name="rainbowOption" substitutionGroup="tns:instrument"
+	             type="ins:RainbowOption"/>
+	<xsd:element name="bondOption" substitutionGroup="tns:instrument"
+	             type="ins:BondOption"/>
+	<xsd:element name="futureOption" substitutionGroup="tns:instrument"
+	             type="ins:FutureOption"/>
+	<xsd:element name="interestRateOption" substitutionGroup="tns:instrument"
+	             type="ins:InterestRateOption"/>
+	<xsd:element name="optionSwapped" substitutionGroup="tns:instrument"
+	             type="ins:OptionSwapped"/>
+	<xsd:element name="indexedOption" substitutionGroup="tns:instrument"
+	             type="ins:IndexedOption"/>
+	<xsd:element name="cppi" substitutionGroup="tns:instrument" type="ins:Cppi"/>
+	<xsd:element name="cppiOption" substitutionGroup="tns:instrument"
+	             type="ins:CppiOption"/>
+	<xsd:element name="fxOption" substitutionGroup="tns:instrument"
+	             type="ins:FxOption"/>
+	<xsd:element name="derivative_message" type="ins:LegacyDerivativeMessage"
+	             substitutionGroup="tns:instrument"/>
+	<xsd:element name="floatingRate" substitutionGroup="tns:instrument"
+	             type="ins:FloatingRateInstrument"/>
+	<xsd:element name="forexOption" substitutionGroup="tns:instrument"
+	             type="ins:ForexOption"/>
+	<xsd:element name="fundOption" substitutionGroup="tns:instrument"
+	             type="ins:FundOption"/>
+	<xsd:element name="convertibleBond" substitutionGroup="tns:instrument"
+	             type="ins:ConvertibleBond"/>
+	<xsd:element name="interestRateForward" substitutionGroup="tns:instrument"
+	             type="ins:InterestRateForward"/>
+	<xsd:element name="forexFuture" substitutionGroup="tns:instrument"
+	             type="ins:ForexFuture"/>
+	<xsd:element name="forexForward" substitutionGroup="tns:instrument"
+	             type="ins:ForexForward"/>
+	<xsd:element name="commodity" type="ins:Commodity"
+	             substitutionGroup="tns:instrument"/>
+	<xsd:element name="ascot" substitutionGroup="tns:instrument"
+	             type="ins:Ascot"/>
+	<xsd:element name="commodityFuture" substitutionGroup="tns:instrument"
+	             type="ins:CommodityFuture"/>
+	<xsd:element name="commodityForward" type="ins:CommodityForward"
+	             substitutionGroup="tns:instrument"/>
+	<xsd:element name="commodityOption" type="ins:CommodityOption"
+	             substitutionGroup="tns:instrument"/>
+	<xsd:element name="swaption" type="ins:Swaption"
+	             substitutionGroup="tns:instrument"/>
+	<xsd:element name="swap" substitutionGroup="tns:instrument" type="ins:Swap"/>
+	<xsd:element name="commodityIndex" substitutionGroup="tns:instrument"
+	             type="ins:CommodityIndex"/>
+	<xsd:element name="capFloor" substitutionGroup="tns:instrument"
+	             type="ins:CapFloor"/>
+	<xsd:element name="commission" substitutionGroup="tns:instrument"
+	             type="ins:Commission"/>
+	<xsd:element name="treasuryAccountInstrument"
+	             substitutionGroup="tns:instrument"
+	             type="ins:TreasuryAccountInstrument"/>
+	<xsd:element name="clauseBuilderOption" substitutionGroup="tns:instrument"
+	             type="ins:ClauseBuilderOption"/>
+	<xsd:element name="forexInstrument" substitutionGroup="tns:instrument"
+	             type="ins:ForexInstrument"/>
+        <xsd:element name="externalFund" type="fund:ExternalFund" substitutionGroup="tns:instrument"/>
+</xsd:schema>

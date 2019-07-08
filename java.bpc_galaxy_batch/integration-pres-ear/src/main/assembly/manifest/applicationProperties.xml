@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<applicationProperties>
+	<!-- ====================================== -->
+	<!-- DEFAULT VARIABLES FOR ALL ENVIRONMENTS -->
+	<!-- ====================================== -->
+	<Environment name="cross"><!-- do not change this name -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+			<!-- application.properties -->
+			<Property name="application#bpc.saml.folder.configuration.location" value="C:/dev/saf/"/>
+			<Property name="application#bpc.saml.file.configuration.location" value="file:C:/dev/saf/application.properties"/>
+			<Property name="application#pres.url.host.url" value="http://localhost:9081/integration-serv-war"/>
+			<Property name="application#pres.url.api.application-version" value="/api/application/version"/>
+		</Properties>
+	</Environment>
+	
+	<!-- ============= -->
+	<!-- ENV VARIABLES -->
+	<!-- ============= -->	
+	<Environment name="DEV">
+		<!-- VARIABLES DEFINED FOR ALL NODES -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+		</Properties>
+	</Environment>
+	
+	<Environment name="INT">
+		<!-- VARIABLES DEFINED FOR ALL NODES -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+			
+			
+		</Properties>
+	</Environment>
+	
+	<Environment name="REC">
+		<!-- VARIABLES DEFINED FOR ALL NODES -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+		</Properties>
+	</Environment>
+	
+	<Environment name="PPROD">
+		<!-- VARIABLES DEFINED FOR ALL NODES -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+		</Properties>
+	</Environment>
+	
+	<Environment name="PROD">
+		<!-- VARIABLES DEFINED FOR ALL NODES -->
+		<Properties node="cross"><!-- do not change this name -->
+			
+		</Properties>
+	</Environment>
+</applicationProperties>

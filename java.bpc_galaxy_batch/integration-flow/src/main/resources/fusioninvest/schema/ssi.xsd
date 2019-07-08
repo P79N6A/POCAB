@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/SSI"
+	elementFormDefault="qualified"
+	attributeFormDefault="qualified" 
+	xmlns:tns="http://www.sophis.net/SSI"
+	xmlns:party="http://www.sophis.net/party"
+	xmlns:instrument="http://www.sophis.net/Instrument"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:common="http://sophis.net/sophis/common"
+	xmlns:NostroAccountReference="http://www.sophis.net/NostroAccountReference"
+	>
+
+	<xsd:import namespace="http://sophis.net/sophis/common" 	schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/Instrument" 	schemaLocation="instrument.xsd" />
+	<xsd:import namespace="http://www.sophis.net/party" 		schemaLocation="party.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/NostroAccountReference" 	schemaLocation="NostroAccountReference.xsd"/>
+
+	<xsd:complexType name="SSI">
+		<xsd:sequence>
+			<xsd:element name="nostroAccountReference"	type="NostroAccountReference:NostroAccountReference"	minOccurs="0"></xsd:element>
+			<xsd:element name="ssiPathId" 				type="xsd:int" 				minOccurs="0"></xsd:element>
+			<xsd:element name="treasuryAccountId" 		type="xsd:int" 				minOccurs="0"></xsd:element>
+			<xsd:element name="accountName" 			type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="countryCode" 			type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="alerthClearingMethod" 	type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="custodian" 				type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="SSIlookUp" 		type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="accountAtCustodian" 		type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="agentCode" 				type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="accountAtAgent" 			type="xsd:string" 			minOccurs="0"></xsd:element>
+			<xsd:element name="thirdParty" 				type="xsd:string" 			minOccurs="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,35 @@
+[
+
+  {
+    "operation": "default",
+    "spec": {
+      "isinName": "Isin",
+      "isinModifiable": "UniquePrioritary"
+    }
+  },
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "quotatnIdntfctn": {
+        "securtyIdntfctn": {
+          "id": "=concat(@(1,isin), '#', @(2,placeOfListng))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "isinName": "identifier.reference[#].name",
+      "isinModifiable": "identifier.reference[#].modifiable",
+      "quotatnIdntfctn": {
+        "securtyIdntfctn": {
+          "id": "identifier.reference[#].value"
+        },
+        "valdtyDate": "quotesByDate[#0].quotationDate"
+      }
+    }
+  }
+
+]

@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sophis.net/sophis/var/parameter" targetNamespace="http://sophis.net/sophis/var/parameter">
+  
+  <xs:annotation>
+		    
+    <xs:documentation xml:lang="en">
+		<xs:appInfo>Sophis Risk Management Stress Tests Note</xs:appInfo>    
+	       This parameter schema defines all the data types that can be used to define 
+		   stress test parameters. A parameter is an item whom value is given at run-time.		   
+		   Several parameters can be defined for each stress test. 		   
+	   </xs:documentation>
+
+  </xs:annotation>
+  
+  <xs:complexType name="ParametersType">
+	<xs:annotation>
+      <xs:documentation xml:lang="en">Specifies the parameters list.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="tns:Parameter" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Parameter">
+    <xs:complexType>
+	<xs:annotation>
+      <xs:documentation xml:lang="en">Specifies the parameter types.</xs:documentation>
+    </xs:annotation>
+      <xs:choice>
+        <xs:element name="Set" type="tns:SetType" />
+        <xs:element name="Range" type="tns:RangeType" />
+        <xs:element name="MultiList" type="tns:MultiListType" />
+      </xs:choice>
+      <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="SetType">
+  	<xs:annotation>
+      <xs:documentation xml:lang="en">Describes the Set parameter type. The Set type can be seen as an ItemType list of items</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="tns:Item" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="type" type="tns:ItemType" />
+    <!--use iterator attribute with the All value to declare explicitly a "for-all" loop-->
+    <xs:attribute name="iterator" type="tns:IteratorType" use="optional" default="Each" />
+    <!--use parent attributes (with the All iterator) to compute paramter dependent "for-all" loops-->
+    <xs:attribute name="parentType" type="tns:ParentItemType" use="optional" />
+    <xs:attribute name="parentValue" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="RangeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes the Range parameter type. The Range type is a numerical set of values</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="axis" type="xs:double" />
+      <xs:element name="step" type="xs:double" />
+      <xs:element name="min" type="xs:double" />
+      <xs:element name="max" type="xs:double" />
+    </xs:sequence>
+    <xs:attribute name="type" type="tns:ItemType" />
+  </xs:complexType>
+  <xs:complexType name="MultiListType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes the MultiListType parameter type. The MultiListType can be seen as a SetType list of items</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="List" type="tns:ListType" minOccurs="2" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="optional" />
+  </xs:complexType>
+  <xs:complexType name="ListType">
+     <xs:annotation>
+      <xs:documentation xml:lang="en">Describes the ListType used by the multi lists. It can be seen as SetType with few restrictions.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="tns:SetType">
+        <xs:sequence>
+          <xs:element ref="tns:Item" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Item">
+    <xs:complexType>
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describes the object that can be hold by the SetType. This is the kind of value managed by the stress test factory.</xs:documentation>
+		</xs:annotation>
+      <xs:attribute name="value" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="ItemType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Currency" />
+      <xs:enumeration value="Underlying" />
+      <xs:enumeration value="Market" />
+      <xs:enumeration value="Allotment" />
+      <xs:enumeration value="Sector" />
+      <xs:enumeration value="Component" />
+      <xs:enumeration value="Curve" />
+      <xs:enumeration value="Rating" />
+      <xs:enumeration value="Seniority" />
+      <xs:enumeration value="Issuer" />
+      <xs:enumeration value="Share" />
+      <xs:enumeration value="Number" />
+      <xs:enumeration value="Array" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParentItemType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Folio" />
+      <xs:enumeration value="Currency" />
+      <xs:enumeration value="Sector" />
+      <xs:enumeration value="Basket" />
+      <xs:enumeration value="Market" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="IteratorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="All" />
+      <xs:enumeration value="Each" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

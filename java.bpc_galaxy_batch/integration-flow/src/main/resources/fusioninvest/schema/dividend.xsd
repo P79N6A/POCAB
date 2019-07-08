@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sophis.net/dividend" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:tns="http://www.sophis.net/dividend" xmlns:instr="http://www.sophis.net/Instrument" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+	<xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+
+	<xs:element name="dividends" type="tns:Dividends" />
+	<xs:element name="dividendsIdentifier" type="instr:Identifier" />
+	<xs:complexType name="DividendProperty">
+		<xs:simpleContent>
+			<xs:extension base="xs:normalizedString">
+				<xs:attribute name="name" type="common:StringBounded39" use="required">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">Identifier of the Dividend property. In upper camel.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DividendPropertyList">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="property" type="tns:DividendProperty"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Dividend">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A specific dividend data.</xs:documentation>
+    </xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="1" name="identifier" type="xs:unsignedInt" />
+			<xs:element name="dividendValueType" type="tns:DividendValueType" />
+			<xs:element name="dividendNatureType" type="tns:DividendNatureType" />
+			<xs:element minOccurs="0" maxOccurs="1" name="accountingRefYear" type="xs:gYear" />
+			<xs:element minOccurs="0" name="recordDate" type="xs:date" />
+			<xs:element minOccurs="0" name="settlementDate" type="xs:date" />
+			<xs:element minOccurs="0" maxOccurs="1" name="exDividendDate" type="xs:date" />
+			<xs:element name="value" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="1" name="currency" type="instr:Currency" />
+			<xs:element minOccurs="0" maxOccurs="1" name="currencyUnit" type="instr:CurrencyUnit" />
+			<xs:element minOccurs="0" maxOccurs="1" name="comment" type="common:StringBounded39" />
+			<xs:choice minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Attribute name not defined</xs:documentation>
+        </xs:annotation>
+				<xs:element name="status" type="tns:DividendStatus" />
+				<xs:element name="annoucedDate" type="xs:date" />
+			</xs:choice>
+			<xs:element minOccurs="0" maxOccurs="1" name="id" type="common:StringBounded39" >
+				<xs:annotation>
+					<xs:documentation xml:lang="en">External MarkIt identifier.</xs:documentation>
+					<xs:documentation xml:lang="en">Deprecated in v6.3.2.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" maxOccurs="1" name="properties" type="tns:DividendPropertyList">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Dividend properties.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="dividend" type="tns:Dividend"/>
+	<xs:simpleType name="MatchDateMethodType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Specify the match method when record and ExDiv dates are present.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="UseExDivDate"></xs:enumeration>
+			<xs:enumeration value="UseRecordDate"></xs:enumeration>
+			<xs:enumeration value="UseBoth"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DividendList">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">All dividends entered in dividend table for a specific instrument.</xs:documentation>
+    </xs:annotation>
+		<xs:sequence>
+			<xs:element name="recordDateWay" type="instr:DateIncludedExcluded" minOccurs="0">
+				<xs:annotation>
+          <xs:documentation xml:lang="en">Specifies if the Dividend Record Date is in the American or European style. Only Excluded (European) is implemented.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="matchDateMethod" type="tns:MatchDateMethodType" minOccurs="0"/>
+			<xs:element minOccurs="0" maxOccurs="1" name="keyProperty" type="xs:normalizedString">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Property used to merge dividend.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="dividend" type="tns:Dividend" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Dividends">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Dividend table</xs:documentation>
+    </xs:annotation>
+		<xs:sequence>
+		  <!-- reset=false cannot be used with SnapshotBaseline-->
+			<xs:element name="identifier" type="instr:Identifier" />
+			<xs:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dividendList" type="tns:DividendList" />
+		</xs:sequence>
+	    <xs:attributeGroup ref="common:PersistentEntity.model"/>
+		<xs:attribute name="reset" type="xs:boolean" default="true">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Remove all existing dividends.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="DividendValueType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe the value type of a bond: F, C, P or %</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Percentage" />
+			<xs:enumeration value="MonetaryUnit" />
+			<xs:enumeration value="Continuous" />
+			<xs:enumeration value="Progression" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DividendNatureType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe the nature type of a dividend: Dividend, Exceptional dividend, etc.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="Dividend" />
+			<xs:enumeration value="TaxCredit" />
+			<xs:enumeration value="OptionalDividend" />
+			<xs:enumeration value="ExceptionalDividend" />
+			<xs:enumeration value="ExceptionalTaxCredit" />
+			<xs:enumeration value="ExceptionalOptionalDividend" />
+			<xs:enumeration value="CyclicDividend" />
+			<xs:enumeration value="CyclicTaxCredit" />
+			<xs:enumeration value="CyclicOptionalDividend" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DividendStatus">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe the status of a dividend: None, estimated, announced.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="Estimated" />
+			<xs:enumeration value="Announced" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="DividendHistoricElement">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">couple date / dividend</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+		<!-- histoDate : histo element is inserted at 23h59 = the inserted element is valid valid at 23h59 + 1 sec -->
+		<!-- exporting element at an histo date retrieves the valids dividends from 23h59 + 1 sec -->
+			<xs:element name="histoDate" type="xs:date"/>
+			<xs:element ref="tns:dividends"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="dividendHistoricElement" type="tns:DividendHistoricElement"/>
+
+	<xs:complexType name="DividendHistoric">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">historic of dividend</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+			<xs:element ref="tns:dividendHistoricElement" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="common:PersistentEntity.model"/>
+	</xs:complexType>
+	<xs:element name="dividendHistoric" type="tns:DividendHistoric"/>
+
+	<xs:complexType name="DividendHistoricIdentifier">
+		<xs:sequence>
+			<xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+			<xs:element name="histoDate" type="xs:date" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="dividendHistoricIdentifier" type="tns:DividendHistoricIdentifier"/>
+	
+</xs:schema>

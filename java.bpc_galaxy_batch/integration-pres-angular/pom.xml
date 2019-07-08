@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.bnpp.galaxy</groupId>
+        <artifactId>gxt</artifactId>
+        <version>1.0.0-0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>integration-pres-angular</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <node.version>v8.10.0</node.version>
+        <npm.cache>C:/APPS/IC/repository-npm</npm.cache>
+        <npm.registry>${repo.internal.deploy.url}/ALL_NPM/</npm.registry>
+        <node.binary.path>C:/APPS/IC/node/npm.cmd</node.binary.path>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>exec-plugin</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>prepend-node-path</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>scripts-prepend-node-path</argument>
+                                        <argument>auto</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>ssl-false</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>strict-ssl</argument>
+                                        <argument>false</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>config-cache</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>cache</argument>
+                                        <argument>${npm.cache}</argument>
+                                        <argument>--global</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>config-registry</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>registry</argument>
+                                        <argument>${npm.registry}</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>cache-clean</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>cache</argument>
+                                        <argument>clean</argument>
+                                        <argument>--force</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>install</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>cleanup</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>run</argument>
+                                        <argument>cleanup</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build-webpack</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>run</argument>
+                                        <argument>webpack:prod:main</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build-clean-www</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${node.binary.path}</executable>
+                                    <arguments>
+                                        <argument>run</argument>
+                                        <argument>clean-www</argument>
+                                    </arguments>
+                                    <workingDirectory>.</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+                <resources>
+                    <resource>
+                        <directory>target/classes/public</directory>
+                        <targetPath>static</targetPath>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>frontend-plugin</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.6</version>
+                        <configuration>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <workingDirectory>.</workingDirectory>
+                            <installDirectory>target</installDirectory>
+                            <downloadRoot>${repo.url}/BNPPA_REF/com/bpc/cij/pm-pkg/node/</downloadRoot>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>npm ssl</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>config set strict-ssl false</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution> <!-- NPM cache setup to avoid used of C:\Users\UID\AppData\Roaming\npm-cache -->
+                                <id>npm config cache</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>config set cache ${npm.cache} --global</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>npm config registry</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>config set registry ${npm.registry}</arguments>
+                                </configuration>
+                            </execution>
+
+                            <!-- Temporaire !! -->
+                            <execution>
+                                <id>npm cache clean</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>cache clean --force</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>cleanup</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run cleanup</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>build webpack</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run webpack:prod:main</arguments>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>build clean-www</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run clean-www</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+                <resources>
+                    <resource>
+                        <directory>target/classes/public</directory>
+                        <targetPath>static</targetPath>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+</project>

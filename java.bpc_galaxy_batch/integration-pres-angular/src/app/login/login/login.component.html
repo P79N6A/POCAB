@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="row justify-content-center ">
+        <div class="col-sm-8 col-lg-6 ">
+            <div class="card card-autenticatio mt-md-5">
+
+                <div class="card-header bg-primary text-white">
+                    Authentification
+                </div>
+
+                <div class="card-block">
+                    <h5 class="card-title">Authentification</h5>
+
+                    <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm);" novalidate>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label for="username" class="form-control-label">Identifiant*</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa  fa-user-circle" aria-hidden="true"></i>
+                                    </div>
+                                    <input type="text" class="form-control"
+                                           id="usernameInput" formControlName="username" placeholder='Identifiant'
+                                    />
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label for="password" class="form-control-label">Mot de passe*</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                    </div>
+                                    <input type="password" class="form-control"
+                                           id="passwordInput" formControlName="password" placeholder='Mot de passe'
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb">
+                            <div class="row">
+                                <div class="col w-50">
+                                    <button type="button" class="btn btn-link btn-block">
+                                        Mot de passe oublié
+                                    </button>
+                                </div>
+                                <div class="col w-50">
+                                    <button type="submit" class="btn btn-primary btn-block"
+                                            [disabled]="!loginForm.valid">
+                                        <i class="fa "
+                                           aria-hidden="true"></i> Login
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

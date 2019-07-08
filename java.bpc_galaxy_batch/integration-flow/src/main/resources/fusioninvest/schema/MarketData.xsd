@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/market_data" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sophis.net/market_data" xmlns:volat="http://www.sophis.net/volatility" xmlns:valuation="http://www.sophis.net/valuation" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:divid="http://www.sophis.net/dividend" xmlns:yieldcurve="http://www.sophis.net/yieldCurve" xmlns:correlation="http://www.sophis.net/correlation" xmlns:crns="http://www.sophis.net/CreditRisk" xmlns:common="http://sophis.net/sophis/common" xmlns:repo="http://www.sophis.net/repo_margin" xmlns:taxcred="http://www.sophis.net/tax_credit">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd" />
+  <xsd:import namespace="http://www.sophis.net/dividend" schemaLocation="dividend.xsd" />
+  <xsd:import namespace="http://www.sophis.net/yieldCurve" schemaLocation="YieldCurve.xsd" />
+  <xsd:import namespace="http://www.sophis.net/correlation" schemaLocation="correlation.xsd" />
+  <xsd:import namespace="http://www.sophis.net/CreditRisk" schemaLocation="CreditRiskData.xsd" />
+  <xsd:import namespace="http://www.sophis.net/repo_margin" schemaLocation="repo_margin.xsd" />
+	<xsd:import namespace="http://www.sophis.net/tax_credit" schemaLocation="taxcredit.xsd" />
+	
+
+  <!-- Types -->
+  <xsd:complexType name="VolatilityValuation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A representation of volatilities of an asset. This is a generic structure whose values can be supplied in a specific volatility matrix.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element ref="volat:volatilityData" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3.3 minOccurs="0" for export</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="volatilityValuation" type="tns:VolatilityValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  <xsd:complexType name="DividendsValuation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A type describing the dividend payout ratio associated with an equity underlyer. In certain cases the actual ratio is not known on trade inception, and only general conditions are then specified.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element ref="divid:dividends" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 5.3.3 minOccurs="0" for export</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="dividendsValuation" type="tns:DividendsValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  <xsd:complexType name="YieldCurveValuation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">The values of a yield curve, including possibly inputs and outputs (dfs, forwards, zero rates). </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element name="family" type="xsd:token" minOccurs="0" />
+          
+		  <xsd:choice minOccurs="0">
+			<xsd:element ref="yieldcurve:zeroRateCurve">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">A curve of zero rates.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+          	<xsd:element ref="yieldcurve:yieldCurve"/>
+		  </xsd:choice>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="yieldCurveValuation" type="tns:YieldCurveValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  
+  <xsd:complexType name="BondYieldCurveValuation">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.FpML.org" xml:lang="en">The values of a bond yield curve, including possibly inputs and outputs (dfs, forwards, zero rates). </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="valuation:PricingStructureValuation">
+			<xsd:sequence>
+			 <xsd:choice minOccurs="0">
+                <xsd:element ref="yieldcurve:bondYieldCurve"   />
+				<xsd:element ref="yieldcurve:bondYieldCurveIdentifier" />
+			 </xsd:choice>
+            </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="bondYieldCurveValuation" type="tns:BondYieldCurveValuation" substitutionGroup="valuation:pricingStructureValuation"/>
+  
+  <xsd:complexType name="CorrelationValuation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The values of a correlation.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element name="objectReference2" type="valuation:PricingInputReference">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">The first reference is in type "Valuation".</xsd:documentation>
+              <xsd:documentation source="http://www.sophis.net" xml:lang="en">Can be Exchange/Exchange, Exchange/Forex and Forex/Forex</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element ref="correlation:correlation" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="correlationValuation" type="tns:CorrelationValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  <xsd:complexType name="CreditRiskDataValuation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The values of a credit Risk Data since 6.1.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element ref="crns:creditData" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="creditRiskDataValuation" type="tns:CreditRiskDataValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  <xsd:complexType name="RepoMarginsValuation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The values of a Repo Margin Data since 6.2.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element ref="repo:repoMargins" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="repoMarginsValuation" type="tns:RepoMarginsValuation" substitutionGroup="valuation:pricingStructureValuation" />
+  
+  <xsd:complexType name="TaxCreditValuation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The values of Tax Credit since 6.2.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="valuation:PricingStructureValuation">
+        <xsd:sequence>
+          <xsd:element ref="taxcred:Tax_credit" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="taxCreditValuation" type="tns:TaxCreditValuation" substitutionGroup="valuation:pricingStructureValuation"/>
+  
+</xsd:schema>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="JobRepport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e72406b1-929f-455b-9e53-66afdc7cb3de">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="JobId" class="java.lang.Long"/>
+	<parameter name="reffluxs" class="java.lang.String"/>
+	<parameter name="reffluxt" class="java.lang.String"/>
+	<parameter name="statut" class="java.lang.String"/>
+	<parameter name="startDate" class="java.util.Date"/>
+	<parameter name="endDate" class="java.util.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="24" width="555" height="38" uuid="93212d6c-68eb-4f7a-b03c-f02f1ede0331"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JOB REPPORT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="80" width="555" height="1" uuid="5f7f0be8-3023-4772-baee-8cb49ca4e74d"/>
+				<graphicElement>
+					<pen lineWidth="2.75"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="99" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="25" uuid="3beea0e3-8c9d-47d1-9912-15f46eb0a1a8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id du Job ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="28" width="100" height="25" uuid="9d45a942-a0a8-4fec-81dc-d4200b8934af"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id du flux source]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="57" width="100" height="25" uuid="eecd6b31-b6b9-4920-8796-e2258d69aeb8"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id du flux cible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="0" width="180" height="25" uuid="c66bfd51-f9ee-4d76-b3a1-3675d98c623d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="28" width="180" height="25" uuid="71db0e7c-ca77-4e15-9723-c627634d1eb9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date de de début de traitement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="57" width="180" height="25" uuid="09cc5c00-4dc6-4445-ada6-d16cb00f762b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date de fin de traitement]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="0" width="158" height="25" uuid="29c051e1-049c-46ef-97ab-0ae3f7d4cb5b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{JobId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="28" width="158" height="25" uuid="37105a83-3b6e-4887-8f26-2102747dadb4"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reffluxs}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="106" y="57" width="158" height="25" uuid="28384921-d111-4af1-90ab-68a18dd215cb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{reffluxt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="0" width="100" height="25" uuid="4d7d8ca0-b0e0-4755-b0e7-c69c0edbc872"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{statut}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="449" y="28" width="100" height="25" uuid="d941da37-e75d-4b05-8ecc-7e9931408842"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{startDate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="449" y="57" width="100" height="25" uuid="93490fb7-c43f-441d-93b9-4cc0d378d3fe"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{endDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="63" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="23" splitType="Stretch"/>
+	</summary>
+</jasperReport>

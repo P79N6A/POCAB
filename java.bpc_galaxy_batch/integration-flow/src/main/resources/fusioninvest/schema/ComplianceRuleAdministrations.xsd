@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.sophis.net/ComplianceRuleAdministrations" attributeFormDefault="qualified" elementFormDefault="qualified"
+	xmlns="http://www.sophis.net/ComplianceRuleAdministrations"
+	xmlns:common="http://sophis.net/sophis/common"
+	xmlns:folio="http://www.sophis.net/folio"
+	xmlns:instrument="http://www.sophis.net/Instrument"
+	xmlns:tns="http://www.sophis.net/ComplianceRuleAdministrations"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xs:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+	<xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+
+	<xs:element name="Root" type="tns:RuleAdministrationRoot"/>
+	<xs:element name="RuleAdministrations" type="tns:RuleAdministrationType"/>
+	<xs:complexType name="RuleAdministrationRoot">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contains the description of compliance objects and the result of import/Export module either it succeded or PartiallySacceded(more than one element couldn't be exported/imported).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RuleAdministrations" type="tns:RuleAdministrationType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="common:PersistentEntity.model"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleAdministrationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">It describes compliance objects (Restrictions,Rules,EntryPoints,RuleGroups,EntryPointGroups, assignments).
+	  It's generated and used by Export/Import module.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Restrictions" minOccurs="0" type="tns:RestrictionsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance restrictions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rules" minOccurs="0" type="tns:RulesType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance rules.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EntryPoints" minOccurs="0" type="tns:EntryPointsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance portfolios.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RuleGroups" minOccurs="0" type="tns:RuleGroupsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance rule sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EntryPointGroups" minOccurs="0" type="tns:EntryPointGroupsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance portfolio sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RuleGroupRuleLinks" minOccurs="0" type="tns:RuleGroupRuleLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between rules and rule sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EPGroupEPLinks" minOccurs="0" type="tns:EPGroupEPLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between portfolios and portfolio sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EPRuleLinks" minOccurs="0" type="tns:EPRuleLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between rules and portfolios.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EPGroupRuleLinks" minOccurs="0" type="tns:EPGroupRuleLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between rules and portfolio sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EPRuleGroupLinks" minOccurs="0" type="tns:EPRuleGroupLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between rule sets and portfolios.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EPGroupRuleGroupLinks" minOccurs="0" type="tns:EPGroupRuleGroupLinksType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe all compliance assignments between rule sets and portfolio sets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe an exception details if there is any.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RestrictionsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">It describes all compliance restrictions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Restriction" minOccurs="0" maxOccurs="unbounded" type="tns:RestrictionType"/>
+			<xs:element name="Restriction_Dummy" minOccurs="0" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RestrictionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Restriction are filters on any portfolio column which specifies the perimeter of the rule.
+	  For instance, a rule can be checked only on Euro currency instruments.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence >
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Describe an exception details if there is any.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="FilterCriteria" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Restriction filter with criterion code replaced by an internal code (P0:?,..) so that it can be easly replaced while import.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idRestriction" type="xs:int"/>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RulesType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">It describes all compliance rules.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Rule" minOccurs="0" maxOccurs="unbounded" type="tns:RuleType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">It describes all rule contents.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" minOccurs="0" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Description of the rule.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Restriction" minOccurs="0" maxOccurs="unbounded" type="tns:RestrictionType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Restriction are filters on any portfolio column which specifies the perimeter of the rule. For instance, a rule can be checked only on Euro currency instruments.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RuleDefinition" minOccurs="0" maxOccurs="unbounded" type="tns:RuleDefinitionType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Define the type of rule, with:
+			IssuerRatioRuleDefinitionType(conditional max),RestrictionRuleDefinitionType(investment Restriction) or CriteriaRuleDefinition(max, min, min/max).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="Deleted" type="xs:boolean"/>
+		<xs:attribute name="ExpiryDate" type="xs:string"/>
+		<xs:attribute name="FileDescriptionLink" type="xs:string"/>
+		<xs:attribute name="FilterCriterion" type="xs:string"/>
+		<xs:attribute name="Lookthrough" type="xs:int"/>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="TagsJoined" type="xs:string"/>
+		<xs:attribute name="ExplanatoryColumnsJoined" type="xs:string"/>
+		<xs:attribute name="StartDate" type="xs:string"/>
+		<xs:attribute name="Type" type="xs:string"/>
+		<xs:attribute name="UserRights" type="xs:string"/>
+		<xs:attribute name="DenominatorFilterCriterion" type="xs:string"/>
+		<xs:attribute name="NumeratorFilterCriterion" type="xs:string"/>
+		<xs:attribute name="CheckOnRunningOrdersOnly" type="xs:boolean"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">It describes rule type.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="CriteriaRuleDefinition" type="tns:CriteriaRuleDefinitionType"/>
+			<xs:element name="IssuerRatioRuleDefinition" type="tns:IssuerRatioRuleDefinitionType"/>
+			<xs:element name="RestrictionRuleDefinition" type="tns:RestrictionRuleDefinitionType"/>
+			<xs:element name="DetailedCashBalanceRuleDefinition" type="tns:DetailedCashBalanceRuleDefinitionType"/>
+			<xs:element name="BenchmarkDeviationRuleDefinition" type="tns:BenchmarkDeviationRuleDefinitionType"/>
+			<xs:element name="InventoryRuleDefinition" type="tns:InventoryRuleDefinitionType"/>
+			<xs:element name="DayTradingRuleDefinition" type="tns:DayTradingRuleDefinitionType"/>
+		</xs:choice>
+		<xs:attribute name="Type" type="xs:string"/>
+		<xs:attribute name="BundleName" type="xs:string"/>
+		<xs:attribute name="WithUnderlying" type="xs:boolean"/>
+		<xs:attribute name="UnderlyingsFilterJoined" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="CriteriaRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Min and Max limits on an indicator and criteria. Indicator and criteria to choose from Sophis.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Breakdowns" minOccurs="0" maxOccurs="unbounded" type="tns:BreakdownsType"/>
+			<xs:element name="AdvancedLimits" minOccurs="0" maxOccurs="unbounded" type="tns:AdvancedLimitsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="en"> set up to match the rule definition.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="AggregationType" type="xs:string"/>
+		<xs:attribute name="OverBreakdown" type="xs:string"/>
+		<xs:attribute name="OverIndicator" type="xs:string"/>
+		<xs:attribute name="IncludeNA" type="xs:boolean"/>
+		<xs:attribute name="WarningNA" type="xs:boolean"/>
+		<xs:attribute name="NAReportLevel" type="xs:string"/>
+		<xs:attribute name="SamePerimeterForNumAndDenom" type="xs:boolean"/>
+		<xs:attribute name="AllowBreachImprovingOrders" type="xs:boolean"/>
+		<xs:attribute name="AllowBreachImprovingOrdersLevel" type="xs:string"/>
+		<xs:attribute name="Indicator" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+		Definition of the indicators:
+		-Linked to the type of rule
+		-On one or many indicators available in Sophis .
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="WithNotAdditiveValue" type="xs:boolean"/>
+		<xs:attribute name="IgnoreLimitForSegmentWithZero" type="xs:boolean"/>
+		<xs:attribute name="DisplayPosition" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="BreakdownsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Specifies the list of Breakdown criteria of the rule.
+	  Breakdown specifies the group by parameter (such as currency, sector...) .</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Breakdown" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+			<xs:element name="Breakdown_Dummy" minOccurs="0" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdvancedLimitsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"> Advanced limits is used to define specific limits on specific criterion.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LimitDefinition" minOccurs="0" maxOccurs="unbounded" type="tns:LimitDefinitionType"/>
+			<xs:element name="LimitDefinition_Dummy" minOccurs="0" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LimitDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"> A limit definition is the list of criterion and there limits(max, min, warning max, warning min) </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Criteria" minOccurs="0" maxOccurs="unbounded" type="tns:CriteriaType" />
+			<xs:element name="EntryPoint" minOccurs="0" maxOccurs="unbounded" type="tns:EntryPointType" />
+		</xs:sequence>
+		<xs:attribute name="LimitDefOrder" type="xs:int"/>
+		<xs:attribute name="Underlying" type="xs:int"/>
+		<xs:attribute name="MinLimit" type="xs:double"/>
+		<xs:attribute name="MaxLimit" type="xs:double"/>
+		<xs:attribute name="MinWarningLimit" type="xs:double"/>
+		<xs:attribute name="MaxWarningLimit" type="xs:double"/>
+		<xs:attribute name="MinNotificationLimit" type="xs:double"/>
+		<xs:attribute name="MaxNotificationLimit" type="xs:double"/>
+	</xs:complexType>
+	<xs:complexType name="CriteriaType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en"> Contain the list or criterion description</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Criterion" type="folio:Criterium" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="en"> Describe a criterion.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Criterion_Dummy" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IssuerRatioRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Conditional Max:
+		Conditional Structure (If / Then / Else) mainly for UCITS rules
+		Indicator Sum of to choose on any Sophis indicator
+		On criteria to choose in Sophis criteria
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="LowerLimit" type="xs:double"/>
+				<xs:attribute name="GreaterLimit" type="xs:double"/>
+				<xs:attribute name="TotalLimit" type="xs:double"/>
+				<xs:attribute name="LowerLimitBis" type="xs:double"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RestrictionRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Investment restriction:
+		Breach / Warning level in case of investment restriction
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="DefaultEvent" type="xs:string"/>
+				<xs:attribute name="Forbid" type="xs:boolean"/>
+				<xs:attribute name="InvestmentRestriction" type="xs:boolean"/>
+				<xs:attribute name="InvestmentPermission" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DetailedCashBalanceRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Detailed cash balance:
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="StartDate" type="xs:string"/>
+				<xs:attribute name="EndDate" type="xs:string"/>
+				<xs:attribute name="ByDepositary" type="xs:boolean"/>
+				<xs:attribute name="ByNostroCashAccount" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BenchmarkDeviationRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Benchmark Deviation:
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="PortfolioIndicator" type="xs:string"/>
+				<xs:attribute name="BenchmarkIndicator" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DayTradingRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Day trading:
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="NoShortToLong" type="xs:boolean"/>
+				<xs:attribute name="NoLongToShort" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="InventoryRuleDefinitionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+		Security Inventory:
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="CriteriaRuleDefinitionType">
+				<xs:attribute name="StartDate" type="xs:string"/>
+				<xs:attribute name="EndDate" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EntryPointsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">the portfolios concerned by compliance.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EntryPoint" minOccurs="0" maxOccurs="unbounded" type="tns:EntryPointType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EntryPointType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">The portfolio is defined by it path to the root portfolio.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" minOccurs="0" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Description of the portfolio.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Portfolios" type="tns:PortfoliosType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="Deleted" type="xs:boolean"/>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleGroupsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of rule sets.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RuleGroup" minOccurs="0" maxOccurs="unbounded" type="tns:RuleGroupType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleGroupType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe a rule set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" minOccurs="0" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Description of the rule set.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="Deleted" type="xs:boolean"/>
+		<xs:attribute name="Father" type="xs:string"/>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="Path" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Define the rule set path, will be used as unique Id of RuleGroup.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SameAsParent" type="xs:boolean"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EntryPointGroupsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of portfolio sets.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EntryPointGroup" minOccurs="0" maxOccurs="unbounded" type="tns:EntryPointGroupType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EntryPointGroupType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe a portfolio set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" minOccurs="0" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Description of the portfolio set.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="Deleted" type="xs:boolean"/>
+		<xs:attribute name="Father" type="xs:string"/>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="Path" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Define the portfolio set path, will be used as it unique Id.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleGroupRuleLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between rule and rule set </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RuleGroupRuleLink" minOccurs="0" maxOccurs="unbounded" type="tns:RuleGroupRuleLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="RuleGroupRuleLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a rule and a rule set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="RuleGroupName" type="xs:string"/>
+		<xs:attribute name="RuleName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupEPLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between portfolios and portfolio sets </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EPGroupEPLink" minOccurs="0" maxOccurs="unbounded" type="tns:EPGroupEPLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupEPLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a portfolio and a portfolio set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="EntryPointGroupName" type="xs:string"/>
+		<xs:attribute name="EntryPointName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPRuleLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between rules and portfolios. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EPRuleLink" minOccurs="0" maxOccurs="unbounded" type="tns:EPRuleLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPRuleLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a rule and a portfolio. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="EntryPointName" type="xs:string"/>
+		<xs:attribute name="RuleName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupRuleLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between rules and portfolio sets </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EPGroupRuleLink" minOccurs="0" maxOccurs="unbounded" type="tns:EPGroupRuleLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupRuleLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a rule and a portfolio set </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="EntryPointGroupName" type="xs:string"/>
+		<xs:attribute name="RuleName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPRuleGroupLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between portfolios and rule sets.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EPRuleGroupLink" minOccurs="0" maxOccurs="unbounded" type="tns:EPRuleGroupLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPRuleGroupLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a portfolio and a rule set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="EntryPointName" type="xs:string"/>
+		<xs:attribute name="RuleGroupName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupRuleGroupLinksType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contain the list of assignments between portfolio sets and rule sets.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EPGroupRuleGroupLink" minOccurs="0" maxOccurs="unbounded" type="tns:EPGroupRuleGroupLinkType"/>
+		</xs:sequence>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="EPGroupRuleGroupLinkType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an assignment between a portfolio set and rule set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExceptionDetails" minOccurs="0" type="tns:ExceptionDetailsType"/>
+		</xs:sequence>
+		<xs:attribute name="EntryPointGroupName" type="xs:string"/>
+		<xs:attribute name="RuleGroupName" type="xs:string"/>
+		<xs:attribute name="AssignationValidityDate" type="xs:string"/>
+		<xs:attribute name="ImportResult" type="xs:string"/>
+		<xs:attribute name="ExportResult" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="PortfoliosType">
+		<xs:sequence>
+			<xs:element name="folioReference" type="folio:FolioReference" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CriteriaUnderlying">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe an underlying.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="folio:Criterium">
+				<xs:sequence>
+					<xs:element name="identifier" type="instrument:Identifier"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CriteriaComplianceRequester">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Describe a ComplianceRequester.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="folio:Criterium">
+				<xs:attribute name="Name" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExceptionDetailsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Contains details about an exception.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="exception" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of the exception.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="faultElement" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element from the input message that caused the rejection. This
+					can be useful when multiples entities are imported/exported in the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

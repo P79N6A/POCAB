@@ -1,0 +1,3692 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by GIE BNP PARIBAS ASSURANCE (GIE BNP PARIBAS ASSURANCE) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by BNP PARIBAS ASSURANCE (BNP PARIBAS ASSURANCE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!--04/05/2011 - DTA : Renommage des types simples créés pour ETOIL3.2 : CommercialActionTypeCodeSLN en ActionOnCommercialOfferTypeCodeSLN et CommercialActionStatusCodeSLN en ActionOnCommercialOfferStatusCodeSLN-->
+	<!--11/04/0211 - DTA : Création type SLN pour ETOIL3.2 : CommercialActionTypeCodeSLN et CommercialActionStatusCodeSLN-->
+	<!--07/10/2010 - DTA : Création type SLN pour TEPOS : BalanceTypeCodeSLN. Retour du métier sur besoin position contrat de future -> suppression de FutureDirectionCodeSLN-->
+	<!--04/10/2010 - DTA : Création type SLN pour TEPOS : FutureContractCodeSLN-->
+	<!--01/10/2010 - DTA : Création type SLN pour TEPOS : LoanDirectionCodeSLN, FutureDirectionCodeSLN-->
+	<!--07/09/2010 - DTA : Création type SLN pour OBC : ContactInformationUseTypeCodeSLN, ContactInformationValidityTypeCodeSLN-->
+	<!--25/08/2010 - DTA : Création type SLN pour OBC : CoSubscriptionClosingClauseCodeSLN, DistributionKeyCodeSLN, EventStatusCodeSLN, InterestRateTypeCodeSLN, MovementStatusCodeSLN-->
+	<!--25/08/2010 - DTA : Création type SLN pour OBC : PeriodicOperationStatusCodeSLN, PeriodicOperationTriggerTypeCodeSLN, SavingProductTypeCodeSLN, StatementStatusCodeSLN, YesNoIndicatorSLN-->
+	<!--20/08/2010 - DTA : Création type SLN pour TEPOS : LegSideCodeSLN, BuyOrSellIndicatorSLN, InterestComputationMethodCodeSLN, BusinessDayConventionCodeSLN, OddCouponMethodCodeSLN, ReferencePeriodTypeCodeSLN-->
+	<!--20/07/2010 - DTA : Création type SLN pour POPS : ProcessingModeCodeSLN-->
+	<!--28/06/2010 - DTA : Création type SLN pour POPS : AmountTypeCodeSLN, AmountNatureTypeCodeSLN, OperationTypeCodeSLN, RoleCodeSLN-->
+	<!--28/06/2010 - DTA : Création type SLN pour POPS : Le type ProductSubFamilyCode n'est pas repris sous forme normalisée (pas de ProductSubFamilyCodeSLN)-->
+	<!--25/06/2010 - DTA : Création type SLN pour POPS : ProfitLossCategoryCodeSLN et ProfitLossObjectTypeCodeSLN-->
+	<!--03/06/2010 - DTA : Création  type SLN pour POPS : FeesApplicationDomainCodeSLN, LiabilityBaseCalculationFeesCodeSLN, ...-->
+	<!--10/05/2010 - JCY/DTA : Création de ReinsuranceTypeCode-->
+	<!--28/04/2010 - DTA : NationalityCodeSLN : A code to identify a nationality-->
+	<!--14/04/2010 - SMU : FinancialInstrumentPerformanceStatusCode : statut de la performance de la performance de l'indice - Validé ou Modifié-->
+	<!--14/04/2010 - SMU : DocumentPartTypeCodeSLN : Titre, Corps de texte, pièce jointe, signature numérique-->
+	<!--14/04/2010 - SMU : MailingAcknowledgementTypeCodeSLN : Type de l'acquittement de l'envoi. Avec accusé de lecture, avec accusé de réception ou normal -->
+	<!--14/04/2010 - SMU : PriorityDegreeCodeSLN : Degré de priorité : faible, normal, urgent. -->
+	<!--14/04/2010 - SMU : MediaTypeCodeSLN : Canal d'envoi : sms, mail, mms, fax -->
+	<!--14/04/2010 - SMU : DocumentFormatTypeCodeSLN : Format utilisé pour l'envoi du  mailing : TXT, HTML, PDF-->
+	<!--23/02/2010 - DTA : ExonerationMotiveCode : Code motif d'exonération fiscale-->
+	<!--23-12-2009 - ASA Mettre les types dans le bon order alphabétique-->
+	<!--27-11-2009 - ASA, DTA. Création d'un nouveau type DiversifiedProductClassCode classe de produit diversifié-->
+	<!--13-11/2009 - ASA. Créataion de CommissionnedElementTypeCodeSLN,  FundCommissionClassTypeCodeSLN, HouseTypeCodeSLN,-->
+	<!--suite : ChimneyTypeCodeSLN, SubscriberOccupantTypeCodeSLN, ProtectionLevelTypeCodeSLN, ContractOptionTypeCodeSLN-->
+	<!--1.0 (26/10/2009, DTA) - Création EconomicCodeSLN, MarriageSettlementCodeSLN-->
+	<!--6/08/2009 ASA  de création de : ClaimStatusCode-->
+	<!--5/08/2009 ASA création de : ProtectionPolicyStatusCode, ProductSubFamilyCode-->
+	<!--1.0 (31/07/2009, FTSAT ETL) - MàJ / correction automatique d'encodage vers ISO-8859-1 -->
+	<!--1.0 (11/05/2009/ FTSAT PWCT) - MàJ / correction automatique d'encodage vers ISO8859-1 -->
+	<!--Normalisation des types de donneés simples -->
+	<!--V1.00 - 03/03/2008 - Création pour prise en compte des standards techniques-->
+	<!--Remplacement - ValueDateStatusCode par DataStatusCode-->
+	<!--Ajout - ApplicationRuleCode,  Modification : LinkedIdentifierType pour inclure des éléments d'identification fonctionnels-->
+	<!--Ajout - StandardTargetDisributionType, StandardInvestmentProfileIdCode,   Modification - PaymentArrangementType par ajout de "Account"-->
+	<!--Ajout - StandardTargetDistributionType-->
+	<!--Ajout - SavingsPolicyIdentificationType-->
+	<!--Ajout - RegistryObjectContextType-->
+	<!--Ajout - PartyIdentificationType-->
+	<!--Ajout - NaturalPersonType-->
+	<!--Ajout - LegalEntityType-->
+	<!--Ajout - InitiatingEventType-->
+	<!--Ajout - ExternalReferenceType-->
+	<!--Ajout - DistributionType-->
+	<!--Ajout - DateTimePeriodType-->
+	<!--Ajout EmailLocaltionType-->
+	<!--Ajout - CustomerIdentificationType-->
+	<!--ReAjout - PostalLocationType, TitleCode, PostalAddressUseCode, PhoneAddressTypeCode, CSPCode, TaxationTypeCode-->
+	<!--Rename PostalAddress  en PostalAddressType-->
+	<!--Rename PhoneAddress en PhoneAddressType-->
+	<!--Ajout de la boite postale (POBox) dans StructuredPostalAddress-->
+	<!--Ajout de SchemeCode, BankingDomiciliationTypeCode-->
+	<!--AJOUT : complex MeasurementType pour exprimer une mesure ou une quantité associé à son unité (Voir création d'un type et d'une liste de valeur pour gérer l'unité)-->
+	<!--AJOUT : SimpleType NameTypeCode pour typer les libellés de types NAME - LISTE DE VALEUR à CREER -->
+	<!--Ajout : ExclusionTypeCode pour gérer les exclusions, PremiumTypeCode, PopulationTypeCode, CalculationTypeCode, BasisAmountTypeCode, PaymentModeCode, ProfileStatusCode-->
+	<!--Ajout : BeneficiaryClauseTypeCode, BenefitTypeCode-->
+	<!--Ajout :  VersionIdentifier dans le type complexe SavingsPolicyIdetificationType, CededAcceptedIndicatorCode-->
+	<!--Ajout : InterestRateTypeCode, ValuationFrequencyKindCode, ProfileTypeCode-->
+	<!--Modification du type complexe InitiatingEventType ajout de InputChannel (code du canal de communication)-->
+	<!--Rendre facultatif Rate et Amount du type complexe FeesType-->
+	<!-- 20/02/08 - Ajout de ValueDateStatusCode  - Récuperer du fichier BUS SimpleTypes V1.22 lors de la fusion des répertoires (HB)-->
+	<!--27/03/08 : Ajout - ExecutionTimeLimitCode (TEPOS - le 27/03/08)-->
+	<!--31/03/08 : Début de création de nouveaux formats  types (FT) types autres que ceux qui décrivent les listes de valeur : 31-03-2008 -->
+	<!--14/04/08 : Ajout/modification des complexeTypes standards InitiatingEvent (STD), Context (ajout CREIdentifier), AccountIdentification, ExternalReference (STD)-->
+	<!--15/04/08 : Création ObjectIdentificationType comme bloc d'identification générique d'un objet, modif sur LegalEntity /NautralPersonType (Libellé UsedName)-->
+	<!--06/05/08 : NaturalPerson : passage de ChildCount en facultative - ajout de ValuationNavTypeCode (pour les demandes d'investissement BO)-->
+	<!--06/05/2008 Modification du type complexe TaxType : renommer Taxation mode en TaxType et l'associer au type TaxTypeCode (àcréer aussi)-->
+	<!--07/05/2008 ajout formats pour InitiatngEvt.IntlEvt.ExtrnlRef.Id et  InitiatngEvt.OthrEvt.ExtrnlRef/Id du type complexe STDInitiatingEventType-->
+	<!--13/05/08 : LegalEntity - passage de RegistrationCountry en facultatif (CMO, ETOIL-SFO Intervenants)-->
+	<!--19/05/08 : NaturalPerson : Création Type VIPCode et rattachement au tag correspondant-->
+	<!--22/05/08 : STDInitiatingEventType - la donnée IntlEvt devient facultative - HBO-->
+	<!--version V1.00 (15/05/2008, Eric de Rochefort) : ajout du simpleType SavngsPolLastOpeStatusCode-->
+	<!--22/05/2008 : ajout:ThresholdControlTypeCode, ThresholdControlBasisTypeCode, ThresholdTypeCode-->
+	<!--22/05/2008 : Modification du TYPE de l'attribut Schme en SchemeCode dans le complex type STDIndentificationInformation - HBO -->
+	<!--26/05/08 : Ajout de BankingAccountUseType et ManagementSpecificType (Customer - CMO)-->
+	<!--30/05/08 : Abbréviations des balises qui se trouvent dans les types complexes-->
+	<!--30/05/08 DTAS : Ajout de InvestmentProfileStatusCode et de StandardInvestmentProfileTypeCode (StandardTargetDistributionInputType)-->
+	<!--30/05/08 CMO : Ajout FeesStatusCode, FixingStatusCode, QuotationStatusCode, NavStatusCode, InvestmentRequestStatusCode, PartyStatusCode, CustomerInternalStatusCode, StructureStatusCode, FinancialFundStatusCode, AknowledgementStatusCode-->
+	<!--30/05/08 CMO : Rename de RegulatoryClassValueCode en RegulatoryClassTypeCode-->
+	<!--19/06/08 DTAS : Ajout de CommercialOfferTypeCode-->
+	<!--07/08/08 CMO : Suppression du CoverageCategoryCode, redondant avec le CoverageCode-->
+	<!--08/08/08 CMO : Passage de EntityTypeCode à 20 caractères au lieu de 15  car la liste de valeurs dépasse (notamment pour "DepositoryAccount")-->
+	<!--18/09/08 CMO : Longueur max sur ClosingClauseCode (100), Duration (50), ManagementSpecificTypeCode (50)-->
+	<!--17/10/08 VCH : Remplacement de tous les formats decimal vers double -->
+	<!--24/10/08 ERO: Ajout de StandardBeneficiaryClauseCode-->
+	<!--30/10/08 DTA : Ajout de ProfileManagementTypeCode-->
+	<!--04/11/2008 - ERO : Passage du type STDRateType de xs:decimal en xs:double-->
+	<!--06/11/2008 - CMO : Suppression des TotalDigit sur les xs:double (AmountType, Duration, NumberDecType)-->
+	<!--07/11/2008 - CMO : Création d'un structureTypeCode correspondant à la liste de valeur existante et à rattacher à StructType du pivot Structure-->
+	<!--11/12/2008 - ERO : Rennomage de StatementStatusCodeType en StatementStatusCodeTypeASUPPR pour suppression-->
+	<!--07/01/2009 - DTA : Création de UserAccountTypeCode : Type de compte d'habilitation de l'utilisateur : client, tiers ou interne-->
+	<!--15/01/2009 - ASA : Création de nouveau types pour simplifier les types existants (STDIdentifierType,  STDUniqueIdentificationType)-->
+	<!--23/01/2009 - TAD/ASA : Création des types AuthorizationTypeCode,  UserAuthorizationStatusCode-->
+	<!--Fin de création de nouveaux formats types (FT)-->
+	<xs:simpleType name="AccountGroupCode">
+		<xs:annotation>
+			<xs:documentation>Code de regroupement de comptes</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie comptable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingCategory1Code">
+		<xs:annotation>
+			<xs:documentation>Catégorie comptable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingCategory2Code">
+		<xs:annotation>
+			<xs:documentation>Catégorie comptable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingCategory3Code">
+		<xs:annotation>
+			<xs:documentation>Catégorie comptable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingEstablishmentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nature de l'établissement comptable (Branch, Parent, PERP)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountingModeCode">
+		<xs:annotation>
+			<xs:documentation>Mode de comptabilisation : en capital ou en titres</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountNumber">
+		<xs:annotation>
+			<xs:documentation>Numéro de compte comptable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountOwnerShipTypeCode">
+		<xs:annotation>
+			<xs:documentation>Qualifie l'état de la propriété d'un Compte, lorsqu'un Compte a plusieurs propriétaires</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountStatusCode">
+		<xs:annotation>
+			<xs:documentation>Qualifie l'état présent d'un Compte (enabled, disabled, deleted)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountTypeCode">
+		<xs:annotation>
+			<xs:documentation>Specifie le type de Compte</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActivityCode">
+		<xs:annotation>
+			<xs:documentation>Domaine d'activité émetteur d'un flux : Banque, Assurance, OPCVM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AFBEntryTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code AFB</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgreementIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant interne Cardif Agrément</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgreementStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'agrément (agrément signé / suspendu / non signé / refusé?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgreementTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'accord : produit, distribution, délégation,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AknowledgementStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'acquittement (Effectué, Rejeté)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AmortizationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'amortissement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ApplicationRuleCode">
+		<xs:annotation>
+			<xs:documentation>Code des règles d'application (des taux...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ApprovalIndicator">
+		<xs:annotation>
+			<xs:documentation>Indicateur d'agrément (Oui / Non / Limité)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AreaTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de zone géographique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AssetAllocationCode">
+		<xs:annotation>
+			<xs:documentation>Allocation d'actifs</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AuthorizationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'habilitation: Rôle, Permission, ..</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BAFIInstrumentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code BAFI du type d'intrument</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BalanceStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du solde</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankingDomiciliationTypeCode">
+		<xs:annotation>
+			<xs:documentation>type de domiciliation bancaire (virement PEP, principale, classique)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankingAccountUseCode">
+		<xs:annotation>
+			<xs:documentation>Type de compte bancaire, utilisation (Principal, Secondaire,...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankCustomerCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie de Client de la BFC</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BasisAmountTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de l'assiètte :montant assuré, Brut, Hors taxes, Net, ..</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BDFIdentificationCode">
+		<xs:annotation>
+			<xs:documentation>Code d'identification utilisé par la BDF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BenchmarkCode">
+		<xs:annotation>
+			<xs:documentation>Benchmark</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BeneficiaryClauseTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de clause bénéficiaire: standard, libre, nomée, en cascade, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BenefitMotiveCode">
+		<xs:annotation>
+			<xs:documentation>Motif de sortie du contrat</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BenefitDistributionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de répartition entre bénéficiaires: égale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BICIdentifier">
+		<xs:annotation>
+			<xs:documentation>Code international (ISO 9362) alloué par SWIFT aux Institutions Financières (et pas seulement aux Banques). Un BIC compte 8 ou 11 caractères et comprend quatre composants : BANK CODE, COUNTRY CODE, LOCATION CODE, BRANCH CODE. Seul le branch code est facultatif.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="8"/>
+			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BondConversionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de transformation d'une obligation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BondSpecificClassificationCode">
+		<xs:annotation>
+			<xs:documentation>Permet d'indiquer si une obligation est Subordonnée, Démembrée ou EMTN</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BondTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'obligation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BonusMalusCode">
+		<xs:annotation>
+			<xs:documentation>Réduction ou SurPrime de la cotisation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BrokerageProductCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Classe produit pour calcul du courtage</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessActivityCode">
+		<xs:annotation>
+			<xs:documentation>Activité principale exercée - Profession</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalendarCode">
+		<xs:annotation>
+			<xs:documentation>Code Calendrier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalendarIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant Calendrier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalendarTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de calendrier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CashAccountTypeCode">
+		<xs:annotation>
+			<xs:documentation>Specifies the kind of account.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CededAcceptedIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>indicateur d'acceptation ou de cession de prime (coassurance, reassurance)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ChargeIncludedIndicator">
+		<xs:annotation>
+			<xs:documentation>Indicates whether charges have already been included in the entry amount or whether charges are only pre-advised</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ChargeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Further define the charge type (e.g., commission, telephone costs, agreed transaction fee).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CheckDigit">
+		<xs:annotation>
+			<xs:documentation>Clé de contrôle d'un code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ChimneyTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de cheminée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ClaimDeclarationStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la déclaration de sinistre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ClaimTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nature du sinistre: accident,maladie, suicide,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ClaimStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du sinistre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CollectionModeCode">
+		<xs:annotation>
+			<xs:documentation>Mode d'encaissement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Comment">
+		<xs:annotation>
+			<xs:documentation>Remarque ou commentaire libre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommercialContactChannelCode">
+		<xs:annotation>
+			<xs:documentation>Canal ou moyen par lequel le client a été mis en contact dans le processus commercial</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommercialOfferTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'offre commerciale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommercialProductStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statuts du produit commercial (Créé, Ouvert à la vente, Fermé à la vente, Clos)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommissionCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Type de commission</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommissionTypeCode">
+		<xs:annotation>
+			<xs:documentation>The commission type under which the order/trade is to be/was executed.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommissionnedElementTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'élément commissionnable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContractFamilyCode">
+		<xs:annotation>
+			<xs:documentation>Option sur actions, sur commodities, sur devise, sur taux?</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContractOptionTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'option choisi dans un contrat</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorporateActionDetailCode">
+		<xs:annotation>
+			<xs:documentation>Détail de l'OST (code du sous-type d'OST)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorporateActionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'Opération sur Titre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorporateActionIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant de l'OST</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverParticularExclusionCode">
+		<xs:annotation>
+			<xs:documentation>Exclusions particulières sur la garantie</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la garantie</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de garantie : garantie simple, option, package, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CSPCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie Socio-Professionnelle</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CUSIPIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifies a security and is allocated by the Committee on Uniform Securities Identification Procedure.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerInternalStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'objet Client (Créé, modifié, Clos)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerInvestmentProfile">
+		<xs:annotation>
+			<xs:documentation>Profil d'investissement du client (conventionnel)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerStatusCode">
+		<xs:annotation>
+			<xs:documentation>Status du client (En vie, décédé, ... pour les personnes morales : en redressement judiciaire ....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustodyChargeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Catégories de Calcul de droit de garde</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DataStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la donnée : transmise....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DayOffsetCode">
+		<xs:annotation>
+			<xs:documentation>Décalage en nombre de jours par rapport à une date (+/- n jours)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DayTypeIndicator">
+		<xs:annotation>
+			<xs:documentation>Type de jour : calendar / business</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DebtSecurityTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de TCN</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DeferredSettlementTypeCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie d'éligibilité au système de Règlement Différé : éligible / non éligible / inconnu.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DeliveryModeCode">
+		<xs:annotation>
+			<xs:documentation>Mode de règlement titres</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistributionNetworkCode">
+		<xs:annotation>
+			<xs:documentation>Canal de distribution - (Réseau - APA - Direct ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistributionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code du type de détermination de la répartition de l'opération :par support, priorisation par support, au prorata des PM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DiversifiedProductClassCode">
+		<xs:annotation>
+			<xs:documentation>Classe de produit diversifié</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentFormatTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Format utilisé pour l'envoi du  mailing : TXT, HTML, PDF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentPartTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Titre, Corps de texte, pièce jointe, signature numérique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code du type de document : CP....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Duration">
+		<xs:annotation>
+			<xs:documentation>A length of time</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="EconomicCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code économique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EligibilityCode">
+		<xs:annotation>
+			<xs:documentation>Politique fiscale de la classe du compartiment OPCVM (éligible PEA ou DSK?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EmailAddressTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'adresse email</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EntityTypeCode">
+		<xs:annotation>
+			<xs:documentation>Qualifie le type de l'entité (Portfolio, DepositoryAccount)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EuroclearClearstreamIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifies a security, is issued in Luxembourg and replaces the CEDEL (Clearstream) and Euroclear codes.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EventCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie d'événement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EventTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'événement : engagement, dénouement, intérêt...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExclusionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'exclusion : suiciide, cancer, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExecutionTimeLimitCode">
+		<xs:annotation>
+			<xs:documentation>Indicates from/until when an order must be executed (ISO 15022)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExonerationMotiveCode">
+		<xs:annotation>
+			<xs:documentation>Code motif d'exonération fiscale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExistenceRuleCode">
+		<xs:annotation>
+			<xs:documentation>Règles concernant la possibilité de l'opération : autorisée, interdite, obligatoire...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExternalRelationshipIdentifierTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de référence externe (propre a un distributeur par ex.)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesBasisCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the charges basis under which the trade was executed.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesCalculationFrequencyCode">
+		<xs:annotation>
+			<xs:documentation>Fréquence de Calcul des Frais</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesCalculationMethodCode">
+		<xs:annotation>
+			<xs:documentation>Méthode de calcul des Frais (OPCVM ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialFundClassTypeCode">
+		<xs:annotation>
+			<xs:documentation>Classe du support financier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialFundStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du support (créé, modifié, clos)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialFundProfileTypeCode">
+		<xs:annotation>
+			<xs:documentation>Profil du support financier (orientation : dynamique, prudent,....)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifier of a Financial Instrument</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentIntegerQuantity">
+		<xs:annotation>
+			<xs:documentation>Quantité arrondie pour les investissements sur OPCVMs non décimalisés</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentPerformanceStatusCode">
+		<xs:annotation>
+			<xs:documentation> Statut de la performance de la performance de l'indice - Validé ou Modifié</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentProductSubTypeCode">
+		<xs:annotation>
+			<xs:documentation>Typologie de Titre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentProductTypeCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the type of product the financial instrument is associated with</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du Titre : Initialisé, Archivé, Enrichi manuellement, Enrichi Provider, Enrichi, Validé</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialInstrumentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'instrument financier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FiscalRegimCode">
+		<xs:annotation>
+			<xs:documentation>Régime fiscal</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FixingStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du Taux de Change ( Valide, Modifie...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FlowType">
+		<xs:annotation>
+			<xs:documentation>Type de flux de gestion</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FolderIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant Dossier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FormOfSecurityCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the form of the financial instrument, eg, registered or bearer</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FormTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de déclaration : courrier, e-mail, téléphone, fax,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundCharacteristicsCode">
+		<xs:annotation>
+			<xs:documentation>Caractéristiques OPCVM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundClassTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de la classe du compartiment OPCVM. Définition Morgan Stanley : A, B, I pour clients particuliers, institutionnels?</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundCommissionClassTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Classe de commissionnement d'un support donné </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundCurrencyUsage">
+		<xs:annotation>
+			<xs:documentation>Devises associées à un OPCVM : cotation, valorisation, publication de la VL</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundDocumentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de document pour l'OPCVM (convention, notice, commercial, agrément?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundManagementTargetType">
+		<xs:annotation>
+			<xs:documentation>Objectif de gestion du Fond</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FundSpecificTypeCode">
+		<xs:annotation>
+			<xs:documentation>Forme spécifique OPCVM : FCPR, FCPE, FCIMT, SICAVVG...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FungibleIndicator">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the securities in the account are interchangeable (fungible ) or not interchangeable (not fungible).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GenderIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>Code du sexe de la personne physique: masculin, fémin</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GeographicalAreaCode">
+		<xs:annotation>
+			<xs:documentation>Zone géographique : France, Euro, International...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GlobalCouponIndicator">
+		<xs:annotation>
+			<xs:documentation>Indique si le coupon couru calculé est global ou unitaire</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de garantie Obligations</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HedgeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de couverture (taux, devise...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HouseTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type habitation : appartement, maision, etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IasCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie IAS d'actif financier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IasFinancialInstrumentClassificationCode">
+		<xs:annotation>
+			<xs:documentation>Qualification IAS des instruments financiers</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdentifierTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code du Type d'identifiant (techique, de gestion...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IncomeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de revenus</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndexationUnderlyingCode">
+		<xs:annotation>
+			<xs:documentation>Support de l'indexation (EUR/USD,CAC40 ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndexationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nature de l'indexation (indice, change,...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndexRateCode">
+		<xs:annotation>
+			<xs:documentation>Le Nom d'un taux de référence</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndividualGroupIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>Indicateur du type de gestion d'un produit : individuel ou groupe...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndustryCode">
+		<xs:annotation>
+			<xs:documentation>Secteur d'activité économique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InitiatingMovementTypeCode">
+		<xs:annotation>
+			<xs:documentation>Mouvement en gestion (copie du statut de l'opération, enrichi éventuellement à un niveau de type mouvement comptable...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InputChannelCode">
+		<xs:annotation>
+			<xs:documentation>Canal de communication avec le demandeur : gestionnaire, plateforme téléphonique, Web...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="INSEECommuneCode">
+		<xs:annotation>
+			<xs:documentation>Code INSEE des communes</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InsuranceCustomerCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie de Client Assurance (Particulier / Entreprise)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InsuranceProductCode">
+		<xs:annotation>
+			<xs:documentation>Produit d'assurance</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InterestCalculationModeCode">
+		<xs:annotation>
+			<xs:documentation>Mode de calcul des intérêts : pré ou post comptés</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentModeCode">
+		<xs:annotation>
+			<xs:documentation>Mode d'investissement possible dans l'OPCVM : en parts et/ou en montant</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentProfileCode">
+		<xs:annotation>
+			<xs:documentation>Mode de gestion financière du PTF (Profilé, sur mesure..)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentProfileStatusCode">
+		<xs:annotation>
+			<xs:documentation>Code du statut du profil</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentRequestStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut fonctionnel de la demande d'investissement suivant cycle de vie (Estimée, Confirmée, Enrichie...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentRuleCode">
+		<xs:annotation>
+			<xs:documentation>Règle d'investissement à l'achat ou à la vente</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISINIdentifier">
+		<xs:annotation>
+			<xs:documentation>International Securities Identifier Number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>A day within a particular calendar year represented by YYYY-MM-DD (ISO 8601).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>A particular point in the progression of time represented by YYYY-MM-DDThh :mm :ss (ISO 8601).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISOTime">
+		<xs:annotation>
+			<xs:documentation>A particular point in the progression of time represented by hh :mm :ss (ISO 8601).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:time"/>
+	</xs:simpleType>
+	<xs:simpleType name="IssuerTypeCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie de l'émetteur</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalCapacityIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>Indicateur de capacité légale : capable, incapable...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalCapacityMotiveCode">
+		<xs:annotation>
+			<xs:documentation>Capacité légale : mineur, majeur, tutelle....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalFormCode">
+		<xs:annotation>
+			<xs:documentation>Code forme juridique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LanguageCode">
+		<xs:annotation>
+			<xs:documentation>The language in which all the communication should be done for this account</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LeadInsurerIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>Apérition Interne ou Externe</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nature du fonds (SiCAV, FCP, etc.)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalStatusIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>Type de personnalité juridique (morale, physique)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalUniverseTypeCode">
+		<xs:annotation>
+			<xs:documentation>Classification COB : Actions françaises, internationales, Actions de pays de la zone euro,Obligations et titres de créances libellées en euro, Obligations et titres de créances internationaux, Monétaires euro, Monétaire à vocation internationale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegSideCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Sens d'une jambe d'une opération de Swap - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LinearOrActuarialCode">
+		<xs:annotation>
+			<xs:documentation>Méthode de calcul du Coupon Couru : actuariel ou linéaire</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MailingAcknowledgementTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation> Type de l'acquittement de l'envoi. Avec accusé de lecture, avec accusé de réception ou normal </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ManagementSpecificTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de gestion commerciale spécifique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MarketTypeCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the type of market in which transactions are placed.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MarriageSettlementCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Régime matrimonial: communauté universelle, communauté réduite aux acquêts</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaritalStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut marital : célibataire, marié, séparé, divorcé, veuf...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MasterFeederCode">
+		<xs:annotation>
+			<xs:documentation>Fond de fonds : maître / nourricier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaturityCode">
+		<xs:annotation>
+			<xs:documentation>Maturité d'une échéance (1D, 1W, 1M, 3M, 1Y...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaturityGuaranteeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de ganrantie à l'échéance</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MediaTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation> Canal d'envoi : sms, mail, mms, fax </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaturityProcessingCode">
+		<xs:annotation>
+			<xs:documentation>Type d'échu</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MICIdentifier">
+		<xs:annotation>
+			<xs:documentation>Market Identifier Code. A standardized code used to identify places of trade, ie, stock exchanges, regulated (eg, Electronic Trading Platforms (ECN)) and unregulated (eg, Automated Trading Systems (ATS)) markets, as sources of prices and related information in order to facilitate automated processing.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonthDayCode">
+		<xs:annotation>
+			<xs:documentation>Position du jour dans le mois</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MovementCode">
+		<xs:annotation>
+			<xs:documentation>Code Mouvement du flux de gestion</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NAFCode">
+		<xs:annotation>
+			<xs:documentation>CodeNAF Nomenclature d'activité française déterminée par l'INSEE (version en vigueur)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Name">
+		<xs:annotation>
+			<xs:documentation>The name of an entity</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NameTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type du Libelle (Long/COurt, Commercial/Technique ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NationalityCodeSLN">
+		<xs:annotation>
+			<xs:documentation>A code to identify a nationality</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="50" fixed="true"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NavStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la Valeur Liquidative ( Valide, Modifie...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NonAvailabilityReasonCode">
+		<xs:annotation>
+			<xs:documentation>The reason why an unit is not available</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Number">
+		<xs:annotation>
+			<xs:documentation>A number of objects represented as an integer</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="NumberDecType">
+		<xs:annotation>
+			<xs:documentation>NE PAS UTILISER - Permet de limiter la taille des Nombres Décimaux dans les complex types</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="ObjectCode">
+		<xs:annotation>
+			<xs:documentation>Objet normalisé</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ObjectStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'Objet Normalisé</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OpeningClosingCode">
+		<xs:annotation>
+			<xs:documentation>Specifies additional information relative to the processing of the trade.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie d'opération (marché, gestion, OST...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationConditionsCode">
+		<xs:annotation>
+			<xs:documentation>Modalités d'exploitation : direct, LPS, réassurance cédée ou acceptée, coassurance cédée ou acceptée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationOriginCode">
+		<xs:annotation>
+			<xs:documentation>Demande Client, Modif Automatique, initiative Gestionnaire, Initiative MOE/Informatique, etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationPerimeterCode">
+		<xs:annotation>
+			<xs:documentation>Périmètre d'opérations: ensemble complexe d'opérations</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationSourceCode">
+		<xs:annotation>
+			<xs:documentation>Marqueur Mouvement Intégré</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'opération : prime, sinistre, achat/vente, repo, change, swap, prêt/emprunt...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OpinionCode">
+		<xs:annotation>
+			<xs:documentation>Avis exprimé par une persone ou entité sur une question donnée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OptionStyleCode">
+		<xs:annotation>
+			<xs:documentation>Spécifie à quel moment une option peut être exercée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OptionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Spécifie si une option est une option d'achat (Call, droit d'acheter le sous-jacent) ou de vente (Put, droit de vendre le sous-jacent)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderCharacteristicCode">
+		<xs:annotation>
+			<xs:documentation>Caractéristique Ordre : conforme, rétroactif, sinistre, marge?</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderClassificationCode">
+		<xs:annotation>
+			<xs:documentation>Classification des ordres liée aux conditions réglementaires qui s'y appliquent.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderInitiatingEventCode">
+		<xs:annotation>
+			<xs:documentation>Evenement passif déclencheur d'un ordre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderRoutingMediumCode">
+		<xs:annotation>
+			<xs:documentation>Type d'envoi des ordres : PAP, FAX, FIC</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'ordre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrderTypeCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the type of instruction to a broker or dealer to buy or sell a financial instrument.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OriginEventCircumstanceTypeCode">
+		<xs:annotation>
+			<xs:documentation>Circonstances (du sinsitre)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OriginEventTypeCode">
+		<xs:annotation>
+			<xs:documentation>Motif du sinistre: scoliose, tumeur,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentModeCode">
+		<xs:annotation>
+			<xs:documentation>Payée par le client, prélevée de la VAC de son contrat, Prélevée de la prime d'épargne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PartialSettlementCode">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the settlement is partial.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PartyIdentifier">
+		<xs:annotation>
+			<xs:documentation>The unique identifier of a Party</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PartyStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du Tiers (créé, modifié, clos )</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PartyTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type du tiers (société de gestion, assurance?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PathologyTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de pathologie: canecr, sida,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentArrangementStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du mode de paiement (prévu au contrat, au client...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentInstrumentCode">
+		<xs:annotation>
+			<xs:documentation>Identifies the payment instrument that resulted in the payment transfer and which refers to the rules that apply to that specific instrument. This can be for example, a bill of exchange.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodicOperationStatus">
+		<xs:annotation>
+			<xs:documentation>SType BUS - A GARDER - REMPLACE PAR PeriodicOperationStatusCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodParityCode">
+		<xs:annotation>
+			<xs:documentation>Code désignant la parité d'une période</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PersonLinkTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code du lien entre deux personnes (physiques ou morales)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PhoneAddressTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'adresse téléphonique (professionnel, domicile, portable, ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PledgeStatusCode">
+		<xs:annotation>
+			<xs:documentation>Type du statut de la mise en gage : présumée, confirmée, suspendue...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PledgeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de mise en gage : partielle, totale....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PolicyDurationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de durée du contrat : viagère, déterminée...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PopulationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de population : Jeunes, Etudiants, Personnel, Medecins, Agriculteurs, Retraités, Toutes les populations, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PortfolioClassificationCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie à laquelle appartient le portefeuille (fond interne, fond général, FCP, SICAV, portefeuille bancaire?).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PortfolioCode">
+		<xs:annotation>
+			<xs:documentation>Code du portefeuille</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PortfolioIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant du Portefeuille</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PortfolioSubClassificationCode">
+		<xs:annotation>
+			<xs:documentation>Sous catégorie à laquelle appartient le portefeuille (Cantonné, mandat de gestion, PERP ..)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PreConfirmationCode">
+		<xs:annotation>
+			<xs:documentation>A pre-confirmation indicator.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PremiumCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie de prime: épargne, prévoyance</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PremiumTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de prime: prime unique, Primes multiples,</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PriceExpressionCode">
+		<xs:annotation>
+			<xs:documentation>Type d'expression du cours : à la pièce ou en pourcentage du nominal</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PriceValueTypeCode">
+		<xs:annotation>
+			<xs:documentation>Mode d'expression du cours</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PriorityDegreeCodeSLN">
+		<xs:annotation>
+			<xs:documentation> Degré de priorité : faible, normal, urgent. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProductFamilyCode">
+		<xs:annotation>
+			<xs:documentation>Famille du produit (Epargne, Capitalisation)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProductSubFamilyCode">
+		<xs:annotation>
+			<xs:documentation>Sous famille produit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfileManagementTypeCode">
+		<xs:annotation>
+			<xs:documentation>Pour un profil fixe : mode de gestion du profil : Piloté, Sous mandat, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfileStatusCode">
+		<xs:annotation>
+			<xs:documentation>Satuts du profile : Créé, Ouvert à la vente, fermé à la vente, Clos</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfileTypeCode">
+		<xs:annotation>
+			<xs:documentation>Fixe, libre, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProtectionPolicyStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut Contrat Prévoyance</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProtectionLevelTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Niveau de protection du bien : avec caméra, etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProviderCode">
+		<xs:annotation>
+			<xs:documentation>Fournisseur d'informations financières</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProxyModeCode">
+		<xs:annotation>
+			<xs:documentation>Modalités de la mise en oeuvre du pouvoir juridique d'une personne à une autre : acte notarié, lettre-type...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProxyTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code de la nature du pouvoir juridique donné par une personne à une autre : procuration, mandat...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="QuantityExpressionCode">
+		<xs:annotation>
+			<xs:documentation>Mode d'expression de la quantité : en Capital ou en Titres</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="QuotationStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du Cours ( Valide, Modifie...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RankCode">
+		<xs:annotation>
+			<xs:documentation>Rang de la dette</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RatingAgencyCode">
+		<xs:annotation>
+			<xs:documentation>Code d'une Agence de Notation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RatingMethodCode">
+		<xs:annotation>
+			<xs:documentation>Méthode de calcul des frais à appliquer</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RatingValueCode">
+		<xs:annotation>
+			<xs:documentation>Specifies the rating, which has been assigned to a security by a rating agency.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Reference">
+		<xs:annotation>
+			<xs:documentation>Information destinée à identifier une entité</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RegulatoryClassTypeCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie fiscale/réglementaire d'un Titre (PEA, DSK...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReinsuranceTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de réassurance (commerciale, produit, interne)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RepoDirectionIndicator">
+		<xs:annotation>
+			<xs:documentation>Sens d'une opération de pension: mise en pension (repurchase agreement ou repo) / prise en pension (reverse Repo)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportCriterionCode">
+		<xs:annotation>
+			<xs:documentation>Critère de sélection pour l'élaboration du relevé</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportingFormCode">
+		<xs:annotation>
+			<xs:documentation>Identifiant d'une maquette de reporting RCL</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReserveCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Type de provision</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ResidenceStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de résidence du client (résident, non-résident, ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ResidenceZoneCode">
+		<xs:annotation>
+			<xs:documentation>Code zone de résidence</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RoleCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Type de role suivant l'urba : client, coass, réass,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RoleCode">
+		<xs:annotation>
+			<xs:documentation>Rôle Tiers</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SalesAgreementIdentifier">
+		<xs:annotation>
+			<xs:documentation>Numéro d'accord commercial</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsFinancialServiceTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de service financier: arbitrage de lissage, arbitrage moyennant, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsPolicySourceTypeCode">
+		<xs:annotation>
+			<xs:documentation>Source du contrat d'épargne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsPolicyStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut du contrat d'Epargne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsSubscriptionStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la souscription</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavngsPolLastOpeStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de l'historique des dernières opérations du contrat</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SecuritiesAccountPurposeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Purpose of the securities account from/to which an entry is to be/has been made as a result of a securities transfer</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SecuritiesAccountTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type of securities account from/to which an entry is to be/has been made as a result of a securities transfer.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SeizureStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la saisie (civile, fiscale) : levée, présumée, confirmée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SeizureTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code du type de saisie : fiscale, civile,....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SettlementTypeCode">
+		<xs:annotation>
+			<xs:documentation>Defines how a derivative contract settles (cash or physical)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ShareTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de part : distribution ou capitalisation ou mixte</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SicovamIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identifiant Titre assigné en France par la Societe Interprofessionnelle Pour La Compensation des Valeurs Mobilieres</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SocialTaxationModeCode">
+		<xs:annotation>
+			<xs:documentation>Type de prélèvement Social</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StandardBeneficiaryClauseCode">
+		<xs:annotation>
+			<xs:documentation>Code clause bénéficiaire (standard ou libre)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StandardInvestmentProfileIdCode">
+		<xs:annotation>
+			<xs:documentation>Code identifiant du profil cible d'investissement (ne plus utiliser : remplacé par StandardInvestmentProfileTypeCode)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StandardInvestmentProfileTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code type du profil cible d'investissement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDDecimalQuantityType">
+		<xs:annotation>
+			<xs:documentation>Pour décrire des quantités décimales tels que le nombre d'unités de compte</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="STDFlatBBANIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Identifiant non formaté de BBAN (chaîne de 30 caractères)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Identifiant quelconque</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDIndicatorType">
+		<xs:annotation>
+			<xs:documentation>Pour décrire un flag ou un boolean (yes/non ou 0/1)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDIntegerQuantityType">
+		<xs:annotation>
+			<xs:documentation>Pour décrire des quantités relatives tels que le nombre d'enfants, de jours fériés</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="STDLongDescriptionType">
+		<xs:annotation>
+			<xs:documentation>Pour définir des descriptions et commentaires longs tels que le texte d'une clause bénéficiaire, clause d'exclusion</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDLongIndentifierType">
+		<xs:annotation>
+			<xs:documentation>Pour définir les formats des identifiants absolus: identifiant customer, identifiant produit, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDLongNameType">
+		<xs:annotation>
+			<xs:documentation>Pour définir des noms longs tels que le nom d'un produit, nom d'une adresse</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDLongNumberType">
+		<xs:annotation>
+			<xs:documentation>Pour décrire des numéros longs et non pas des nombres, tel que numéro de telephone</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDRateType">
+		<xs:annotation>
+			<xs:documentation>pour décrire des taux tels que le taux de frais, taux de taxe, taux de réduction</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="STDShortDescriptionType">
+		<xs:annotation>
+			<xs:documentation>Pour définir des descriptions et commentaires courts tels que la description d'un produit, d'un profil, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDShortIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Pour définir les formats des identifiants relatifs: identifiant mouvement à l'intérieur d'une opération, identifiant d'un profil à l'intérieur d'un produit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDShortNameType">
+		<xs:annotation>
+			<xs:documentation>Pour définir des noms courts tels que le nom d'une personne, d'une compagnie</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDShortNumberType">
+		<xs:annotation>
+			<xs:documentation>Pour décrire des nuéros courts et non pas des nombres, tel que nuéro du jour, numéro de rue</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="STDUniqueIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Identifiant unique d'un objet sans identifiant de version</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StepTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de Step pour Obligation (Step Up / Step Down)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StructureBranchTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'élément de la structure : Pôle, Territoire, Région, Division, Agence, point de vente, Vendeur, Inspecteur, .. Code à créer</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StructureStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut de la Structure (créé, modifié, clos)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StructureTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de structure décrite (distribution, capitalisatique, organisationnelle...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubCoverageCode">
+		<xs:annotation>
+			<xs:documentation>Caractère Complémentaire pour la Sous-Catégorie CCA-ACAM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubRoleCode">
+		<xs:annotation>
+			<xs:documentation>Sous-rôle joué : usufruitier, nu-propriétaire,...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubscriberOccupantTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'occupant: propriètaire, locataire, colocataire, etc</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SystemAvailability">
+		<xs:annotation>
+			<xs:documentation>Information about the activity or non-activity of the system.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxationTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type d'imposition (exonéré, ISF, autre)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxCategoryCode">
+		<xs:annotation>
+			<xs:documentation>Catégorie Fiscale</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxExemptionReasonCode">
+		<xs:annotation>
+			<xs:documentation>Raison d'exemption d'une taxe</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RetroIndicator">
+		<xs:annotation>
+			<xs:documentation>Indicateur de rétroactivité d'un flux (réalisé, rétroactif..)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TermTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de terme (court terme / long terme)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TimeUnitCode">
+		<xs:annotation>
+			<xs:documentation>Unité de temps : Année, Mois....</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TitleCode">
+		<xs:annotation>
+			<xs:documentation>Civilité</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TownNameType">
+		<xs:annotation>
+			<xs:documentation>Nom de ville</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TradeDirectionCode">
+		<xs:annotation>
+			<xs:documentation>Sens du mouvement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TradeIdentifier">
+		<xs:annotation>
+			<xs:documentation>TradeIdentifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TradeExecutionSessionCode">
+		<xs:annotation>
+			<xs:documentation>Represente une session de négociation donnée. Identifie une session où une opération peut être exécutée ("after market", "pre-market").</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TradeTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nomenclature Front Office des opérations de marché</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionStatusCode">
+		<xs:annotation>
+			<xs:documentation>Qualifie l'état présent d'une transaction</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionTypeCode">
+		<xs:annotation>
+			<xs:documentation>Specifies the nature of the transaction.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TresoreryInterfaceCode">
+		<xs:annotation>
+			<xs:documentation>Type d'interface des flux de Trésorerie</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ThresholdControlTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de contrôle de seuil (Seuil de contrôle UC, seuil de contrôle immobilier, )</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ThresholdControlBasisTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de base pour le contôl de seuil : seuil d'encours, seuil d'investissement, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ThresholdTypeCode">
+		<xs:annotation>
+			<xs:documentation>type de seuil : mmontant, taux, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TypeOfPriceCode">
+		<xs:annotation>
+			<xs:documentation>Indicates the type of price</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnderlyingInstrumentTypeCode">
+		<xs:annotation>
+			<xs:documentation>Nature du sous-jacent : T (contrat à terme, futur), C (comptant, indice).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitLinkedCode">
+		<xs:annotation>
+			<xs:documentation>Code Support</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserAccountTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de compte d'habilitation de l'utilisateur : client, tiers ou interne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserAuthorizationStatusCode">
+		<xs:annotation>
+			<xs:documentation>Statut des habilitations de l'utilisateur : créé, modifié, clos</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UsualIdentificationCode">
+		<xs:annotation>
+			<xs:documentation>Type de codification principale du Titre</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValuationFrequencyWordingType">
+		<xs:annotation>
+			<xs:documentation>Code du liblellé décrivant la règle de détermination de la VL</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValuationFrequencyKindCode">
+		<xs:annotation>
+			<xs:documentation>Nature de la fréquence de valorisation des contrats (fréquence réelle, fréquence des CG, fréquence pour prise d'effet, ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValuationPriceTypeCode">
+		<xs:annotation>
+			<xs:documentation>Type de Cours ayant servi à valoriser le mouvement (VL d'achat, de vente, brute ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValueDateStatusCode">
+		<xs:annotation>
+			<xs:documentation>Etat de la date de valeur (Automatique, Souhaitée, Inconnue, Rétroactive, ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VatDeductibleCollectedCode">
+		<xs:annotation>
+			<xs:documentation>TVA déductible ou collectée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VatSystemCode">
+		<xs:annotation>
+			<xs:documentation>Régime de TVA</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VatTypeCode">
+		<xs:annotation>
+			<xs:documentation>Code d'un Taux de TVA spécifique</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VIPCode">
+		<xs:annotation>
+			<xs:documentation>Code PEPS (Personne économiquement ou politiquement sensible)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WeekDayType">
+		<xs:annotation>
+			<xs:documentation>Type de jour de la semaine</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--03/06/2010 DTA - Création de nouveaux types SLN pour prendre en compte les listes de valeurs normalisées-->
+	<xs:simpleType name="ActionOnCommercialOfferStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Status d'une action sur offre commerciale : En attente, en cours, terminée, annulée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionOnCommercialOfferTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'action sur offre commerciale : taux, versement, seuil</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AmountNatureTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code de la nature du montant (HT ou TTC) - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AmountTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code du type de montant - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AnnuityDurationCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Types de durée de rente : 5 ans, 10 ans, Non Applicable, ... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AnnuityTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code du type de rente : temporaire, vie entière, réversible, ... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ApplicationComponentCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code d'application informatique - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AppropriationResultCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Résultat de l'affectation - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AppropriationStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Statut de l'affectation (du résultat) - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BalanceTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Précise sur quels éléments ou combinaison porte le solde</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BenefitModeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Mode du type de prestation - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessDayConventionCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Méthode conventionnelle d'ajustement quand une date ne tombe pas un jour ouvré</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BuyOrSellIndicatorSLN">
+		<xs:annotation>
+			<xs:documentation>Indique le sens de l'ordre, à l'achat ou à la vente</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalculationBasisTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommunicationChannelCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Canal de communication : web, plateforme téléphonique, ... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContactInformationUseTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'adresse, utilisation (Fiscale, Principale, Secondaire, Vacances, ...) (remplace PostalAddressUseCode)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ContactInformationValidityTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code de l'indicateur de validité d'une adresse postale (NPAI, OK) (remplace PostalAddressValidityIndicatorCode)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoSubscriptionClosingClauseCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Clause de dénouement d'une co-adhésion</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverageCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverRiskUseCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code du Type de risques couverts par la garantie - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CreditDebitIndicatorCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CurrencyCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistributionKeyCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code de la clef de répartition de l'opération : en montant, en pourcentage</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EventStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Statut de traiement de l'événement : traité, rejeté</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesApplicationDomainCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code du type de frais - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesCharacterCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de frais (frais administratif, frais d'acquisition, frais d'encaissement, ...) - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FrequencyTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de fréquence - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FutureContractCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code contrat d'un Future</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InsuranceActivityCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code activité pratiquée dans le domaine des assurances
+ - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InterestComputationMethodCodeSLN">
+		<xs:annotation>
+			<xs:documentation>The computation method of accrued interest of the related financial instrument (30/360, actual/actual?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InterestRateTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de taux taux d'intérêt : PB, IT, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InternalFundCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de sous-support (déclinaison des différents types de support) - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InvestmentDirectionCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IssuerCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Institution à l'origine du Code - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalSchemeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Cadre légal du produit d'assurance : PERP, PERE, ... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LiabilityBaseCalculationFeesCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code du type de base pour le calcul des frais - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LifeIndicatorCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code de l'indicateur Vie/NonVie de la garantie - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LoanDirectionCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Sens du prêt/emprunt financier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MovementStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Statuts d'un mouvement financier (Créé, En attente de dénouement, Dénoué, Converti)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OddCouponMethodCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Permet de préciser le calcul du premier ou du dernier coupon de l'obligation : AD, AF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'opération : prime, sinistre, achat/vente, repo, change, swap, prêt/emprunt... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodicOperationStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Statut d'une opération périodique : en cours, suspendu...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodicOperationTriggerTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de déclenchement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de période - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProcessingModeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Pour préciser les modes de paiement : manuel ou automatique - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProductFamilyCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Code famille de produit - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfitLossCategoryCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfitLossObjectTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RateCategoryCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Nature de taux - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RateTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de taux - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReferencePeriodTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de période de référence : vie du contrat, année civile précédente, année en cours...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RoleCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Rôle Tiers - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingProductTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de produit/contrat d'épargne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SchemeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Cadre légal lié à la commercialisation des produits d'assurance - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SettlementModeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Mode de réglement : chèque, virement, ... - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpecificPeriodTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de période spécifique - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatementStatusCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Etat de la situation du contrat</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxationOptionTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type d'option fiscale (Impôt sur le revenu, Prélèvement forfaitaire libératoire, ...)
+ - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de prélèvement fiscal ou social - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de Support - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserRoleCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Rôle utilisateur - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserRoleTypeCodeSLN">
+		<xs:annotation>
+			<xs:documentation>Type de rôle de l'utilisateur - Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WayOfCalculatingSLN">
+		<xs:annotation>
+			<xs:documentation>Liste normalisée</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="YesNoIndicatorSLN">
+		<xs:annotation>
+			<xs:documentation>Indicates a "Yes" or "No" type of answer for an element typed by this indicator.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--20/08/2010 DTA - Types obsolètes (remplacés par des types SLN)-->
+	<xs:simpleType name="AmountType">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Permet de limiter la taille des montants dans CurrencyandAmount</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="AmountTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code du type de montant (de l'opération)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ApplicationCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Application du Système d'Information (remplacé par ApplicationComponentCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AppropriationResultCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Réslutat de l'affectation : Partiel, Solde, Total (remplacé par AppropriationResultCodeSLN et AppropriationStatusCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BalanceTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Précise sur quels éléments ou combinaison porte le solde</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BaseCalculationMethodCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type d'assiette pour le calcul des frais (sur versé, sur investi..) (remplacé par FeesApplicationDomainCodeSLN et LiabilityBaseCalculationFeesCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BenefitTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de sortie: Rente, capital, ... (remplacé par BenefitModeCodeSLN, AnnuityTypeCodeSLN et AnnuityDurationCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessDayConventionCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Méthode conventionnelle d'ajustement quand une date ne tombe pas un jour ouvré</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BuyOrSellIndicator">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Indique le sens de l'ordre, à l'achat ou à la vente</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CalculationTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de calcul de prime de la Type de calcul: montant fixe, taux fixe*assiette, taux variable*assiette, ... (remplacé par WayOfCalculatingSLN et CalculationBasisTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ClosingClauseCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code clause de dénouement d'un contrat a co-souscription (remplacé par CoSubscriptionClosingClauseSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CommunicationChannelCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Canal de communication : plateforme téléphonique, Web...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - A code to identify a nation with its own government (ISO 3166-alpha2).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2" fixed="true"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoverageCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de garantie ou catégorie d'assurance</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CreditDebitCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Indicates whether the amount is a credited or debited amount. (remplacé par CreditDebitIndicatorCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CurrencyCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Official ISO standard code for a currency (ISO 4217).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="3" fixed="true"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistributionKeyCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code de la clef de répartition de l'opération : en montant, en nombre de part, en pourcentage</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EventStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Statut de traiement de l'événement : traité, rejeté</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de frais (adhésion, gestion, ..)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FeesStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Statut des frais : standards, dérogés (remplacé par FeesCharacterCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FrequencyCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Indicates the periodicity of a specified event (remplacé par FrequencyTypeCodeSLN, PeriodTypeCodeSLN et SpecificPeriodTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InterestComputationMethodCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - The computation method of accrued interest of the related financial instrument (30/360, actual/actual?)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InsuranceActivityCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Activité d'Assurance (Epargne individuelle, Prévoyance Individuelle ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InterestRateTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de taux taux d'intérêt : PB, IT, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IssuerCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Identifies the institution issuing a proprietary code.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalSchemeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Cadre légal du produit d'assurance : PERP, PERE, ...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegSideCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Sens d'une jambe d'une opération de Swap</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LifeIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code de l'indicateur Vie NonVie pour la Garantie (remplacé par LifeIndicatorCodeSLN et CoverRiskUseCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MovementStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Statuts d'un mouvement financier (Créé, En attente de dénouement, Dénoué, Converti)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OddCouponMethodCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Permet de préciser le calcul du premier ou du dernier coupon de l'obligation : AD, AF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Statut opération</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodicOperationStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Statut d'une opération périodique : en cours, suspendu...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PeriodicOperationTriggerTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de service financier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PostalAddressUseCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type d'adresse, utilisation (Fiscale, Principale, Secondaire, Vacances, ...) (remplacé par ContactInformationUseTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PostalAddressValidityIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code de l'indicateur de validité d'une adresse postale (NPAI, OK) (remplacé par ContactInformationValidityTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RateTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de taux : fixe, variable, révisable (remplacé par RateTypeCodeSLN et RateCategoryCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsProductTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de produit d'épargne</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReferencePeriodCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de période de référence : vie du contrat, année civile précédente, année en cours...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SavingsSwitchWayCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Sens de l'arbitrage: entrant, sortant (remplacé par InvestmentDirectionCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SchemeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Identifie l'origine d'une liste de valeurs : application, organisme...</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SettlementModeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Mode de règlement (chèque, virement ...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SplitIndicatorCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code de la périodicité de l'opération péridique : annuel, mensuel... (remplacé par type complexe SLNV1FrequencyDataType)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatementStatusCodeTypeASUPPR">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Code du statut de la situation (ERO 11/12/2008: A SUPPRIMER)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatementStatusCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - SType BUS - A GARDER - REMPLACE PAR StatementStatusCodeType (ERO 11/12/2008 A UTILISER, vue avec Abdel)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxationModeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de prélèvement Fiscal (PFL, IRPP, ...) (remplacé par TaxationOptionTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de taxe (CRDS, CSG, ICSA, ISF...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitTypeCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Type de support (UC, FG, ...) (remplacé par InternalFundCodeSLN et UnitTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserRoleCode">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Rôle joué par un utilisateur dans un processus (remplacé par UserRoleCodeSLN et UserRoleTypeCodeSLN)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="YesNoIndicator">
+		<xs:annotation>
+			<xs:documentation>NE PLUS UTILISER - Indicates a "Yes" or "No" type of answer for an element typed by this indicator.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

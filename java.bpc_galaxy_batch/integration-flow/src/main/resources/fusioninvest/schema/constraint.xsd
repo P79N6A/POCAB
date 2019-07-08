@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sophis.net/sophis/var/constraint" targetNamespace="http://sophis.net/sophis/var/constraint">
+ 
+
+ <xs:annotation>
+		    
+    <xs:documentation xml:lang="en">
+		<xs:appInfo>Sophis Risk Management Stress Tests Note</xs:appInfo>    
+	       This constraints schema defines all the data types that can be used to determine wether 
+		   a certain stress is applicable (like a filter) for a given market data. 
+		   Several constaints can be defined for each stress. A set of constraints can differ 
+		   according to the market data type, therefore several group of constraints have been defined.	
+		   See stresstest.xsd for the market data and constraint sets definitions.
+	   </xs:documentation>
+
+  </xs:annotation>
+
+<xs:complexType name="GenericConstraintsFilterGroupType">
+    <xs:sequence>
+      <xs:element name="ConstraintsFilter" type="xs:string" minOccurs="0" maxOccurs="4"/>
+    </xs:sequence>
+</xs:complexType>
+
+  <xs:complexType name="GenericConstraintsGroupType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies the most common constraints set.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+	  <xs:element name="ConstraintsFilter" type="xs:string" minOccurs="0" maxOccurs="4"/>
+      <xs:element name="Instrument" type="tns:InstrumentDefinition" minOccurs="0" />
+      <xs:element name="InstrumentType" type="tns:InstrumentTypeType" minOccurs="0" />
+      <xs:element name="InstrumentCurrency" type="tns:InstrumentCurrencyType" minOccurs="0" />
+      <xs:element name="Allotment" type="tns:AllotmentType" minOccurs="0" />
+      <xs:element name="Sector" type="tns:SectorType" minOccurs="0" />
+      <xs:element name="Rating" type="tns:RatingType" minOccurs="0" />
+      <xs:element name="Market" type="tns:MarketType" minOccurs="0" />
+      <xs:element name="Index" type="tns:IndexType" minOccurs="0" />
+      <xs:element name="Underlying" type="tns:UnderlyingType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GenericConstraintsGroupWithCurrencyType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Based on the GenericConstraintsGroupType. Add the Currency constraint.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:GenericConstraintsGroupType">
+        <xs:sequence>
+          <xs:element name="Currency" type="tns:CurrencyType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GenericConstraintsGroupWith2CurrenciesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Based on the GenericConstraintsGroupType. Add two Currencies constraints.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:GenericConstraintsGroupType">
+        <xs:sequence>
+          <xs:element name="Currency1" type="tns:CurrencyType" minOccurs="0" />
+          <xs:element name="Currency2" type="tns:CurrencyType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CurrencyConstraintsGroupType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a constraint set having only the Currency constraint.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Currency" type="tns:CurrencyType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CurrencyFamilyConstraintsGroupType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Based on the CurrencyConstraintsGroupType. Add the Family constraint.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:CurrencyConstraintsGroupType">
+        <xs:sequence>
+          <xs:element name="Family" type="tns:FamilyType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CurrencyInflationIndexConstraintsGroupType">
+    <xs:complexContent>
+      <xs:extension base="tns:CurrencyConstraintsGroupType">
+        <xs:sequence>
+          <xs:element name="Index" type="tns:InflationIndexType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="YieldCurveConstraintsGroupType">
+    <xs:complexContent>
+      <xs:extension base="tns:CurrencyConstraintsGroupType">
+        <xs:sequence>
+          <xs:element name="YieldCurveName" type="tns:YieldCurveNameType" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CurrenciesConstraintsGroupType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a constraint set having four currencies constraints.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Currency1" type="tns:CurrencyType" minOccurs="0" />
+      <xs:element name="Currency2" type="tns:CurrencyType" minOccurs="0" />
+      <xs:element name="Currency3" type="tns:CurrencyType" minOccurs="0" />
+      <xs:element name="Currency4" type="tns:CurrencyType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CurrencyType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a currency constraint. The ISO code or the system internal code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="InstrumentDefinition">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an instrument constraint. The the system reference or internal code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="InstrumentTypeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an instrument type constraint. The the system type character is expected</xs:documentation>
+    </xs:annotation>
+   <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="classifier" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>    
+  </xs:complexType>
+
+  <xs:simpleType name="InstrumentCurrencyType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an instrument currency constraint. The ISO code or the system internal code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+
+  <!--Classifier-->
+  <xs:complexType name="AllotmentType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an allotment constraint. The allotment code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="classifier" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>    
+  </xs:complexType>
+
+  <!--Classifier-->
+  <xs:complexType name="SectorType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a sector constraint. The sector code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+			<xs:attribute name="classifier" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="RatingType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a rating constraint. The rating provider and name is expected.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+				<xs:attribute name="classifier" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="MarketType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies a sector constraint. The market internal code is expected</xs:documentation>
+    </xs:annotation>
+	    <xs:simpleContent>
+	      <xs:extension base="xs:string">
+	        <xs:attribute name="classifier" type="xs:string"/>
+	      </xs:extension>
+	    </xs:simpleContent>
+	</xs:complexType>
+
+  <xs:simpleType name="IndexType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an index (instrument) constraint. The the system internal code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="UnderlyingType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+				Specifies an underlying constraint. The the system reference or internal code is expected. 
+				The system will look over any underlying to see if one of them belongs the given instrument
+				underlyings.
+			</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="FamilyType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies an family curve constraint. The the system reference or internal code is expected</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="InflationIndexType">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="YieldCurveNameType">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/execution"
+			elementFormDefault="qualified" attributeFormDefault="qualified" 
+			xmlns:common="http://sophis.net/sophis/common" 
+			xmlns:exec="http://www.sophis.net/execution" 
+			xmlns:tns="http://www.sophis.net/trade"		
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:party="http://www.sophis.net/party">
+
+	<xsd:annotation>
+		<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			Describes external tickets and executions.
+			An external execution is a transaction made in an external system (financial markets, brokers, OTC, etc). 
+			Integrating such an execution in Sophis may impact one or more sophis trades.
+			External tickets are operations (commands) on executions. An execution can be created, modified, deleted or replaced.
+			Sophis receives tickets from external systems, so tickets can be imported with an import message.
+			Executions successfully integrated in sophis can be exported with an export message.
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd" />
+  
+	<xsd:simpleType name="QuantityType">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="NbrOfSecurities"/>
+			<xsd:enumeration value="Notional"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ProcessingMode">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="LastFill"/>
+			<xsd:enumeration value="CumulativeQuantity"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ExecutionKind">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Manual"/>
+			<xsd:enumeration value="Other"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="RepoExecKind">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="OTC"/>
+			<xsd:enumeration value="Listed"/>
+			<xsd:enumeration value="Pledge"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="FeesDetails">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="index" type="xsd:int" use="optional" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Fees">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				There are 3 kinds of fees: broker, market and counter-party.
+				For each of them up to 20 details may be specified (MiFID).
+				If index fees attribute not set, the index of the fees is the order in the list
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="marketFees" type="exec:FeesDetails" minOccurs="0" maxOccurs="20"/>
+			<xsd:element name="brokerFees" type="exec:FeesDetails" minOccurs="0" maxOccurs="20"/>
+			<xsd:element name="ctpyFees" type="exec:FeesDetails" minOccurs="0" maxOccurs="20"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AllocationRule">
+		<xsd:sequence>
+			<xsd:element name="folioId" type="xsd:int"/>
+			<xsd:element name="qty" type="xsd:double"/>
+			<xsd:element name="primeBroker" type="xsd:int" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="allocationRule" type="exec:AllocationRule"/>
+	<xsd:complexType name="AllocationRules">
+		<xsd:sequence>
+			<xsd:element ref="exec:allocationRule" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="allocationRules" type="exec:AllocationRules"/>
+	
+	<xsd:complexType name="CompetitiveQuote">
+		<xsd:sequence>
+			<xsd:element name="dealerId" type="xsd:string"/>
+			<xsd:element name="quote" type="xsd:double"/>
+			<xsd:element name="quoteType" type="xsd:int"/>
+			<xsd:element name="quantity" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="competitiveQuote" type="exec:CompetitiveQuote"/>
+	<xsd:complexType name="CompetitiveQuotes">
+		<xsd:sequence>
+			<xsd:element ref="exec:competitiveQuote" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="competitiveQuotes" type="exec:CompetitiveQuotes"/>
+
+	<xsd:complexType name="ExecSpecificFields">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				Execution specific fields.
+				There are fields that override some common trade fields:
+					- the quantity
+					- the boEventId 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="externalRef" type="xsd:string"/>
+			<xsd:element name="lastQty" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="lastPrc" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="cumQty" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="orderQty" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="avgPrc" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="quantityType" type="exec:QuantityType" />
+			<xsd:element name="processingMode" type="exec:ProcessingMode" minOccurs="0"/>
+			<xsd:element name="fees" type="exec:Fees" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="placeName" type="xsd:string"/>
+				<xsd:element name="placeId" type="xsd:int"/>
+			</xsd:choice>
+			<xsd:element ref="exec:allocationRules" minOccurs="0"/>
+			<xsd:element ref="exec:competitiveQuotes" minOccurs="0"/>
+			<xsd:element name="executionKind" type="exec:ExecutionKind" minOccurs="0"/>
+			<xsd:element name="repoExecKind" type="exec:RepoExecKind" minOccurs="0"/>
+			<xsd:element name="instrDesc" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="instrForceCreate" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="isLast" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="execSpecificFields" type="exec:ExecSpecificFields"/>
+
+
+    <!-- Warning : should be in the same order that the ValueKind property in include file property.h-->
+	<xsd:simpleType name="PropertySimpleType">
+		<xsd:restriction base="xsd:token">
+		    <xsd:enumeration value="vk_null"/>
+			<xsd:enumeration value="vk_char"/>
+			<xsd:enumeration value="vk_uchar"/>
+			<xsd:enumeration value="vk_short"/>
+			<xsd:enumeration value="vk_ushort"/>
+			<xsd:enumeration value="vk_long"/>
+			<xsd:enumeration value="vk_ulong"/>
+			<xsd:enumeration value="vk_longlong"/>
+			<xsd:enumeration value="vk_ulonglong"/>
+			<xsd:enumeration value="vk_float"/>
+			<xsd:enumeration value="vk_double"/>
+			<xsd:enumeration value="vk_boolean"/>
+			<xsd:enumeration value="vk_string"/>
+			<xsd:enumeration value="vk_propertySet"/>
+			<xsd:enumeration value="vk_setOfPropertySet"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- value should be type valueKind (read as string and type conversion in code) -->
+	<xsd:complexType name="AdditionalExecField">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+		<xsd:attribute name="valueKind" type="exec:PropertySimpleType" use="required">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">propertySet with data type notion</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="additionalExecField" type="exec:AdditionalExecField"/>
+	
+	<xsd:complexType name="AdditionalExecFields">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				User defined fields. It's a collection of name=value with type attribute. 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="exec:additionalExecField" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="additionalExecFields" type="exec:AdditionalExecFields"/>
+	
+	<xsd:complexType name="UserField">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="userField" type="exec:UserField"/>
+
+	<xsd:complexType name="UserFields">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				User defined fields. It's a collection of name=value. The values are all of type string, 
+				it's up to the toolkit to know the real type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="exec:userField" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="userFields" type="exec:UserFields"/>
+
+	<xsd:complexType name="Execution">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				The following fields types are used:
+				- fields in common with a Sophis trade; The trade description is used for several reasons:
+					- to facilitate trades creation from executions
+					- allow reusing trades XML as executions (with minimal changes) in order to take advantage of the 
+					  allocation and/or aggregation.
+				- execution specific fields
+				- user fields
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			
+			<xsd:element name="sophisOrderId" type="xsd:int" minOccurs="0" maxOccurs="1" />
+			
+			<xsd:element ref="exec:execSpecificFields" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.FpML.org" xml:lang="en">
+						Specific execution fields
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:trade"  minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.FpML.org" xml:lang="en">
+						Fields in common with a Sophis trade
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="exec:userFields"  minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.FpML.org" xml:lang="en">
+						Additional fields defined by the user. When such fields are present, a transaction dialog toolkit
+						must be present to process them. If the toolkit is not present or if it does t take into account 
+						all fields, the execution is not processed and will be marked with an error.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+			<xsd:element ref="exec:additionalExecFields" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.FpML.org" xml:lang="en">
+						additionnal sophis execution field with a specific type
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="execution" type="exec:Execution"/>
+
+
+	<!-- ticket Type  -->
+	<!-- Warning : should be in the same order than enum TicketType in Ticket.h -->
+	<xsd:simpleType name="TicketType">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the nature of the ticket</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="New">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Modify">
+		          <xsd:annotation>
+		          	<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		          </xsd:documentation>
+		        </xsd:annotation>
+      		</xsd:enumeration>
+			<xsd:enumeration value="Cancel">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Replace">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+      <xsd:enumeration value="CONFIRMATION">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+    </xsd:simpleType>
+
+	
+
+    <!-- TODO add other Ids -->
+	<xsd:complexType name="TicketReference">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.FpML.org" xml:lang="en">A list of ids defining a ticket.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="externalTicketRef" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="targetExecRef" type="xsd:string" minOccurs="0"  maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+						The external reference of the target execution. It must be specified only for 
+						Modify, Replace or Cancel tickets
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+			<xsd:element name="ticketId" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="createdExecId" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="modifiedExecId" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="deletedExecId" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="newTradeReference" type="tns:TradeReference" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="modifiedTradeReference" type="tns:TradeReference" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element name="cancelledTradeReference" type="tns:TradeReference" maxOccurs="unbounded" minOccurs="0"/>
+		</xsd:sequence>
+		
+		<!-- type Ticket -->
+		<xsd:attribute name="ticketType" type="exec:TicketType" use="required">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en"> describes if the ticket create, cancel, modify, replace an external execution </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		
+		<!-- Matching Engine Action -->
+		<xsd:attribute name="matchingEngineAction" type="xsd:int" use="optional">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					The matching operation (attach, detach, ...)
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		
+		<xsd:attribute name="otc" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					otc instrument type; Set only for ticket on otc instrument; 
+					set to "swap" for irs and cds
+					set to "repo" for repo executions
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		
+		<xsd:attribute name="href" use="optional"/>
+		
+		<!-- internal -->
+		<xsd:attribute name="ID" type="xsd:ID" use="optional">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">Internal, for gxml simplified soap.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		
+		<xsd:attribute name="idRMA" type="xsd:int" use="optional">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					The internal identifier of the RMA message (INTERNALREF column of the RMA_MESSAGES table). Mandatory at input.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="dateRMA" type="xsd:int" use="optional">
+			<xsd:annotation>
+				<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+					The creation date of the RMA message (ENTEREDDATECODE column of the RMA_MESSAGES table). Mandatory at input.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<!-- ******************** EXTERNAL TICKET *******************************-->
+	
+	<xsd:complexType name="Ticket">
+		
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			</xsd:documentation>
+		</xsd:annotation>
+		
+		<xsd:sequence>
+			<xsd:element ref="exec:ticketReference" minOccurs="1" maxOccurs="1" />
+			<xsd:element ref="exec:execution" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.FpML.org" xml:lang="en">
+						Contains the execution fields. May be missing for Cancel tickets.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		
+		<xsd:attributeGroup ref="common:PersistentEntity.model"/>
+	</xsd:complexType>
+
+	<xsd:element name="ticket" type="exec:Ticket"/>
+	<xsd:element name="ticketReference" type="exec:TicketReference"/>
+  
+  <!-- ******************** CLEARING CONFIRMATION ******************** -->
+  <xsd:complexType name="ImpactedTradeId">
+    <xsd:annotation>
+      <xsd:documentation>
+        Trades' id that are impacted by the clearing confirmation.
+        Error attribute exists only when an exception has been raised when doing the treatment
+        for this trade. The attribute reports the exception.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="error" type="xsd:normalizedString" use="optional" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ConfirmationClearing">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element ref="exec:ticketReference" />
+      <xsd:element name="sophisOrderId" type="xsd:int"/>
+      <xsd:element name="statusEvent" type="xsd:int"/>
+      <xsd:element name="refusingReason" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="elecPlatformId" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="USI" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="USINamespace" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="priorUSI" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="priorUSINamespace" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="blockUSI" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="blockUSINamespace" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="clearingHouse" type="party:PartyRole" minOccurs="0"/>
+      <xsd:element name="clearingMember" type="party:PartyRole" minOccurs="0"/>
+      <xsd:element name="USIIdentifier" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="namespaceIdentifier" type="xsd:string" minOccurs="0"/>      
+    </xsd:sequence>
+
+    <xsd:attributeGroup ref="common:PersistentEntity.model"/>
+  </xsd:complexType>
+  <xsd:element name="confirmationClearing" type="exec:ConfirmationClearing"/>
+  
+  <xsd:complexType name="ConfirmationClearingResponse">
+
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="sophisOrderId" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="idRMA" type="xsd:int" minOccurs="0"/>
+      <xsd:element ref="exec:ticketReference"/>
+      <xsd:element name="impactedTradeId" type="exec:ImpactedTradeId"  minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+
+  </xsd:complexType>
+  <xsd:element name="confirmationClearingResponse" type="exec:ConfirmationClearingResponse"/>
+  
+
+  
+</xsd:schema>

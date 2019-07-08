@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:fund="http://www.sophis.net/fund" xmlns:tns="http://www.sophis.net/eod" targetNamespace="http://www.sophis.net/eod" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en"></xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/fund" schemaLocation="fund.xsd" />
+  <xsd:element name="eod" type="tns:EOD" />
+  <xsd:complexType name="EOD">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Report of the End of Day process for one fund.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fund" type="tns:Fund" />
+      <xsd:element name="eodDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Date for which the End of Day procedure has been run.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="launchDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Date at which the End of Day procedure has been run. This is not necessarily the same as the End of Day date because you can run today an End of Day for a past date.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="eodData" type="tns:EodData" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Fund">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">This can be either an href pointing to an instrument defined elsewhere or the identifiers of the instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="instrument:Underlyer"></xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="EodData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains all the data computed by the VALUE End of Day (Asset Value, Cash Value, Fees, GAV, number of shares etc...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="asset" type="tns:Asset" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="cash" type="tns:Cash" minOccurs="0" maxOccurs="1" />
+	  <xsd:element name="cashPerAccount" type="tns:CashPerAccount" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="equalisation" type="tns:Equalisation" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="indicators" type="tns:Indicators" minOccurs="0" maxOccurs="1" />
+      <xsd:choice>
+        <xsd:element name="standardEodData" type="tns:StandardEodData" />
+        <xsd:element name="multiClassEodData" type="tns:MultiClassEodData" />
+      </xsd:choice>
+      <xsd:element name="sr" type="tns:SR" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="StandardEodData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains Fees and Gav for standard funds (mono-class funds)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fees" type="tns:Fees" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="gav" type="tns:GAV" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MultiClassEodData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains Fees and Gav for multi-class funds</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fundClassEODData" type="tns:FundClassEODData" />
+      <xsd:element name="fundClassEODResults" type="tns:FundClassEODResults" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GAV">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">High-level results (Net and Gross amount, number of shares, etc.)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="dividends" type="xsd:double" />
+      <xsd:element name="newFees" type="xsd:double" />
+      <xsd:element name="numberOfShares" type="xsd:double" />
+      <xsd:element name="navPerShare" type="xsd:double" />
+      <xsd:element name="grossAsset" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="netAsset" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="totalCash" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Asset">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Consolidated positions.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="assetNode" type="tns:AssetNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="AssetNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the basic information on each asset in the fund (instrument, name, currency, price etc...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="instrument" type="instrument:Identifier" />
+      <xsd:element name="name" type="xsd:string" />
+      <xsd:element name="positionId" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="folioId" type="xsd:int" minOccurs="0"/>
+	  <xsd:element name="folioName" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="currency" type="instrument:Currency" />
+      <xsd:element name="numberOfSecurities" type="xsd:double" />
+      <xsd:element name="price" type="xsd:double" />
+      <xsd:element name="accruedAmount" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="value" type="xsd:double" />
+      <xsd:element name="balance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="unsettledBalance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Cash">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Consolidated cash.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="cashNode" type="tns:CashNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CashNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the basic information on a cash node (currency, balance, unsettled balance, FX rate).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="balance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="unsettledBalance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="forexRate" type="xsd:double" />
+      <xsd:element name="currency" type="instrument:Currency" />
+    </xsd:sequence>
+  </xsd:complexType>
+    <xsd:complexType name="CashPerAccount">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Consolidated cash per account.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="cashPerAccountNode" type="tns:CashPerAccountNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CashPerAccountNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the basic information on a cash node (currency, balance, unsettled balance, FX rate).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="balance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="unsettledBalance" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="forexRate" type="xsd:double" />
+      <xsd:element name="currency" type="instrument:Currency" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Fees">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Fees</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="feesNode" type="tns:FeesNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FeesNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the fees information (type, amount, comment, currency, payment date etc...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="type" type="xsd:string" />
+      <xsd:element name="amount" type="xsd:double" />
+      <xsd:element name="comment" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="currency" type="instrument:Currency" />
+      <xsd:element name="paymentDate" type="xsd:date" />
+      <xsd:element name="customId" type="xsd:int" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SR">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Details pertaining to Subscriptions and Redemptions.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="srNode" type="tns:SRNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SRNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the Subscription / Redemption information (class name, number of share, amount, fees etc...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="code" type="xsd:double" />
+      <xsd:element name="className" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="numberOfShares" type="xsd:double" />
+      <xsd:element name="amount" type="xsd:double" />
+      <xsd:element name="grossAmount" type="xsd:double" />
+      <xsd:element name="feesInt" type="xsd:double" />
+      <xsd:element name="feesAmountInt" type="xsd:double" />
+      <xsd:element name="feesExt" type="xsd:double" />
+      <xsd:element name="feesAmountExt" type="xsd:double" />
+      <xsd:element name="businessPartnerFeesAmount" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Equalisation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">S/R for which equalisation has been performed.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="equalisationNode" type="tns:EqualisationNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="EqualisationNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the Equalisation Credit information (Initial S/R code, class name, investor, number of share and amount)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="initialSrCode" type="xsd:long" />
+      <xsd:element name="className" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="investor" type="xsd:long" />
+      <xsd:element name="nbShares" type="xsd:double" />
+      <xsd:element name="amount" type="xsd:double" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Indicators">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Fund indicators</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="indicatorsNode" type="tns:IndicatorsNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="IndicatorsNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the fund "other indicators" information (Record Date, Fund Code, Indicator Name, Indicator Value)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="recordDate" type="xsd:date" />
+      <xsd:element name="fundCode" type="xsd:long" />
+      <xsd:element name="indicatorName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="indicatorValue" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FundClassEODData">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">End of Day data for one class of a multi-classes fund.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fundClassEodDataNode" type="tns:FundClassEODDataNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FundClassEODDataNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the Class EOD information that were computed at the last EOD and are used to compute this one. (Gav, Nav, Nav / Share, Weights etc...) </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="code" type="instrument:Identifier" />
+      <xsd:element name="currency" type="instrument:Currency" />
+      <xsd:element name="cashFolio" type="xsd:long" />
+      <xsd:element name="investmentFolio" type="xsd:long" />
+      <xsd:element name="specificFolio" type="xsd:long" />
+      <xsd:element name="hedgingFolio" type="xsd:long" />
+      <xsd:element name="feesFolio" type="xsd:long" />
+      <xsd:element name="nbShares" type="xsd:double" />
+      <xsd:element name="gav" type="xsd:double" />
+      <xsd:element name="gavPerShare" type="xsd:double" />
+      <xsd:element name="nav" type="xsd:double" />
+      <xsd:element name="navPerShare" type="xsd:double" />
+      <xsd:element name="hasHwmFees" type="xsd:boolean" />
+      <xsd:element name="hwm" type="xsd:double" minOccurs="0" />
+      <xsd:element name="investmentWeight" type="xsd:double" />
+      <xsd:element name="hedgingWeight" type="xsd:double" />
+      <xsd:element name="specificWeight" type="xsd:double" />
+      <xsd:element name="cashWeight" type="xsd:double" />
+      <xsd:element name="feesWeight" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FundClassEODResults">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">End of Day results for one class of a multi-classes fund </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fundClassEODResultsNode" type="tns:FundClassEODResultsNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FundClassEODResultsNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the Class EOD information that are computed on this EOD (Gav, Gav per share, fees, investment weight etc....)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="code" type="instrument:Identifier" />
+      <xsd:element name="initialGav" type="xsd:double" />
+      <xsd:element name="investmentPnl" type="xsd:double" />
+      <xsd:element name="hedgingPnl" type="xsd:double" />
+      <xsd:element name="specificPnl" type="xsd:double" />
+	  <xsd:element name="cashPnl" type="xsd:double" />
+	  <xsd:element name="feesPnl" type="xsd:double" />
+      <xsd:element name="investmentCommonCash" type="xsd:double" />
+      <xsd:element name="hedgingCommonCash" type="xsd:double" />
+      <xsd:element name="specificCommonCash" type="xsd:double" />
+      <xsd:element name="cashFolioCommonCash" type="xsd:double" />
+      <xsd:element name="classSpecificCash" type="xsd:double" />
+      <xsd:element name="allocatedGav" type="xsd:double" />
+      <xsd:element name="preGavFees" type="xsd:double" />
+      <xsd:element name="postGavFees" type="xsd:double" />
+      <xsd:element name="gav" type="xsd:double" />
+      <xsd:element name="gavPerShare" type="xsd:double" />
+      <xsd:element name="gavReturn" type="xsd:double" />
+      <xsd:element name="hwm" type="xsd:double" />
+      <xsd:element name="finalGav" type="xsd:double" />
+      <xsd:element name="investmentWeight" type="xsd:double" />
+      <xsd:element name="hedgingWeight" type="xsd:double" />
+      <xsd:element name="specificWeight" type="xsd:double" />
+      <xsd:element name="cashWeight" type="xsd:double" />
+      <xsd:element name="feesWeight" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

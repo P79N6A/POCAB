@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.sophis.net/positionsFile"
+            xmlns:tns="http://www.sophis.net/positionFile">
+
+	<xsd:element name="ISIN" type="xsd:string"/>
+	<xsd:element name="TICKER" type="xsd:string"/>
+	<xsd:element name="SEDOL" type="xsd:string"/>
+	<xsd:element name="SOPHISREF" type="xsd:string"/>
+	<xsd:element name="VAR" type="xsd:string"/>
+	<xsd:element name="RIC" type="xsd:string"/>
+	<xsd:element name="MARKIT" type="xsd:string"/>
+</xsd:schema>

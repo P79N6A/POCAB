@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://www.sophis.net/sophis" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sophis.net/sophis" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:party="http://www.sophis.net/party" xmlns:nostro="http://www.sophis.net/NostroAccount" xmlns:nostroref="http://www.sophis.net/NostroAccountReference">
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			sophis.xsd imports all schemas(now a new schema must be added in sophis.xsd), it knows all namespaces.
+			Then it is easy to define a concrete type extending an abstract type defined in a schema, in order to avoid any circular
+			dependency.
+			Respect the case of XSD file names.
+		</xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/repo_margin" schemaLocation="repo_margin.xsd" />
+<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/quotation" schemaLocation="quotation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/CorporateActions" schemaLocation="CorporateActions.xsd" />
+  <xsd:import namespace="http://www.sophis.net/MisysCorporateActions" schemaLocation="MisysCorporateActions.xsd" />
+  <xsd:import namespace="http://www.sophis.net/CreditRisk" schemaLocation="CreditRiskData.xsd" />
+  <xsd:import namespace="http://www.sophis.net/dividend" schemaLocation="dividend.xsd" />
+  <xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd" />
+  <xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd" />
+  <xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd" />
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  <xsd:import namespace="http://www.sophis.net/scheduling" schemaLocation="scheduling.xsd" />
+  <xsd:import namespace="http://www.sophis.net/reporting" schemaLocation="Reporting.xsd" />
+  <xsd:import namespace="http://www.sophis.net/preferences" schemaLocation="preferences.xsd" />
+  <xsd:import namespace="http://www.sophis.net/scenario" schemaLocation="scenario.xsd" />
+  <xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd" />
+  <xsd:import namespace="http://www.sophis.net/yieldCurve" schemaLocation="YieldCurve.xsd" />
+  <xsd:import namespace="http://www.sophis.net/correlation" schemaLocation="correlation.xsd" />
+  <xsd:import namespace="http://www.sophis.net/market_data" schemaLocation="MarketData.xsd" />
+  <xsd:import namespace="http://www.sophis.net/bo_xml" schemaLocation="bo_xml.xsd" />
+  <xsd:import namespace="http://www.sophis.net/instruction" schemaLocation="instruction.xsd" />
+  <xsd:import namespace="http://www.sophis.net/basket_adjustment" schemaLocation="BasketAdjustment.xsd" />
+  <xsd:import namespace="http://www.sophis.net/NostroAccount" schemaLocation="NostroAccount.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/NostroAccountReference" schemaLocation="NostroAccountReference.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/SSI" schemaLocation="ssi.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/listedmarket" schemaLocation="ListedMarket.xsd" />
+  <xsd:import namespace="http://www.sophis.net/position" schemaLocation="position.xsd" />
+  <xsd:import namespace="http://www.sophis.net/accountingposition" schemaLocation="accountingposition.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/StaticData" schemaLocation="StaticData.xsd"/>  
+  <xsd:import namespace="http://www.sophis.net/CollateralValuation" schemaLocation="CollateralValuation.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/ExoticMask" schemaLocation="ClauseBuilderExoticMask.xsd"/>  
+  <xsd:import namespace="http://www.sophis.net/dailyData" schemaLocation="dailyData.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/inflation" schemaLocation="inflation.xsd"/>
+  
+  <xsd:complexType name="ConcreteCalculationAgent">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">This type extends AbstractCalculationAgent defined in instrument.xsd.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="instrument:AbstractCalculationAgent">
+        <xsd:sequence>
+          <xsd:element ref="party:partyReference" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="concreteCalculationAgent" type="tns:ConcreteCalculationAgent" substitutionGroup="instrument:abstractCalculationAgent" />
+  
+</xsd:schema>

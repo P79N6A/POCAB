@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/complianceAlert" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:sph="http://www.sophis.net/complianceAlert" xmlns:tns="http://www.sophis.net/complianceAlert" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="complianceAlert" type="sph:ComplianceAlert" />
+  <xsd:complexType name="ComplianceAlert">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Compliance alert is generated when a compliance rule is breached during the execution of a compliance session. When a rule is checked, it may generate several alerts for each checked position.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="reportSettings" type="sph:ReportSettings" />
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="session" type="sph:Session" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BoundedRelativeDates">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This is a field of ReportSettings.
+It specifies relative date range of compliance sessions that must included in the generated report.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="begin" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="end" type="xsd:normalizedString" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="BoundedAbsoluteDates">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This is a field of ReportSettings.
+It specifies absolute date range of compliance sessions that must included in the generated report.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="begin" type="xsd:string" use="required" />
+    <xsd:attribute name="end" type="xsd:string" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="ReportSettings">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Search criteria of compliance sessions to be included in the generated report: Dates (relative or absolute), session groups, sessions, entry points, rule lists, status lists.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sessionGroupList" type="xsd:normalizedString" minOccurs="0" />
+      <xsd:element name="sessionList" type="xsd:normalizedString" minOccurs="0" />
+      <xsd:element name="entryPointList" type="xsd:normalizedString" minOccurs="0" />
+      <xsd:element name="ruleList" type="xsd:normalizedString" minOccurs="0" />
+      <xsd:element name="detailedPositions" type="xsd:normalizedString" minOccurs="0" />
+      <xsd:element name="boundedAbsoluteDates" type="tns:BoundedAbsoluteDates" minOccurs="0" />
+      <xsd:element name="boundedRelativeDates" type="tns:BoundedRelativeDates" minOccurs="0" />
+    </xsd:sequence>
+    <xsd:attribute name="UTC-offset" type="xsd:normalizedString" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="Session">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A compliance session is an execution of compliance checks on specified perimeter of compliance portfolios.
+It contains a report for each checked rule of the perimeter. A session is identified by an ID and a name. A session can be either run manually by user or run within compliance scheduler.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Alert" type="sph:Alert" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="name" type="xsd:normalizedString" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="Alert">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Compliance alert is generated when a compliance rule is breached during the execution of a compliance session. When a rule is checked, it may generate several alerts for each checked position. The life-cycle of an alert is managed by a dedicated workflow which enables user to interact with alert and raise event on it (for instance, escalate an alert). An other feature on alert is the possibility to notify interested users by mails.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="segment" type="sph:ReportLine" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="audit" type="sph:Audit" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="ruleId" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="ruleName" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="ruleBreakDowns" type="xsd:normalizedString" />
+    <xsd:attribute name="status" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="inceptionDate" type="xsd:date" use="required" />
+    <xsd:attribute name="modificationDate" type="xsd:date" use="required" />
+    <xsd:attribute name="entryPoint" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="entryPointId" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="reportLineId" type="xsd:normalizedString" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="LimitsMinMax">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A compliance rule defines several limits. LimitsMinMax is the rule's maximum and minimum thresholds to be checked.  In addition the thresholds, it defines a warning limits which will generate a warning alert when reached.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="maxlimit" type="xsd:normalizedString" />
+    <xsd:attribute name="maxwarninglimit" type="xsd:normalizedString" />
+    <xsd:attribute name="maxnotificationlimit" type="xsd:normalizedString" />
+    <xsd:attribute name="minlimit" type="xsd:normalizedString" />
+    <xsd:attribute name="minwarninglimit" type="xsd:normalizedString" />
+    <xsd:attribute name="minnotificationlimit" type="xsd:normalizedString" />
+  </xsd:complexType>
+   <xsd:complexType name="ReportLine">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Result of a compliance rule check on an assigned portfolio.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0"  name="indicator" type="tns:Indicator" />
+      <xsd:element maxOccurs="unbounded" minOccurs="0"  name="explanatory" type="tns:Explanory" />
+      <xsd:element name="limitsMinMax" type="tns:LimitsMinMax" minOccurs="0"  />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:normalizedString" use="required" />
+    <xsd:attribute name="breakDowns" type="xsd:normalizedString" />
+    <xsd:attribute name="status" type="xsd:normalizedString" use="required" />
+  </xsd:complexType>
+  
+ <xsd:complexType name="Indicator" mixed="true"> 
+     <xsd:attribute name="name" type="xsd:normalizedString" use="required" /> 
+  </xsd:complexType>
+  
+  <xsd:complexType name="Explanory" mixed="true"> 
+     <xsd:attribute name="name" type="xsd:normalizedString" use="required" /> 
+  </xsd:complexType>
+  <xsd:complexType name="Audit">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">History of all actions performed by users on a specific alert. Actions can be the esacalation of an alert or its resolution.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="date" type="xsd:date" />
+    <xsd:attribute name="event" type="xsd:normalizedString" />
+    <xsd:attribute name="finalStatus" type="xsd:normalizedString" />
+    <xsd:attribute name="indicator" type="xsd:normalizedString" />
+<!--    <xsd:attribute name="comment" type="xsd:normalizedString" /> a new request is now necessary-->
+  </xsd:complexType>
+</xsd:schema>

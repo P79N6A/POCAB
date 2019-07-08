@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://sophis.net/sophis/common" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sophis.net/sophis/common">
+  <!-- Miscellaneous types -->
+  <xsd:simpleType name="char">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Deprecated, kept only for compatibility. Use type 'Char' instead.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Char">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Character, string of length 1.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:length value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="relativeDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Relative date described as + or - a number of days, months, year. For example -2d or +1y.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:pattern value="(\+|-)\d(d|m|y)" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="date">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The "date" type represents a date which can be relative (cf. type "relativeDate") or absolute (cf. "date").</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="tns:relativeDate xsd:date" />
+  </xsd:simpleType>
+  <xsd:simpleType name="xmlDocument">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">XML document is represented by a string.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string" />
+  </xsd:simpleType>
+  <xsd:complexType name="IdentifiedDate">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A date which can be referenced elsewhere.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Made the id attribute optional.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:date">
+        <xsd:attribute name="id" type="xsd:ID" use="optional" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="DateInterval">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type defining a time interval or offset, e.g. one day, three months. Used for specifying frequencies at which events occur, the tenor of a floating rate or an offset relative to another date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="periodMultiplier" type="xsd:int">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A time period multiplier, e.g. 1, 2 or 3 etc. A negative value can be used when specifying an offset relative to another date, e.g. -2 days. If the period value is Term then periodMultiplier must contain the value 1.</xsd:documentation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">since fwk 1.4 : changed from integer to int.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="periodEnum" type="tns:PeriodEnum">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A time period, e.g. a day, week, month, year or term of the stream. If the periodMultiplier value is 0 (zero) then period must contain the value Day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" />
+  </xsd:complexType>
+  <xsd:simpleType name="PeriodEnum">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">The specification of a time period</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Day" />
+      <xsd:enumeration value="Week" />
+      <xsd:enumeration value="Month" />
+      <xsd:enumeration value="Year" />
+      <xsd:enumeration value="Term" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="Offset">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type defining an offset used
+			   in calculating a new date relative to a reference date. Currently, the only
+			   offsets defined are expected to be expressed as either calendar or business
+			day offsets.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:DateInterval">
+        <xsd:sequence>
+          <xsd:element name="dayType" type="tns:DayTypeEnum" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.FpML.org" xml:lang="en">In the case of an offset specified as a number of days,
+						this element defines whether consideration is given as to
+						whether a day is a good business day or not. If a day
+						type of business days is specified then non-business days
+						are ignored when calculating the offset. The financial
+						business centers to use for determination of business
+						days are implied by the context in which this element is
+						used. This element must only be included when the offset
+						is specified as a number of days. If the offset is zero
+						days then the dayType element should not be included.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="DayTypeEnum">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A day type classification used in counting the number of days between two
+			dates.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Business">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">When calculating the number of days between two dates the
+				count includes only business days.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Calendar">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">When calculating the number of days between two dates the
+				count includes all calendar days.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CurrencyBusiness">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">When calculating the number of days between two dates the
+				count includes only currency business days.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ExchangeBusiness">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">When calculating the number of days between two dates the
+				count includes only stock entity business days.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="RelativeDateOffset">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type defining a date (referred to as the derived date) as a relative offset from another date (referred to as the anchor date). If the anchor date is itself an adjustable date then the offset is assumed to be calculated from the adjusted anchor date. A number of different scenarios can be supported, namely;
+			1) the derived date may simply be a number of calendar periods (days, weeks, months or years) preceding or following the anchor date;
+			2) the unadjusted derived date may be a number of calendar periods(days, weeks, months or years) preceding or following the anchor date with the resulting unadjusted derived date subject to adjustment in accordance with a specified business day convention, i.e. the derived date must fall on a good business day; 3) the derived date may be a number of business days preceding or following the anchor date. Note that the businessDayConvention specifies any required adjustment to the unadjusted derived date. A negative or positive value in the
+			periodMultiplier indicates whether the unadjusted derived precedes or follows the anchor date. The businessDayConvention should contain a value NONE if the day type element contains a value of Business (since specifying a negative or positive business days offset would already guarantee that the derived date would fall on a good business day in the specified business centers).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:Offset">
+        <xsd:sequence>
+          <xsd:element name="businessDayConvention" type="tns:BusinessDayConventionEnum">
+            <xsd:annotation>
+              <xsd:documentation source="http://www.FpML.org" xml:lang="en">The convention for
+							adjusting a date if it would otherwise fall on a day that is not a business day.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:group ref="tns:BusinessCenter" minOccurs="0" />
+          <xsd:element name="dateRelativeTo" type="tns:DateRelativeTo" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="BusinessDayConventionEnum">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">The convention for adjusting any relevant date if it would
+			otherwise fall on a day that is not a valid business day. Note
+			that FRN is included here as a type of business day convention
+			although it does not strictly fall within ISDA's definition of a
+			Business Day Convention and does not conform to the simple
+			definition given above.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="NONE">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The date will not be adjusted if it falls on a day that is
+					not a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PRECEDING">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The non-business day will be adjusted to the first preceding
+					day that is a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FOLLOWING">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The non-business date will be adjusted to the first following
+					day that is a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MODFOLLOWING">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The non-business date will be adjusted to the first following
+					day that is a business day unless that day falls in the next
+					calendar month, in which case that date will be the first
+					preceding day that is a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MODPRECEDING">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The non-business date will be adjusted to the first preceding
+					day that is a business day unless that day falls in the
+					previous calendar month, in which case that date will be the
+					first following day that us a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FRN">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">Per 2000 ISDA Definitions, Section 4.11. FRN Convention;
+					Eurodollar Convention.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NotApplicable">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The date adjustments conventions are defined elsewhere, so it
+					is not required to specify them here.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="BusinessCenter">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A code identifying a financial business center location. A business center is drawn from the list identified by the business center scheme.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="businessCenterScheme" default="http://www.fpml.org/spec/2000/business-center-1-0" type="xsd:anyURI" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:group name="BusinessCenter">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Group representing a list of business centers.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="businessCenters" type="tns:BusinessCenters" />
+    </xsd:sequence>
+  </xsd:group>
+  <xsd:complexType name="BusinessCenters">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Type representing a list of business centers.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="businessCenter" type="tns:BusinessCenter" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DateRelativeTo">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">Specifies the anchor as an href attribute. The href attribute
+			value is a pointer style reference to the element or component
+			elsewhere in the document where the anchor date is defined.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="href" use="required" type="xsd:IDREF" />
+  </xsd:complexType>
+  <xsd:complexType name="BusinessDayAdjustments">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type defining the business day convention and
+			financial business centers used for adjusting any relevant date 
+			if it would otherwise fall on a day that is not a business day in the specified business centers.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="businessDayConvention" type="tns:BusinessDayConventionEnum">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The convention for adjusting a date if it would otherwise fall 
+				on a day that is not a business day.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice minOccurs="0">
+        <xsd:group ref="tns:BusinessCentersOrReference.model" />
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" />
+  </xsd:complexType>
+  <xsd:complexType name="BusinessDayAdjustmentsReference">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Reference to a BusinessDay adjustment.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="href" type="xsd:IDREF" use="required" />
+  </xsd:complexType>
+  <xsd:group name="BusinessCentersOrReference.model">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A type where the list of BusinessCenters is either provided or given by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="businessCentersReference" type="tns:BusinessCentersReference" />
+      <xsd:element name="businessCenters" type="tns:BusinessCenters" />
+    </xsd:choice>
+  </xsd:group>
+  <xsd:complexType name="BusinessCentersReference">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A pointer style reference to a set of financial business centers defined elsewhere in the document. This set of business centers is used to determine whether a particular day is a business day
+			or not.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="href" use="required" type="xsd:IDREF" />
+  </xsd:complexType>
+  <xsd:complexType name="AdjustableDate">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type for defining a date that shall be subject 
+			to adjustment if it would otherwise  all on a day that is not a business day in the specified business centers, 
+			together with the convention for adjusting the date.</xsd:documentation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Changed the type of the unadjusted date from
+			an anonymous complex type, to IdentifiedDate</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="unadjustedDate" type="tns:IdentifiedDate">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A date subject to adjustment.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="dateAdjustments" type="tns:BusinessDayAdjustments">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The business day convention and financial business centers used for adjusting the date if it would otherwise fall on a day that is not a business dat in the specified business centers.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="AdjustableOrRelativeDate">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type giving the choice between defining a date as an explicit date together with applicable adjustments or as relative to some other (anchor) date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="adjustableDate" type="tns:AdjustableDate">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A date that shall be subject to adjustment if it would otherwise fall on a day that is not a business day in the
+					specified business centers, together with the convention for adjusting the date.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="relativeDate" type="tns:RelativeDateOffset">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A date specified as some offset to another date (the anchor date).</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+    <xsd:attribute name="id" type="xsd:ID" />
+  </xsd:complexType>
+  <xsd:complexType name="IntradocumentReference">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A reference to an element within the document</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="href" type="xsd:IDREF" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="StreetAddress">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type that describes the set of street and building number information that identifies a postal address within a city.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="streetLine" type="xsd:string" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">An individual line of street and building number information, forming part of a postal address.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Address">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type that represents a physical postal address.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="streetAddress" type="tns:StreetAddress" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The set of street and building number information that identifies a postal address within a city.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="city" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The city component of a postal address.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="state" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A country subdivision used in postal addresses in some countries. For example, US states, Canadian provinces, Swiss cantons.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="country" type="tns:Country" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The ISO 3166 standard code for the country within which the postal address is located.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="postalCode" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">The code, required for computerized mail sorting systems, that is allocated to a physical address by a national postal authority.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Country">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The ISO 3166 standard code for the country within which the postal address is located.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="countryScheme" type="xsd:anyURI" default="http://www.fpml.org/ext/iso3166" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- Referencable types -->
+  <xsd:attributeGroup name="ReferenceGroup">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Basic data structure that can represent a reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="ID" type="xsd:ID" />
+    <xsd:attribute name="href" type="xsd:IDREF" />
+  </xsd:attributeGroup>
+  <xsd:complexType name="ReferencableString">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableChar">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:char">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableInt">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:int">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableLong">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:long">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableFloat">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:float">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableDouble">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:date">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableTime">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:time">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableDateTime">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:dateTime">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableBinary">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:base64Binary">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReferencableXMLDocument">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extends the type by adding the possibility to provide it by its reference.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:xmlDocument">
+        <xsd:attributeGroup ref="tns:ReferenceGroup" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- Persistent State definitions -->
+  <xsd:simpleType name="PersistenceType">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes the nature of the described entity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Create">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Replaces "Anonymous" since 6.1.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Anonymous">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Deprecated since 6.1. Use "Create" instead. Keep it for compatibility reasons.
+						The entity only has a meaning within
+					 	the scope of the document but still needs to be persistent.
+						It is an error that such an entity, is provided a primary key 
+						in its description, and it is awkward that it owns
+						an external reference.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FindOrCreate">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Replaces "Universal" since 6.1.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Universal">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Deprecated since 6.1. Use "FindOrCreate" instead. Keep it for compatibility reasons.
+						The entity definition never changes, it will be created
+						in db only once if it does not exist already.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UpdateOrCreate">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Replaces "Shared" since 6.1.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Shared">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Deprecated since 6.1. Use "UpdateOrCreate" instead. Keep it for compatibility reasons.
+						The entity definition may change, it will be created in
+						db if it does not exist, and updated otherwise.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CheckOrCreate">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The entity definition never changes, it will be created
+            			in db only once if it does not exist already. Moreover, given description is 
+						compared to original description.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Check">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">The entity definition never changes, it will be created
+            			in db only once if it does not exist already. Moreover, given description is 
+						compared to original description.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:attributeGroup name="PersistentEntity.model">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specifies the type of the Persistent Entity.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="persistenceType" type="tns:PersistenceType" use="optional" default="Universal" />
+  </xsd:attributeGroup>
+  <!-- -->
+  <xsd:complexType name="ExtraFields">
+    <xsd:annotation>
+      <xsd:documentation>Extra fields contains data that are extensions to the model.
+			Typically this can be toolkit data.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="extraFields" type="tns:ExtraFields" />
+  <!-- -->
+  <xsd:simpleType name="StringBounded249">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String with a maximum length of 249.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="249" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded39">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String with a maximum length of 39.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="39" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded33">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String with a maximum length of 33.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="33" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded256">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String with a maximum length of 256.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="256" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded40">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String having a maximum length of 40 characters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="40"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="AxisLabels">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Enumeration of possible analysis axis for Risk Matrix and other analytics. For example, underlying spot, rates, volatilities, maturities (calculation date), credit risk spreads.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Underlying" />
+      <xsd:enumeration value="Rate" />
+      <xsd:enumeration value="Volat" />
+      <xsd:enumeration value="Maturity" />
+      <xsd:enumeration value="Credit Risk" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="QuotationSideEnum">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">The side from which perspective a value is quoted.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="Open">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client open quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Last">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client close quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="High">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client High quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Low">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client Low quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Bid">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client Bid quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Ask">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Client Ask quotation.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Mid">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.FpML.org" xml:lang="en">A value midway between the bid and the ask value.</xsd:documentation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Not implemented.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="SnapshotTimestamp">
+  <xsd:sequence> 
+   <xsd:element name="snapshotTime" type="xsd:time" />
+   <xsd:element name="snapshotTimezone" type="xsd:string" minOccurs="0"/>
+  </xsd:sequence>
+ </xsd:complexType>
+ <xsd:complexType name="SnapshotBaseline">
+  <xsd:annotation>
+   <xsd:documentation xml:lang="en">Baseline used to snap market data. A baseline is represented by a date and a timestamp (time+timezon). Timestamp Id can also be provided.</xsd:documentation>
+  </xsd:annotation>
+	<xsd:sequence> 
+	 <xsd:element name="snapshotDate" type="xsd:date"/>
+	 <xsd:choice minOccurs="0">
+	 		 <xsd:element name="snapshotId" type="xsd:int"/>	
+	 		 <xsd:element name="snapshotTimestamp" type="tns:SnapshotTimestamp"/>
+	 </xsd:choice>
+	 <xsd:element name="saveInHistoTable" type="xsd:boolean" minOccurs="0"/>
+	</xsd:sequence>
+ </xsd:complexType>
+ <xsd:element name="snapshotBaseline" type="tns:SnapshotBaseline" />
+ <xsd:complexType name="DoubleInPercent">
+	<xsd:simpleContent>
+		<xsd:extension base="xsd:double">
+			<xsd:attribute name="inPercent" type="xsd:boolean"></xsd:attribute>
+		</xsd:extension>
+	</xsd:simpleContent>
+  </xsd:complexType>
+</xsd:schema>

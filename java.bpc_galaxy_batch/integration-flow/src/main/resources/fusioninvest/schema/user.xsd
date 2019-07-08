@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://www.sophis.net/user" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sophis.net/user" xmlns:common="http://sophis.net/sophis/common">
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en">supported userIdSchemes are:
+		www.sophis.net/user/userId/name :</xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:complexType name="UserId">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en"></xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:normalizedString">
+        <xsd:attribute name="id" type="xsd:ID" use="optional" />
+        <xsd:attribute name="userIdScheme" type="xsd:anyURI" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+</xsd:schema>

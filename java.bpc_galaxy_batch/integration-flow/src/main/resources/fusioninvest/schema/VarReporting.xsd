@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/varReporting" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:tns="http://www.sophis.net/varReporting">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:element name="varParameters" type="tns:VarParameters">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Parameters of Parametric VaR.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="varResults" type="tns:VarResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Results of Parametric VaR.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="varExplanation" type="tns:VarExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Explanation of Parametric VaR.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="varMissingData" type="tns:VarMissingData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Missing data in the CSV file. In this case, we suppose volatility=0 and correlation=0</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="varError" type="tns:VarError">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Error</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="VarParameters">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The full set of Entry Parameters for Parametric VaR calculation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="horizon" type="common:AdjustableOrRelativeDate" />
+      <xsd:element name="confidenceLevel" type="xsd:double" />
+      <xsd:element name="fileName" type="xsd:normalizedString" />
+      <xsd:element name="calculationType" type="xsd:normalizedString" />
+      <xsd:element name="backtestType" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="backtestPerCriteria" type="xsd:normalizedString" />
+      <xsd:element name="criterion" type="xsd:normalizedString" />
+      <xsd:element name="bundle" type="xsd:normalizedString" />
+      <xsd:element name="breakdown" type="xsd:normalizedString" />
+      <xsd:element name="worksheetName" type="xsd:normalizedString" />
+      <xsd:element name="zoneName" type="xsd:normalizedString" />
+      <xsd:element name="importConfigName" type="xsd:normalizedString" />
+      <xsd:element name="importType" type="xsd:normalizedString" />
+      <xsd:element name="allGreeks" type="xsd:normalizedString" />
+      <xsd:element name="delta" type="xsd:normalizedString" />
+      <xsd:element name="vega" type="xsd:normalizedString" />
+      <xsd:element name="rho" type="xsd:normalizedString" />
+      <xsd:element name="credit" type="xsd:normalizedString" />
+      <xsd:element name="inflation" type="xsd:normalizedString" />
+      <xsd:element name="inflationBreakdowns" type="xsd:normalizedString" />
+      <xsd:element name="liquidityRisk" type="xsd:normalizedString" />
+      <xsd:element name="incrementalVarPos" type="xsd:normalizedString" />
+      <xsd:element name="maxExtractionLevel" type="xsd:int" />
+      <xsd:element name="extraction" type="tns:Extraction" />
+      <xsd:element name="saveResults" type="xsd:normalizedString" />
+      <xsd:element name="inPercentNaV" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="criteriaList" type="tns:CriteriaList" />
+      <xsd:element minOccurs="0" name="entryPointList" type="tns:EntryPointList" />
+      <xsd:element minOccurs="0" name="entryPoint" type="tns:EntryPoint" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="EntryPoint">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Reference of the Portfolio (deprecated, see EntryPointList)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="sophisId" type="xsd:int" />
+      <xsd:element name="name" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="Extraction">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Optional reference of an Extraction that describes the Positions and the way they will be grouped in the Results</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="extractionId" type="xsd:int" />
+      <xsd:element name="name" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="Criterion">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Extraction Criterion that describes the way Positions will be grouped in the Results (deprecated, see CriteriaList)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="name" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="CriteriaList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Extraction Criterion that describe the way Positions will be grouped in the Results</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="extractionCriteria" type="tns:Criterion" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="EntryPointList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Portfolio References</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="entryPointFolio" type="tns:EntryPoint" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="VarResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The full set of Output Values generated by the Parametric VaR scenario</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="varFolderResults" type="tns:VarFolderResults" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="VarExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Detailed Explanations of SOPHIS's internal calculation for Parametric VaR (correlations, sensitivities...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice minOccurs="4" maxOccurs="unbounded">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">List of possible Explanation Details for Parametric VaR</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element minOccurs="1" maxOccurs="1" name="varCorrelationExplanation" type="tns:VarCorrelationExplanation" />
+      <xsd:element minOccurs="1" maxOccurs="1" name="varCovarianceExplanation" type="tns:VarCovarianceExplanation" />
+      <xsd:element minOccurs="1" maxOccurs="1" name="varDeltaExplanation" type="tns:VarDeltaExplanation" />
+      <xsd:element minOccurs="0" maxOccurs="1" name="varGammaExplanation" type="tns:VarGammaExplanation" />
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="varBreakDownExplanation" type="tns:VarBreakDownExplanation" />
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="varInflationBreakDownExplanation" type="tns:VarInflationBreakDownExplanation" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="VarCorrelationExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Definite Positive Correlation Matrix between all Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="correlationValue" type="tns:CorrelationValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CorrelationValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Historical Correlation for a pair of Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="source1" type="xsd:long" />
+    <xsd:attribute name="source2" type="xsd:long" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="VarCovarianceExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Covariance Matrix between all Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="covarianceValue" type="tns:CovarianceValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CovarianceValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Historical Covariance for a pair of Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="source1" type="xsd:long" />
+    <xsd:attribute name="source2" type="xsd:long" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="VarGammaExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Second Order Sensitivities with respect to Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="gammaValue" type="tns:GammaValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GammaValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Second Order Sensitivity with respect to one or two Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="source1" type="xsd:long" />
+    <xsd:attribute name="source2" type="xsd:long" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="VarDeltaExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">First Order Sensitivities with respect to Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="deltaValue" type="tns:DeltaValue" />
+    </xsd:sequence>
+    <xsd:attribute name="currency" type="xsd:normalizedString" />
+  </xsd:complexType>
+  <xsd:complexType name="DeltaValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">First Order Sensitivity with respect to one Risk Factors</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="maturity" type="xsd:normalizedString" />
+    <xsd:attribute name="source" type="xsd:long" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="VarBreakDownExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Details of the Interest Rate Breakdown Calculation per Currency</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice minOccurs="1" maxOccurs="2">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">List of possible Explanation Details for the Interest Rate Breakdowns in Parametric VaR</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element minOccurs="0" name="deltaBreakDown" type="tns:DeltaBreakDown" />
+      <xsd:element minOccurs="0" name="gammaBreakDown" type="tns:GammaBreakDown" />
+    </xsd:choice>
+    <xsd:attribute name="currency" type="xsd:normalizedString" />
+    <xsd:attribute name="support" type="xsd:long" />
+    <xsd:attribute name="supportCurrency" type="xsd:normalizedString" />
+  </xsd:complexType>
+  <xsd:complexType name="VarInflationBreakDownExplanation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Details of the Inflation Rate Breakdown Calculation per Index</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice minOccurs="1" maxOccurs="2">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">List of possible Explanation Details for the Inflation Rate Breakdowns in Parametric VaR</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element minOccurs="0" name="deltaInflationBreakDown" type="tns:DeltaInflationBreakDown" />
+      <xsd:element minOccurs="0" name="gammaInflationBreakDown" type="tns:GammaInflationBreakDown" />
+    </xsd:choice>
+    <xsd:attribute name="index" type="xsd:normalizedString" />
+    <xsd:attribute name="support" type="xsd:long" />
+    <xsd:attribute name="supportCurrency" type="xsd:normalizedString" />
+  </xsd:complexType>
+  <xsd:complexType name="DeltaBreakDown">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Interest Rate Delta per Maturity of the Portfolio or a Breakdown Instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="deltaBreakDownValue" type="tns:DeltaBreakDownValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GammaBreakDown">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Interest Rate Gamma (or Crossed Gamma) per Maturity of the Portfolio or a Breakdown Instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="gammaBreakDownValue" type="tns:GammaBreakDownValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DeltaInflationBreakDown">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Inflation Rate Delta per Maturity of the Portfolio or a Breakdown Instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="deltaInflationBreakDownValue" type="tns:DeltaBreakDownValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GammaInflationBreakDown">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Inflation Rate Gamma (or Crossed Gamma) per Maturity of the Portfolio or a Breakdown Instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" name="gammaInflationBreakDownValue" type="tns:GammaBreakDownValue" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="DeltaBreakDownValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">IR Delta of the Portfolio, or a Breakdown Instrument, for a particular currency and maturity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="maturity" type="xsd:normalizedString" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="GammaBreakDownValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">IR Gamma (or Crossed Gamma) of the Portfolio, or a Breakdown Instrument, for a particular currency and maturity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="maturity1" type="xsd:normalizedString" />
+    <xsd:attribute name="maturity2" type="xsd:normalizedString" />
+    <xsd:attribute name="value" type="xsd:double" />
+  </xsd:complexType>
+  <xsd:complexType name="VarFolderResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Parametric VaR results for one Portfolio or Extraction level</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="folder" type="xsd:normalizedString" />
+	  <xsd:element minOccurs="0" name="folderId" type="xsd:int" />
+      <xsd:element minOccurs="0" name="var" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varRho" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varCredit" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varInflation" type="xsd:double" /> 
+      <xsd:element minOccurs="0" name="bmVARDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="bmVARVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="bmVARRho" type="xsd:double" />
+      <xsd:element minOccurs="0" name="bmVARCredit" type="xsd:double" />
+      <xsd:element minOccurs="0" name="bmVARInflation" type="xsd:double" />  
+      <xsd:element minOccurs="0" name="teDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="teVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="teRho" type="xsd:double" />
+      <xsd:element minOccurs="0" name="teCredit" type="xsd:double" />
+      <xsd:element minOccurs="0" name="teInflation" type="xsd:double" />  
+      <xsd:element minOccurs="0" name="PnL" type="xsd:double" />
+      <xsd:element minOccurs="0" name="HypotheticalPnL" type="xsd:double" />
+      <xsd:element minOccurs="0" name="PnLDate" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="HypotheticalPnLDate" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="varLiquidity" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varDeltaVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varCrossed" type="xsd:double" />
+      <xsd:element minOccurs="0" name="shortfall" type="xsd:double" />
+      <xsd:element minOccurs="0" name="currency" type="xsd:int" />
+      <xsd:element minOccurs="0" name="positionVarResults" type="tns:PositionVarResults" />
+      <xsd:element minOccurs="0" name="componentVarResults" type="tns:ComponentVarResults" />
+      <xsd:element minOccurs="0" name="varFolderCommodityResults" type="tns:VarFolderCommodityResults" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="PositionVarResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Parametric VaR results for one position in a Portfolio or Extraction level</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="position" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="var" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varRho" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varCredit" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varInflation" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varLiquidity" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varDeltaVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varCrossed" type="xsd:double" />
+      <xsd:element minOccurs="0" name="shortfall" type="xsd:double" />
+      <xsd:element minOccurs="0" name="incrementalVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="marginalVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="currency" type="xsd:int" />
+      <xsd:element minOccurs="0" name="PnL" type="xsd:double" />
+      <xsd:element minOccurs="0" name="HypotheticalPnL" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ComponentVarResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Parametric VaR results classified by Risk Factor</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Specifies either a Risk Factor or the Sum per Risk Factor</xsd:documentation>
+        </xsd:annotation>
+        <xsd:element name="component" type="tns:ComponentDef" />
+        <xsd:element name="sum" type="xsd:normalizedString" />
+      </xsd:choice>
+      <xsd:element minOccurs="0" name="partialVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="unitDeltaVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="quantityDeltaVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="cVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="betaVar" type="xsd:double" />
+      <xsd:element minOccurs="0" name="marginalVar" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ComponentDef">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Description of a Risk Factor for the Parametric VaR (instrument ID + tag)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="underlyer" type="instrument:Identifier" />
+      <xsd:element minOccurs="0" name="type" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="VarFolderCommodityResults">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Parametric VaR results specific to Commodity Risk</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="folder" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varTotal" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varMaturity" type="tns:VarMaturity" />
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="collection" type="tns:Collection" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="VarMaturity">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Commodity VaR Results organized by Future Maturity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="maturity" type="xsd:int" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varTotal" type="xsd:double" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="Collection">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Commodity VaR Results organized by Commodity Collection (Collection is eg Power, Oil...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="collectionName" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varTotal" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varMaturity" type="tns:VarMaturity" />
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="commodity" type="tns:Commodity" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Commodity">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Commodity VaR Results organized by Reference Commodity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element minOccurs="0" name="commodityName" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="varDelta" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varVega" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varTotal" type="xsd:double" />
+      <xsd:element minOccurs="0" name="varMaturity" type="tns:VarMaturity" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="VarMissingData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Risk Factors for which the Correlation Matrix does not contain any related Historical Volatility</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="missingInstrument" type="tns:MissingInstrument" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="MissingInstrument">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Reference of a Risk Factor for which the Correlation Matrix does not contain any related Historical Volatility</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="code" type="xsd:int" />
+      <xsd:element minOccurs="0" name="ref" type="xsd:normalizedString" />
+      <xsd:element minOccurs="0" name="type" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+  <xsd:complexType name="VarError">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Warning or Error messages generated during the VaR calculation process</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element minOccurs="0" name="message" type="xsd:normalizedString" />
+    </xsd:all>
+  </xsd:complexType>
+</xsd:schema>

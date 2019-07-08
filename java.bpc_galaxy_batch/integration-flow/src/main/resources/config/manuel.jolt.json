@@ -1,0 +1,29 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "index1": "&0",
+      "index2": "&0",
+      "index3": "&0",
+      "index5": "quotesByDate[].quotationDate",
+      "index7": "quotesByDate[#2].quote[].value",
+      "index10": "quotesByDate[#2].quote[].value"
+    }
+  },
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "id": "=concat(@(1,index1), '#', @(1,index2), '#', @(1,index3))"
+    }
+  },
+
+  {
+    "operation": "shift",
+    "spec": {
+      "id": "identifier.reference[].value",
+      "quotesByDate": "&0"
+    }
+  }
+
+]

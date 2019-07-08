@@ -1,0 +1,70 @@
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const rxPaths = require('rxjs/_esm5/path-mapping');
+
+const utils = require('./utils.js');
+
+module.exports = (options) => ({
+    resolve: {
+        extensions: ['.ts', '.js'],
+        modules: ['node_modules'],
+        alias: {
+            app: utils.root('src/app/'),
+            ...rxPaths()
+        }
+    },
+    stats: {
+        children: false
+    },
+    performance: {
+        maxEntrypointSize: 1024000,
+        maxAssetSize: 1024000
+    },
+    module: {
+        rules: [
+            {
+                test: /\.html$/,
+                loader: 'html-loader',
+                options: {
+                    minimize: true,
+                    caseSensitive: true,
+                    removeAttributeQuotes:false,
+                    minifyJS:false,
+                    minifyCSS:false
+                },
+                exclude: ['/src/index.html']
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
+                loader: 'file-loader',
+                options: {
+                    digest: 'hex',
+                    hash: 'sha512',
+                    name: '[hash].[ext]'
+                }
+            },
+            // Ignore warnings about System.import in Angular
+            { test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } },
+        ]
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: `'${options.env}'`,
+                BUILD_TIMESTAMP: `'${new Date().getTime()}'`,
+                VERSION: `'${utils.parseVersion()}'`,
+                DEBUG_INFO_ENABLED: options.env === 'development',
+                // The root URL for API calls, ending with a '/' - for example: `"http://www.localhost:10000/myservice/"`.
+                // If this URL is left empty (""), then it will be relative to the current context.
+                // If you use an API server, in `prod` mode, you will need to enable CORS
+                SERVER_API_URL: `''`
+            }
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            chunks: ['vendors', 'polyfills', 'main', 'global'],
+            chunksSortMode: 'manual',
+            inject: 'body'
+        })
+    ]
+});

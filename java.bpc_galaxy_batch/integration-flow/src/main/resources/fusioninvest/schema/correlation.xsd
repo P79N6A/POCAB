@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/correlation" elementFormDefault="qualified" attributeFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sophis.net/correlation" xmlns:instr="http://www.sophis.net/Instrument"
+	xmlns:volatility="http://www.sophis.net/volatility" xmlns:common="http://sophis.net/sophis/common"> 
+
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd" />
+  <xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:complexType name="Correlation">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Object representing the Correlation term Structure between two Instruments</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="model" type="xsd:string" />
+      <xsd:element name="points" type="tns:CorrelationPoints" minOccurs="0" />
+      <xsd:element name="identifier" type="tns:CorrelationIdentifier" minOccurs="0"/>
+      <xsd:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0" maxOccurs="1" />
+	</xsd:sequence>
+	<xsd:attributeGroup ref="common:PersistentEntity.model">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">persitenceType for import</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attributeGroup>
+  </xsd:complexType>
+  <xsd:element name="correlation" type="tns:Correlation" />
+  <xsd:complexType name="CorrelationPoints">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Correlation values per maturity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="point" type="tns:CorrelationPoint" maxOccurs="unbounded" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CorrelationPoint">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">One Correlation Value for given a pair of Underlyings and Maturity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="volatility:Abscissa">
+        <xsd:sequence>
+          <xsd:element name="value" type="xsd:double">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Value of correlation at this abscissa</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="CorrelationIdentifier">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">correlation identifier : can be Exchange/Exchange, Exchange/Forex and Forex/Forex</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="instrument1" type="instr:Identifier"/>
+        <xsd:element name="quotedCurrencyPair1" type="instr:QuotedCurrencyPair"/>
+      </xsd:choice>
+      <xsd:choice>
+        <xsd:element name="instrument2" type="instr:Identifier"/>
+        <xsd:element name="quotedCurrencyPair2" type="instr:QuotedCurrencyPair"/>
+      </xsd:choice>
+
+    </xsd:sequence>
+  </xsd:complexType>
+  	    <xsd:element name="correlationIdentifier" type="tns:CorrelationIdentifier"/>
+
+</xsd:schema>

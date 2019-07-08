@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.sophis.net/FactorModels"  xmlns:common="http://sophis.net/sophis/common" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/FactorModels" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+    <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+     
+	<xs:element name="csmFactorModelData" type="tns:CSMFactorModelData" />
+	<xs:element name="factorModelsKey" type="tns:FactorModelsKey" />
+  
+	<xs:complexType name="CSMFactorModelData">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs ="1" name="Key" nillable="false" type="tns:FactorModelsKey" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="FactorsMetaDataElements" nillable="false" type="tns:FactorModelsMetaData" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="InstrumentsMetaDataElements" nillable="false" type="tns:FactorModelsMetaData" />
+			<xs:element minOccurs="0" maxOccurs="1" name="InstrumentsUniversalReferences" nillable="false" type="tns:FactorModelsUniversalReferences" />
+			<xs:element minOccurs="1" maxOccurs="1" name="FactorsData" nillable="false" type="tns:FactorModelsElements" />
+			<xs:element minOccurs="0" maxOccurs="1" name="InstrumentsData" nillable="false" type="tns:FactorModelsElements" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="FactorsValues" nillable="false" type="tns:InstrumentFactorsValues" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="CovarianceMatrix" nillable="false" type="tns:FactorStatData" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="CorrelationMatrix" nillable="false" type="tns:FactorStatData" />
+		</xs:sequence>
+		<xs:attribute name="UpdateType" type="tns:FactorModelsUpdateType" use="required"/>
+		<xs:attributeGroup ref="common:PersistentEntity.model">
+     	      <xs:annotation>
+              <xs:documentation xml:lang="en">Since 5.3.3 add persitenceType for import</xs:documentation>
+             </xs:annotation>
+        </xs:attributeGroup>
+	</xs:complexType>
+
+	<xs:simpleType name="FactorModelsUpdateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Total"/>
+			<xs:enumeration value="Partial"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="FactorModelsUniversalReferences">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="N" type="xs:string" /> <!--NAME-->
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="FactorModelsKey">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs ="1" name="Name" nillable="false" type="xs:string" />
+		</xs:sequence>
+		<xs:attribute name="ProviderType" type="xs:string" default="Standard" />
+		<xs:attribute name="MatcherType" type="xs:string" default="Standard" />
+		<xs:attribute name="ProviderName" type="xs:string"  />
+		<xs:attribute name="Date" type="xs:dateTime" use="required" />
+		<xs:attribute name="Index" type="xs:int" use="optional" />
+		<xs:attribute name="IsLast" type="xs:boolean" use="optional" />
+		<xs:attribute name="MetaDataSeparator" type="xs:string" use="optional" />
+	</xs:complexType>
+	
+	<xs:complexType name="FactorModelsMetaData">
+		<xs:attribute name="N" type="xs:string" /> <!--NAME-->
+		<xs:attribute name="T" type="xs:string" use="optional"/> <!--Type-->
+		<xs:attribute name="U" type="xs:string" use="optional"/> <!--Unit-->
+	</xs:complexType>
+	
+	<xs:complexType name="FactorModelsElement">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="N" type="xs:string" /> <!--NAME-->
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="UR" type="xs:string" /> <!--UNIVERSAL_REFERENCE-->
+			<xs:element minOccurs="0" maxOccurs="1" name="MD" type="xs:string" /> <!--METADATA-->
+		</xs:sequence>
+		<xs:attribute name="Id"  use="required" type="xs:string" />
+		<xs:attribute name="T"  use="optional" type="xs:string" /> <!-- Factor type-->
+		<xs:attribute name="R" use="optional" type="xs:double" /> <!-- RETURN-->
+		<xs:attribute name="V" use="optional" type="xs:double" /> <!-- VOLATILITY-->
+	</xs:complexType>
+
+	<xs:complexType name="FactorModelsElements">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="E" type="tns:FactorModelsElement" /> <!--ELEMENT-->
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InstrumentFactorsValues">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="B" type="xs:double" /> <!--BETA-->
+		</xs:sequence>
+		<xs:attribute name="E" type="xs:double" />
+		<xs:attribute name="N" type="xs:string" /> <!--NAME-->
+		<xs:attribute name="Id"  use="required" type="xs:string" />
+	</xs:complexType>
+	
+	<xs:complexType name="FactorStatData">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="S" type="xs:double" /> <!--STAT-->
+		</xs:sequence>
+		<xs:attribute name="N" type="xs:string" /> <!--NAME-->
+		<xs:attribute name="Id"  use="required" type="xs:string" />
+	</xs:complexType>
+	
+</xs:schema>

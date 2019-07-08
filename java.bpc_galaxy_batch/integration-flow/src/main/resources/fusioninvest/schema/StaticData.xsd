@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/StaticData" xmlns:common="http://sophis.net/sophis/common" xmlns:instr="http://www.sophis.net/Instrument" xmlns:tns="http://www.sophis.net/StaticData" xmlns="http://www.sophis.net/StaticData" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  
+	<xsd:simpleType name="StringBounded10">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">String with a maximum length of 10.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="10" />
+		</xsd:restriction>
+	</xsd:simpleType> 
+	
+	<xsd:simpleType name="InstrumentOwnershipType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">InstrumentOwnershipTypeEnum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="AtNegociation" />
+			<xsd:enumeration value="AtDelivery" />
+			<xsd:enumeration value="SeeGoverningCurrency"/>
+			<xsd:enumeration value="AtNegociationIncludingTaxCredit"/>
+			<xsd:enumeration value="SeeGoverningPlace"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ExerciseType">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">Describes exercise type for an option. Possible values: European, American</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="European"></xsd:enumeration>
+			<xsd:enumeration value="American"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	<xsd:simpleType name="OffsetType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">DayOffsetTypeEnum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="DayPlus" />
+			<xsd:enumeration value="MonthPlus" />
+			<xsd:enumeration value="WeekPlus"/>
+			<xsd:enumeration value="Calendar"/>
+			<xsd:enumeration value="CalendarPlus"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="StubPaymentPeriodType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">StubPaymentPeriodTypeEnum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="AtTheBegining" />
+			<xsd:enumeration value="AtTheEnd" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="CurrencyRoundingMethodType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">CurrencyRoundingMethodTypeEnum</xsd:documentation>
+		</xsd:annotation>	
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="AtHundredth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At hundredth - values are rounded to 0.01.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtUnit">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At unit - values are rounded to the whole number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtThousand">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At thousandth - values are rounded to 0.001.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtThousandth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At thousand - values are rounded to nearest thousand.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtTenThousandth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At ten-thousandth - values are rounded to 0.0001.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtHundredThousandth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At hundred-thousandth - values are rounded to 0.00001.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtTen">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At ten - values are rounded to the nearest ten.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="AtHundred">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">At hundred - values are rounded to nearest hundred.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="InstrumentQuotationType">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Currency" />
+			<xsd:enumeration value="Hundredth" />
+			<xsd:enumeration value="Thousandth" />
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="ResultRoundingType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Method of rounding.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Rounded" />
+			<xsd:enumeration value="Truncated" />
+			<xsd:enumeration value="Plain" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="WeekEndOpenDays">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">WeekEndOpenDaysEnum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Saturdays" />
+			<xsd:enumeration value="Sundays" />
+			<xsd:enumeration value="Both" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="SwaptionDeliveryForCalibration">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Tells how the volatility in swaption volatility matrix are to be interpreted: using cash settlement, physical settlement, or according to calibrated product.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Physical"></xsd:enumeration>
+			<xsd:enumeration value="Cash"></xsd:enumeration>
+			<xsd:enumeration value="SameAsProduct"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CurrencyModel">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Standard"></xsd:enumeration>
+			<xsd:enumeration value="Precious Metals"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+
+	<xsd:simpleType name="DayEnum">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en" />
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Sunday" />
+			<xsd:enumeration value="Monday" />
+			<xsd:enumeration value="Tuesday" />
+			<xsd:enumeration value="Wednesday" />
+			<xsd:enumeration value="Thursday" />
+			<xsd:enumeration value="Friday" />
+			<xsd:enumeration value="Saturday" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	 <xsd:simpleType name="AvailabilityType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">AvailabilityTypeEnum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Available" />
+			<xsd:enumeration value="Unavailable" />
+		</xsd:restriction>
+	</xsd:simpleType>
+ 
+	<xsd:simpleType name="ModelnameType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Model name can be toolkitted.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Standard"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="OnBankHolidayCouponIsPaidType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Defines the coupon date if it falls on a non-business day.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="The Day Before"></xsd:enumeration>
+			<xsd:enumeration value="The Day After"></xsd:enumeration>
+			<xsd:enumeration value="Nearest"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>		
+		
+	<xsd:complexType name="HolidaysCalendarEntry">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en" />
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="weekendsDay" type="tns:DayEnum" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define a weekends day. For example, markets in Saudi Arabia are open from Saturday to Wednesday. To define the business days for the Saudi riyal, you must specify Thursday and Friday in the calendar. By default, Saturday and Sunday are considered non-business days.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="publicHolidaysDate" type="xsd:date" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define a Bankholiday date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PublicHolidaysCalendar">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en" />
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="dayOff" type="tns:HolidaysCalendarEntry" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:element name="currency" type="tns:Currency" />
+	<xsd:element name="currencyIdentifier" type="tns:CurrencyIdentifier" />
+	
+	<xsd:complexType name="CurrencyIdentifier">
+	<xsd:choice>
+		<xsd:element minOccurs="0" name="name" type="instr:Currency"/>
+		<xsd:element minOccurs="0" name="code" type="xsd:int"/>
+	</xsd:choice>
+	</xsd:complexType>
+  
+	<xsd:complexType name="Currency">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Currencies are the basic monetary units for instruments and deals. They define how instruments are traded and deals are handled. This includes the business days, ownership and delivery behaviour, and the exchange rate between one currency and another.</xsd:documentation>
+		</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element name="currencyCode" type="instr:Currency">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier of the Currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="common:StringBounded39">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the Currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element minOccurs="0" name="quotity" type="xsd:int"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qP" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qH" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qB" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qBid" type="xsd:double"></xsd:element>	
+			<xsd:element minOccurs="0" name="quote_qAsk" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qD" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="quote_qL" type="xsd:double"></xsd:element>
+			<xsd:element minOccurs="0" name="date_quote" type="xsd:int"></xsd:element>	
+			<xsd:element minOccurs="0" name="baseFXRate" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Displays the rate of a currency, with respect to its base currency. The rate of the currency is calculated using the this rate and the spot price of the base currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="baseCurrency" type="instr:Currency">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the base currency. This is defined for currencies that are pegged to another currency. The rate between these currencies is defined by the Base FX Rate parameter. This field can be undefined.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="masterCurrency" type="instr:Currency">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the currency against which the currency is quoted. This field can be undefined</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="inverseRIC" type="xsd:boolean"></xsd:element>
+			<xsd:element minOccurs="0" name="equityOwnershipType" type="tns:InstrumentOwnershipType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define the default ownership type for equity. This type is used to calculate the ex-coupon date from the record date of an equity. Provided value can be neither SeeGoverningCurrency nor SeeGoverningPlace</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="bondOwnershipType" type="tns:InstrumentOwnershipType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define the default ownership type for bond. This type is used to calculate the ex-coupon date from the record date of an bond.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="holidayAdjustmentType" type="instr:HolidayAdjustementEnum">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Get the holiday adjustment type. Used to implement the calendar interface.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="fundingRate" type="instr:Identifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">During the reporting, each cash is remunerated using that interest rate.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="index" type="instr:Identifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Get the index associated to the currency. This is only used for the bundle currency to group all the equity delta for that currency in this underlying.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="stubPaymentPeriodType" type="tns:StubPaymentPeriodType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define the stub payment period. It is used to generate a swap schedule.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="roundingMethodType" type="tns:CurrencyRoundingMethodType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Get the rounding method type. Used for instance to round an amount when paying an amount for a swap coupon or an accrued.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="weekEndOpenDays" type="tns:WeekEndOpenDays">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Define which days are open during the weekend for that currency. Used to implement the calendar interface.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="considerEndOfMonth" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Check if interest rate has to take into account the end of month. This is used to define the period when the start date is the end of opened days; if it is set to true, the end date will be also the last open days of the month.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="swaptionBasis" type="instr:DayCountBasis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basis used for Cash settlement swaptions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="swaptionMode" type="instr:YieldCalculation">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Yield calculation mode used for Cash settlement swaptions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="CDSBasis" type="instr:DayCountBasis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Basis used as default parameter for CDS linked to this currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="CDSMode" type="instr:YieldCalculation">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Yield calculation mode used as default parameter for CDS linked to this currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="CDSFrequency" type="instr:PeriodicityType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Frequency used as default parameter for CDS linked to this currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="deliveryForSwaptionVolatility" type="tns:SwaptionDeliveryForCalibration">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Tells how the volatility in swaption volatility matrix are to be interpreted: using cash settlement, physical settlement, or according to calibrated product. This is used for instance when calibrating the Hull and White model from european swaptions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element minOccurs="0" name="model" type="tns:CurrencyModel">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the currency model. The following models are available: "Standard" to define a standard monetary currency. "Precious Metals" to define a precious metal commodity</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="currencyPublicHolidays" type="tns:PublicHolidaysCalendar" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the currency's non-business days, including weekends and public holidays. Weekends are defined as name of the recurring days of the week that are non-business days. By default, Saturday and Sunday are considered non-business days. Use weekEndOpenDays field to modify this behavior. Public holidays are defined as specific dates on which the currency's markets do not trade.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="forwardFutureCorrelation" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the factor used in interest-rate convexity adjustment calculations for futures and forwards.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  
+	<xsd:element name="market" type="tns:Market" />
+	<xsd:complexType name="Market">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"></xsd:documentation>
+		</xsd:annotation>
+        <xsd:sequence>
+			<xsd:element name="name" type="common:StringBounded39">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the market.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currency" type="instr:Currency">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the market currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element name="code" type="instr:Mnemonic">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal market code.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>				
+			<xsd:element minOccurs="0" name="place" type="common:StringBounded39">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the place for which the market is created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="vat" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the VAT percentage applicable to the brokerage fees on all deals on the market.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="otherTax" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the percentage for all other taxes.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="model" type="common:StringBounded39">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines a market model. Use Standard for default value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="shortName" type="tns:StringBounded10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Short name of the Market. Its maximum length is 10 char.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--xsd:element minOccurs="0" name="counterparty" type="instr:PartyReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the market counterparty.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element-->
+			<xsd:element minOccurs="0" name="depositary" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the market depositary.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="couponGenerationShift" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines the number of days before the package coupon end date that the package's swap and debt instrument tickets are generated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="hairCut" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the default amount of stock loan principal covered by securities instead of cash. (Deprecated)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="exDivDateCalcType" type="tns:ExerciseType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines how the ex-dividend date is calculated. This has the following settings: European - calculates the ex-dividend date using the European method. American - calculates the ex-dividend date using the American method.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="instrOwnership" type="tns:InstrumentOwnershipType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines how instrument ownership changes during a trade.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="offsetType" type="tns:OffsetType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the offset type to apply to paymentOffset and deliveryOffset filed. It has the following settings: Immediate at d+, Monthly at m+, Weekly at w+, See calendar, Calendar at d+</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="deliveryOffset" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the offset value for the delivery date of trades on the market. It has to be concidered in the context of offsetType filed value</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="paymentOffset" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the offset value for the payment date of trades on the market. It has to be concidered in the context of offsetType filed value</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="quotationType" type="tns:InstrumentQuotationType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the price quotation type. It has the following settings:Currency, Hundredth, Thousandth (prices are quoted in thousandths of the currency).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="includeAccInterest" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines if tax credits are included if the ownership of a share or bond changes. It is only taken into account if instrOwnership field is AtNegociation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="useAdjDatesForAI" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines if accrued coupons are calculated based on the adjusted date of the previous coupon date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="dateRoll" type="instr:HolidayAdjustementEnum">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines how bond coupons are adjusted. It has the following settings: See Currency, The Day Before, The Day After, Nearest</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element> 
+			<xsd:element minOccurs="0" name="aIDayCountBasis" type="instr:DayCountBasis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the day count basis of accrued interest calculations.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="aIRoundingType" type="tns:ResultRoundingType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines how accrued interest calculations are rounded in bond futures. This has the following settings: Rounded - accrued interest calculations are rounded to the number of decimals defined in the Decimals Units text box. Truncated ?accrued interest calculations are truncated to the number of decimals defined in the Decimals Units text box. Plain accrued interest calculations are not rounded or truncated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="aIDecimalUnits" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the number of decimals displayed in accrued interest calculations. This is only displayed if the field AIRoundingType is set to either Truncated or Rounded.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="bondQuotationInRate" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Sets the default quotation type of all bonds created on the market to In rate.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="adjDatesForYtM" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines that only business dates are used in yield-to-maturity calculations.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="ytMOnSettlementDate" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines the date on which the yield to maturity is calculated. This has the following settings: If this check box is selected, the yield to maturity is calculated on the settlement date. If this check box is cleared, the yield to maturity is calculated on the trade date. Note: This parameter does not affect debt instruments.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="ytMDayCountBasis" type="instr:DayCountBasis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the day count basis used to calculate the yield to maturity.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="ytMCalculationType" type="instr:YieldCalculation">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the mode used to calculate the yield to maturity.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="ytMRoundingType" type="tns:ResultRoundingType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines how YTM calculations are rounded in bond futures.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="ytMDecimalUnits" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the number of decimals displayed in YTM results. This is only displayed if the field AIRoundingType is set to either Truncated or Rounded.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="accrualsFees" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the percentage of tax applied to accrued interest calculations.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="couponFees" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the percentage of tax charged when the coupon is paid.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="dutyStamps" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the percentage of tax that must be paid when a trade is completed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="transactionCosts" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the fees that are charged by the market.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="transCostsByOrder" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Applies the transaction costs to each deal.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="bondDayCountBasis" type="instr:DayCountBasis">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the day count basis of duration calculations.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="bondFrequency" type="instr:PeriodicityType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the frequency of bond coupons.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="adjDatesForCoupon" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines if bond coupons are calculated using the adjusted date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>	
+	</xsd:complexType>  
+  
+	<xsd:element name="place" type="tns:Place" />
+    <xsd:complexType name="Place">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"></xsd:documentation>
+		</xsd:annotation>
+        <xsd:sequence>
+			<xsd:element name="name" type="common:StringBounded39">				
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the place. example is 'NEW YORK NYMEX'</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!--xsd:element name="code" type="instr:Mnemonic">				
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Code of the market. example is 'NYME'</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element-->
+			<xsd:element name="currency" type="instr:Currency">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Displays the place's currency..</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element minOccurs="0" name="extraBankHolidays" type="tns:PublicHolidaysCalendar">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the other extra days. Other extra days are defined in Extra bank h/days list</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="equityOwnershipType" type="tns:InstrumentOwnershipType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the point at which the ownership of shares changes during a trade.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="bondOwnershipType" type="tns:InstrumentOwnershipType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the point at which the ownership of bonds changes during a trade.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element minOccurs="0" name="index" type="instr:Identifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the index. This is used for beta computation.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="taxCreditPercentagePerShare" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the tax credit percentage for instruments defined on the place. Share - the tax credit applied to shares.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="taxCreditPercentagePerArbitrage" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the tax credit percentage for instruments defined on the place. Arbitrage - the tax credit applied to arbitraged instruments.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="taxCreditPercentagePerOption" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the tax credit percentage for instruments defined on the place. Option - the tax credit applied to options.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="taxCreditPercentagePerFuture" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the tax credit percentage for instruments defined on the place. Future - the tax credit applied to futures.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element minOccurs="0" name="taxCreditPercentagePerLoans" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the tax credit percentage for instruments defined on the place. Loans - the tax credit applied to loans.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+			<xsd:element minOccurs="0" name="shortName" type="tns:StringBounded10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Hidden Editor</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="availability" type="tns:AvailabilityType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the availability of the place.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="forexHistoricalColumn" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Column Defines the column of the currency's Historical window that sets the exchange rate of the market's currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>	
+			<xsd:element minOccurs="0" name="ignoreCurrencyHolidays" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Determines the non-business days. This check has the following settings: 
+														Selected - the non-business days are defined in Extra bank h/days list. All non-business days defined for the currency are ignored.
+														Cleared - the non-business days are the currency's non-business days plus the days listed in the Extra bank h/days list.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element minOccurs="0" name="modelName" type="tns:ModelnameType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the model of the place. This list is populated with the Standard model and all toolkitted models.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+	</xsd:sequence>	
+	</xsd:complexType>	
+	
+</xsd:schema>  

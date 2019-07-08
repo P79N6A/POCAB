@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="soaMethodDesignerService" targetNamespace="http://soaDesigner.sophis.net" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapwsdl="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soaDesigner.sophis.net" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<wsdl:types>
+
+		<xsd:schema targetNamespace="http://sophis.net/sophis/common">
+			<xsd:include schemaLocation="common.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/party">
+			<xsd:include schemaLocation="party.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/ExoticMask">
+			<xsd:include schemaLocation="ClauseBuilderExoticMask.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/Instrument">
+			<xsd:include schemaLocation="instrument.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/folio">
+			<xsd:include schemaLocation="folio.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/SSI">
+			<xsd:include schemaLocation="ssi.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccount">
+			<xsd:include schemaLocation="NostroAccount.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/trade">
+			<xsd:include schemaLocation="trade.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/user">
+			<xsd:include schemaLocation="user.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/reporting">
+			<xsd:include schemaLocation="Reporting.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/preferences">
+			<xsd:include schemaLocation="preferences.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/valuation">
+			<xsd:include schemaLocation="Valuation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/scenario">
+			<xsd:include schemaLocation="scenario.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/history">
+			<xsd:include schemaLocation="history.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/fund">
+			<xsd:include schemaLocation="fund.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmark">
+			<xsd:include schemaLocation="amBenchmark.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/amBenchmarkComposition">
+			<xsd:include schemaLocation="amBenchmarkComposition.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/quotation">
+			<xsd:include schemaLocation="quotation.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.sophis.net/sophis">
+			<xsd:include schemaLocation="sophis.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.w3.org/2000/09/xmldsig#">
+			<xsd:include schemaLocation="xmldsig-core-schema.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.fpml.org/2005/FpML-4-2">
+			<xsd:include schemaLocation="fpml-msg-4-2-extract.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/volatility">
+			<xsd:include schemaLocation="volatility.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/execution">
+			<xsd:include schemaLocation="execution.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4">
+			<xsd:include schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+		</xsd:schema>
+	
+		<xsd:schema targetNamespace="http://www.sophis.net/CorporateActions">
+			<xsd:include schemaLocation="CorporateActions.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/CreditRisk">
+			<xsd:include schemaLocation="CreditRiskData.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/dividend">
+			<xsd:include schemaLocation="dividend.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/yieldCurve">
+			<xsd:include schemaLocation="YieldCurve.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/correlation">
+			<xsd:include schemaLocation="correlation.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/repo_margin">
+			<xsd:include schemaLocation="repo_margin.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://sophis.net/sophis/gxml/dataExchange">
+			<xsd:include schemaLocation="dataExchange.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/authentication">
+			<xsd:include schemaLocation="authUtil.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/listedmarket">
+			<xsd:include schemaLocation="ListedMarket.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/position">
+			<xsd:include schemaLocation="position.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/FactorModels">
+			<xsd:include schemaLocation="FactorModelTypes.xsd"/>
+		</xsd:schema>
+
+		<xsd:schema targetNamespace="http://www.sophis.net/Tag">
+			<xsd:include schemaLocation="Tag.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/NostroAccountReference">
+			<xsd:include schemaLocation="NostroAccountReference.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/accountingposition">
+			<xsd:include schemaLocation="accountingposition.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/dailyData">
+			<xsd:include schemaLocation="dailyData.xsd"/>
+		</xsd:schema>
+		
+
+		<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://soaDesigner.sophis.net" xmlns:authUtil="http://www.sophis.net/authentication" xmlns:common="http://sophis.net/sophis/common" xmlns:dataExch="http://sophis.net/sophis/gxml/dataExchange" xmlns:folio="http://www.sophis.net/folio" xmlns:fpml="http://www.fpml.org/2005/FpML-4-2" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:party="http://www.sophis.net/party" xmlns:sophis="http://www.sophis.net/sophis" xmlns:trade="http://www.sophis.net/trade" xmlns:user="http://www.sophis.net/user" xmlns:valuation="http://www.sophis.net/valuation">
+
+			<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/ExoticMask" schemaLocation="ClauseBuilderExoticMask.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/valuation" schemaLocation="Valuation.xsd"/>
+			<xsd:import namespace="http://www.fixprotocol.org/FIXML-4-4" schemaLocation="fixml-ordersSupported-4-4.xsd"/>
+			<xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+			<xsd:import namespace="http://sophis.net/sophis/gxml/dataExchange" schemaLocation="dataExchange.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/authentication" schemaLocation="authUtil.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/FactorModels" schemaLocation="FactorModelTypes.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/dailyData" schemaLocation="dailyData.xsd"/>
+
+			<xsd:simpleType name="ErrorCode">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+							0 	= success
+							1 	= not logged in
+							2 	= already logged id
+							3 	= no license available
+							4 	= method designer error
+							5	= other error; a reason is provided
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="SUCCESS"/>
+					<xsd:enumeration value="NOTLOGGEDIN"/>
+					<xsd:enumeration value="ALREADYLOGGED"/>
+					<xsd:enumeration value="NOLICENSE"/>
+					<xsd:enumeration value="METHODDESIGNERERROR"/>
+					<xsd:enumeration value="MISC"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="Error">
+				<xsd:sequence>
+					<xsd:element name="code" type="tns:ErrorCode"/>
+					<xsd:element minOccurs="0" name="reason" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation source="http://www.sophis.net" xml:lang="en">defined only if errorCode=3</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="GetSoaMethods">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:soaMethodsExportMessage"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getSoaMethods" type="tns:GetSoaMethods"/>
+
+			<xsd:complexType name="GetSoaMethodsResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getSoaMethodsResponse" type="tns:GetSoaMethodsResponse"/>
+
+			<xsd:complexType name="ExecuteSoaMethods">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:soaMethodsRequest"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="executeSoaMethods" type="tns:ExecuteSoaMethods"/>
+
+			<xsd:complexType name="ExecuteSoaMethodsResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="executeSoaMethodsResponse" type="tns:ExecuteSoaMethodsResponse"/>
+
+			<xsd:complexType name="ProcessRaw">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="message" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processRaw" type="tns:ProcessRaw"/>
+
+			<xsd:complexType name="ProcessRawResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="response" type="xsd:string"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="processRawResponse" type="tns:ProcessRawResponse"/>
+
+			<xsd:complexType name="ExportSoaTemplates">
+				<xsd:sequence>
+				    <xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:soaTemplateExport"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportSoaTemplates" type="tns:ExportSoaTemplates"/>
+
+			<xsd:complexType name="ExportSoaTemplatesResponse">
+				<xsd:sequence>
+					<xsd:element ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="exportSoaTemplatesResponse" type="tns:ExportSoaTemplatesResponse"/>
+
+			<xsd:complexType name="ImportSoaTemplates">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="dataExch:soaTemplateImport"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importSoaTemplates" type="tns:ImportSoaTemplates"/>
+
+			<xsd:complexType name="ImportSoaTemplatesResponse">
+				<xsd:sequence>
+					<xsd:element ref="dataExch:message"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="importSoaTemplatesResponse" type="tns:ImportSoaTemplatesResponse"/>
+
+
+			<xsd:complexType name="Login">
+				<xsd:sequence>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="login" type="tns:Login"/>
+
+			<xsd:complexType name="LoginResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="authUtil:token"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="loginResponse" type="tns:LoginResponse"/>
+
+			<xsd:complexType name="Logout">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logout" type="tns:Logout"/>
+
+			<xsd:complexType name="LogoutResponse">
+				<xsd:sequence>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logoutResponse" type="tns:LogoutResponse"/>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="getSoaMethodsRequest">
+		<wsdl:part element="tns:getSoaMethods" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="getSoaMethodsResponse">
+		<wsdl:part element="tns:getSoaMethodsResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="executeSoaMethodsRequest">
+		<wsdl:part element="tns:executeSoaMethods" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="executeSoaMethodsResponse">
+		<wsdl:part element="tns:executeSoaMethodsResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="processRawRequest">
+		<wsdl:part element="tns:processRaw" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="processRawResponse">
+		<wsdl:part element="tns:processRawResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="exportSoaTemplates">
+		<wsdl:part element="tns:exportSoaTemplates" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="exportSoaTemplatesResponse">
+		<wsdl:part element="tns:exportSoaTemplatesResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="importSoaTemplates">
+		<wsdl:part element="tns:importSoaTemplates" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="importSoaTemplatesResponse">
+		<wsdl:part element="tns:importSoaTemplatesResponse" name="parametersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="loginRequest">
+		<wsdl:part element="tns:login" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="loginResponse">
+		<wsdl:part element="tns:loginResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="logoutRequest">
+		<wsdl:part element="tns:logout" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="logoutResponse">
+		<wsdl:part element="tns:logoutResponse" name="parametersResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="SoaMethodDesignerService">
+		<wsdl:operation name="getSoaMethods">
+			<wsdl:input message="tns:getSoaMethodsRequest"/>
+			<wsdl:output message="tns:getSoaMethodsResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="executeSoaMethods">
+			<wsdl:input message="tns:executeSoaMethodsRequest"/>
+			<wsdl:output message="tns:executeSoaMethodsResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="processRaw">
+			<wsdl:input message="tns:processRawRequest"/>
+			<wsdl:output message="tns:processRawResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="importTemplates">
+			<wsdl:input message="tns:importSoaTemplates"/>
+			<wsdl:output message="tns:importSoaTemplatesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="exportTemplates">
+			<wsdl:input message="tns:exportSoaTemplates"/>
+			<wsdl:output message="tns:exportSoaTemplatesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="login">
+			<wsdl:input message="tns:loginRequest"/>
+			<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<wsdl:input message="tns:logoutRequest"/>
+			<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="SoaMethodDesignerServiceSOAP" type="tns:SoaMethodDesignerService">
+
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="getSoaMethods">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/getSoaMethods"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="executeSoaMethods">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/executeSoaMethods"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="processRaw">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/processRaw"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="importTemplates">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/importTemplates"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="exportTemplates">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/exportTemplates"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="login">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/login"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<soapwsdl:operation soapAction="http://soaDesigner.sophis.net/logout"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="SoaMethodDesignerService">
+		<wsdl:port binding="tns:SoaMethodDesignerServiceSOAP" name="SoaMethodDesignerServicePort">
+			<soapwsdl:address location="http://localhost:9080/SoaMethodDesignerWsHttpRouter/SoaMethodDesignerServicePort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

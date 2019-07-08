@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="authenticationService" targetNamespace="http://authentication.soa.sophis.net" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapwsdl="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://authentication.soa.sophis.net" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.sophis.net/authentication">
+			<xsd:include schemaLocation="authUtil.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema targetNamespace="http://www.sophis.net/accessRights">
+			<xsd:include schemaLocation="accessRights.xsd"/>
+		</xsd:schema>
+		
+		<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://authentication.soa.sophis.net" xmlns:accessRights="http://www.sophis.net/accessRights" xmlns:authUtil="http://www.sophis.net/authentication">
+
+			<xsd:import namespace="http://www.sophis.net/authentication" schemaLocation="authUtil.xsd"/>
+			<xsd:import namespace="http://www.sophis.net/accessRights" schemaLocation="accessRights.xsd"/>
+
+			<xsd:simpleType name="ErrorCode">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+						0 = success
+						1 = not logged in
+						2 = already logged id
+						3 = no license available
+						4 = authentication error
+						5 = right not found
+						6 = other error; a reason is provided</xsd:documentation>
+				</xsd:annotation>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="SUCCESS"/>
+					<xsd:enumeration value="NOTLOGGEDIN"/>
+					<xsd:enumeration value="ALREADYLOGGED"/>
+					<xsd:enumeration value="NOLICENSE"/>
+					<xsd:enumeration value="AUTHENTICATIONERROR"/>
+					<xsd:enumeration value="RIGHTNOTFOUND"/>
+					<xsd:enumeration value="MISC"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:complexType name="Error">
+				<xsd:sequence>
+					<xsd:element name="code" type="tns:ErrorCode"/>
+					<xsd:element minOccurs="0" name="reason" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:complexType name="Login">
+				<xsd:sequence>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="login" type="tns:Login"/>
+
+			<xsd:complexType name="LoginResponse">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" ref="authUtil:token"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="loginResponse" type="tns:LoginResponse"/>
+
+			<xsd:complexType name="Logout">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="user" type="xsd:string"/>
+					<xsd:element name="password" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="authUtil:property"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logout" type="tns:Logout"/>
+
+			<xsd:complexType name="LogoutResponse">
+				<xsd:sequence>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="logoutResponse" type="tns:LogoutResponse"/>
+			
+			<xsd:complexType name="GetEntitlements">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getEntitlements" type="tns:GetEntitlements"/>
+
+			<xsd:complexType name="GetEntitlementsResponse">
+				<xsd:sequence>
+					<xsd:element ref="accessRights:entitlementResultList"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getEntitlementsResponse" type="tns:GetEntitlementsResponse"/>
+			
+			<xsd:complexType name="IsEntitled">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element ref="accessRights:entitlement"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="isEntitled" type="tns:IsEntitled"/>
+			
+			<xsd:complexType name="IsEntitledResponse">
+				<xsd:sequence>
+					<xsd:element ref="accessRights:entitlementResult"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="isEntitledResponse" type="tns:IsEntitledResponse"/>
+			
+			<xsd:complexType name="GetRights">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getRights" type="tns:GetRights"/>
+			
+			<xsd:complexType name="GetRightsResponse">
+				<xsd:sequence>
+					<xsd:element ref="accessRights:rightResultList"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="getRightsResponse" type="tns:GetRightsResponse"/>
+			
+			<xsd:complexType name="HasRight">
+				<xsd:sequence>
+					<xsd:element ref="authUtil:token"/>
+					<xsd:element name="rightName" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="hasRight" type="tns:HasRight"/>
+			
+			<xsd:complexType name="HasRightResponse">
+				<xsd:sequence>
+					<xsd:element ref="accessRights:rightResult"/>
+					<xsd:element name="error" type="tns:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="hasRightResponse" type="tns:HasRightResponse"/>
+			
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="loginRequest">
+		<wsdl:part element="tns:login" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="loginResponse">
+		<wsdl:part element="tns:loginResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="logoutRequest">
+		<wsdl:part element="tns:logout" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="logoutResponse">
+		<wsdl:part element="tns:logoutResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getEntitlementsRequest">
+		<wsdl:part element="tns:getEntitlements" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="getEntitlementsResponse">
+		<wsdl:part element="tns:getEntitlementsResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="isEntitledRequest">
+		<wsdl:part element="tns:isEntitled" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="isEntitledResponse">
+		<wsdl:part element="tns:isEntitledResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getRightsRequest">
+		<wsdl:part element="tns:getRights" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="getRightsResponse">
+		<wsdl:part element="tns:getRightsResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="hasRightRequest">
+		<wsdl:part element="tns:hasRight" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="hasRightResponse">
+		<wsdl:part element="tns:hasRightResponse" name="parametersResponse"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="AuthenticationService">
+		<wsdl:operation name="login">
+			<wsdl:input message="tns:loginRequest"/>
+			<wsdl:output message="tns:loginResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<wsdl:input message="tns:logoutRequest"/>
+			<wsdl:output message="tns:logoutResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getEntitlements">
+			<wsdl:input message="tns:getEntitlementsRequest"/>
+			<wsdl:output message="tns:getEntitlementsResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="isEntitled">
+			<wsdl:input message="tns:isEntitledRequest"/>
+			<wsdl:output message="tns:isEntitledResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getRights">
+			<wsdl:input message="tns:getRightsRequest"/>
+			<wsdl:output message="tns:getRightsResponse"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="hasRight">
+			<wsdl:input message="tns:hasRightRequest"/>
+			<wsdl:output message="tns:hasRightResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="AuthenticationServiceSOAP" type="tns:AuthenticationService">
+		<soapwsdl:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="login">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/login"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logout">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/logout"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getEntitlements">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/getEntitlements"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="isEntitled">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/isEntitled"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getRights">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/getRights"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="hasRight">
+			<soapwsdl:operation soapAction="http://authentication.soa.sophis.net/hasRight"/>
+			<wsdl:input>
+				<soapwsdl:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soapwsdl:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="AuthenticationService">
+		<wsdl:port binding="tns:AuthenticationServiceSOAP" name="AuthenticationServicePort">
+			<soapwsdl:address location="http://localhost:9080/AuthenticationWsHttpRouter/AuthenticationServicePort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

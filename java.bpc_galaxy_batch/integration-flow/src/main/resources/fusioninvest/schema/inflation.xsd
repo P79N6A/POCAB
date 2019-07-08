@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/inflation" xmlns:inf="http://www.sophis.net/inflation" xmlns:common="http://sophis.net/sophis/common" xmlns:yc="http://www.sophis.net/yieldCurve" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:vol="http://www.sophis.net/volatility" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/yieldCurve" schemaLocation="YieldCurve.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/volatility" schemaLocation="volatility.xsd" />
+
+	
+
+   
+	<!-- Inflations -->
+	<xsd:element name="inflations" type="inf:Inflations">
+		<!-- Unique identifier within a list of inflation -->
+		<xsd:unique name="UniqueIdentifier">
+			<xsd:selector xpath="inf:inflationHistory/inf:identifier"/>
+			<xsd:field xpath="instrument:sophis"/>
+		</xsd:unique>
+	</xsd:element>
+	<xsd:complexType name="Inflations">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A list of Historical Inflations</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="historyTable" type="xsd:string" default="INFLATION_HISTORY" minOccurs="0"/>
+			<xsd:element name="inflationHistory" type="inf:InflationHistory" minOccurs="0" maxOccurs="unbounded">
+				<!-- Unique inflation date per history -->
+				<xsd:unique name="UniqueDatePerHistory">
+					<xsd:selector xpath="inf:inflation" />
+					<xsd:field xpath="inf:year_month" />
+				</xsd:unique>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="common:PersistentEntity.model"></xsd:attributeGroup>
+	</xsd:complexType>
+	<xsd:complexType name="InflationHistory">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A list of Inflations for a specific code (a country)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="identifier" type="instrument:Identifier"/>
+			<xsd:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0">
+	     <xsd:annotation>
+	       <xsd:documentation source="http://www.sophis.net" xml:lang="en">Baseline to use for snapping data in the past.</xsd:documentation>
+	      </xsd:annotation>
+	    </xsd:element>
+			<xsd:element name="inflation" type="inf:Inflation" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">quotation list for this Inflation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Inflation">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Inflation information for a given year and month</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="year_month" type="xsd:gYearMonth">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">Inflation date (Year and Month only)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="estimated" type="xsd:double" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">Estimated inflation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="revisited" type="xsd:double" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">Revisited inflation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rebasement" type="xsd:double" nillable="true" minOccurs="0"/>
+			<xsd:element name="validity_date" type="xsd:date" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">Validity date</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LPIVolatility">
+		<xsd:sequence>
+			<xsd:element name="lpiVolatilityReference" type="yc:YieldCurveIdentifier"/>
+			<!-- Add minOccurs="0" to the element in this sequence in order to make it works with IS -->
+			<xsd:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation source="http://www.sophis.net" xml:lang="en">Baseline to use for snapping data in the past.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lpiQuotesMap" type="inf:LPIQuotesMap" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="common:PersistentEntity.model">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Since 5.3.3 add persistenceType for import</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attributeGroup>
+	</xsd:complexType>
+	
+	<xsd:element name="lpiVolatility" type="inf:LPIVolatility"/>
+	
+	<xsd:complexType name="LPIQuotesMap">
+		<xsd:sequence>
+			<xsd:element name="lpiQuotesMapEntry" type="inf:LPIQuotesMapEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LPIQuotesMapEntry">
+		<xsd:sequence>
+			<xsd:element name="lpiCapFloor" type="inf:LPICapFloor"/>
+			<xsd:element name="lpiQuotes" type="inf:LPIQuotes"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LPICapFloor">
+		<xsd:sequence>
+			<xsd:element name="capValue" type="xsd:double" nillable="true" minOccurs="0"/>
+			<xsd:element name="floorValue" type="xsd:double" nillable="true" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LPIQuotes">
+		<xsd:sequence>
+			<xsd:element name="lpiQuote" type="inf:LPIQuote" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LPIQuote">
+		<xsd:complexContent>
+			<xsd:extension base="vol:Abscissa">
+				<xsd:sequence>
+					<xsd:element name="volatility" type="xsd:double"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="Months" final="restriction" >
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="January" />
+			<xsd:enumeration value="Febuary" />
+			<xsd:enumeration value="March" />
+			<xsd:enumeration value="April" />
+			<xsd:enumeration value="May" />
+			<xsd:enumeration value="June" />
+			<xsd:enumeration value="July" />
+			<xsd:enumeration value="August" />
+			<xsd:enumeration value="September" />
+			<xsd:enumeration value="October" />
+			<xsd:enumeration value="November" />
+			<xsd:enumeration value="December" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Factor">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:double">
+				<xsd:attribute name="month" type="inf:Months"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Format">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:boolean">
+				<xsd:attribute name="name" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Formats">
+		<xsd:sequence>
+			<xsd:element name="format" type="inf:Format" maxOccurs="4" />
+		</xsd:sequence>
+		<xsd:attribute name="currentFormat" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="Factors">
+		<xsd:sequence>
+			<xsd:element name="factor" type="inf:Factor" maxOccurs="12" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InflationSeasonality">
+		<xsd:sequence>
+			<xsd:element name="inflationIndexCode" type="instrument:Identifier" />
+			<xsd:element name="historyDepth" type="xsd:long" minOccurs="0" />
+			<xsd:element name="dateFrom" type="xsd:gYearMonth" minOccurs="0" />
+			<xsd:element name="formats" type="inf:Formats" minOccurs="0" />
+			<xsd:element name="factors" type="inf:Factors" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="inflationSeasonality" type="inf:InflationSeasonality"/>
+
+</xsd:schema>

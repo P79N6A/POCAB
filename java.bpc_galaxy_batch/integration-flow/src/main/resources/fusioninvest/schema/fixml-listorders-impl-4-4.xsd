@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Revision: FIXML 4.4 Schema Version - 20040109
+    Copyright 2003,2004 FIX Protocol Limited.  All rights reserved.
+
+    This Schema represents FIXML vocabulary based on version 4.4 of the FIX Protocol
+
+    Comments should be posted on the FIX protocol web-site
+    www.fixprotocol.org
+-->
+<xs:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4"
+           xmlns:common="http://sophis.net/sophis/common"
+           xmlns:instrument="http://www.sophis.net/Instrument"
+           xmlns:exec="http://www.sophis.net/execution"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.fixprotocol.org/FIXML-4-4"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:include schemaLocation="fixml-listorders-base-4-4.xsd"/>
+
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+  <xs:import namespace="http://www.sophis.net/execution" schemaLocation="execution.xsd"/>
+
+  <!-- ************************************************************ -->
+  <!-- New Order List sophis message definition                     -->
+  <!-- ************************************************************ -->
+
+  <xs:group name="Sph_NewOrderListElements">
+    <xs:sequence>
+      <xs:element name="SphOrd" type="Sph_ListOrdGrp_Block_t" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="Sph_NewOrderList_message_t" final="#all">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:group ref="Sph_NewOrderListElements"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="common:PersistentEntity.model"/>
+        <xs:attributeGroup ref="NewOrderListAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SphNewOrdList" type="Sph_NewOrderList_message_t" substitutionGroup="Message" />
+
+  <xs:complexType name="Sph_ListOrdGrp_Block_t" final="#all">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ListOrdGrpElements" />
+      <!-- New sophis fields -->
+      <xs:element name="SphInstrmt" type="instrument:Underlyer" minOccurs="0" maxOccurs="1" />
+      <xs:element name="SphCustomFields" type="SphCustomFields_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SphProperties" type="SphProperties_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="SphExecutions" type="exec:Execution" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="ListOrdGrpAttributes"/>
+    <xs:attributeGroup ref="Sph_OrderAttributes"/>
+  </xs:complexType>
+
+  <!-- ************************************************************ -->
+  <!-- New Order List sophis Ack message definition                 -->
+  <!-- ************************************************************ -->
+
+  <xs:complexType name="Sph_NewOrderList_acknowledge_t" >
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:element ref="SphOrderAck" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attributeGroup ref="OrderMessageAcknowledgeAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element  name="SphOrdListAck" type="Sph_NewOrderList_acknowledge_t" substitutionGroup="Message" />
+
+</xs:schema>

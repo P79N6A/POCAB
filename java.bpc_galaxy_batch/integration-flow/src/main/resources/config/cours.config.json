@@ -1,0 +1,432 @@
+{
+	"Header": {
+		"TransformationOrder": "Transco,Filter",
+		"FatherBlocSource": "/quotation",
+		"FatherBlocTarget": "/quotations/quotationsByInstrument",
+		"ConditionFiltrageBloc": ""
+	},
+	"Format": {
+		"Source": {
+			"XSD": "/../../../Quotation.xsd"
+		},
+		"Target": {
+			"Name": "Quotation_Cours",
+			"Format": "XML",
+			"Seperator": ""
+		},
+		"Condition": [
+			{
+				"Name": "condition1",
+				"Operands": "Filter1,Filter2",
+				"Operator": "AND"
+			}
+		]
+	},
+	"Transformation": [
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/quotatnIdntfctn/valdtyDate",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": 10,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "quotesByDate/quotationDate",
+				"Type": "Text",
+				"Index": -1,
+				"FatherBloc": ""
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/openingPrice/*/$priceType|PERU?@Open",
+				"Operator": "==",
+				"Transco": true,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/openingPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/openingPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/askPrice/*/$priceType|PERU?@Ask",
+				"Operator": "==",
+				"Transco": true,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/askPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/askPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/bidPrice/*/$priceType|PERU?@Bid",
+				"Operator": "==",
+				"Transco": true,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/bidPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/bidPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/highPrice/*/$priceType|PERU?@High",
+				"Operator": "==",
+				"Transco": true,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/highPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/highPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/lowPrice/*/$priceType|PERU?@Low",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/lowPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/lowPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/closingPrice/*/$priceType|PERU?@Last",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/closingPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/closingPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/midPrice/*/$priceType|PERU?@Mid",
+				"Operator": "==",
+				"Transco": true,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/midPrice/*/$priceType|PERU?./value/amnt/currency",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "currency",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/mesure/bondPrice/midPrice/*/$priceType|PERU?./value/amnt/value",
+				"Operator": "==",
+				"Transco": false,
+				"Index": -1,
+				"Type": "DOUBLE",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "DOUBLE",
+				"Index": 0,
+				"FatherBloc": "quotesByDate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/Provdr/@DataProvdr",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "sideString",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "/quotesbydate/quote"
+			}
+		},
+		{
+			"FieldSourceInfos": {
+				"AbsolutePath": "/provdr/dataprovdr",
+				"Transco": false,
+				"Index": -1,
+				"Type": "Text",
+				"size": -1,
+				"IsMandatory": false
+			},
+			"FieldTarget": {
+				"Name": "value",
+				"Type": "Text",
+				"Index": 0,
+				"FatherBloc": "/quotesbydate/quote"
+			}
+		}
+	]
+}

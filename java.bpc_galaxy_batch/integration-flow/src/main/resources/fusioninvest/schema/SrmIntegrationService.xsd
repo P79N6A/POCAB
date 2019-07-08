@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xs:schema targetNamespace="http://www.sophis.net/srm" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:tns="http://www.sophis.net/srm" elementFormDefault="qualified" attributeFormDefault="qualified">
+
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" /> 
+
+  <xs:element name="sensitivitiesType" type="tns:SensitivitiesType"/>
+  
+  <xs:complexType name="SensitivitiesType">  
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Sequence of instruments with sensitivities.</xs:documentation>
+    </xs:annotation>
+	<xs:sequence>
+	  <xs:element minOccurs="0" maxOccurs="unbounded" name="lineType" type="tns:LineType" />
+	</xs:sequence>
+	<xs:attribute name="scenario" type="xs:string" use="required"></xs:attribute>
+	<xs:attribute name="user" type="xs:string" use="optional" default=""></xs:attribute>
+	<xs:attribute name="numberOfSicovamsIgnored" type="xs:double" use="optional" default="0"></xs:attribute>
+	<xs:attribute name="numberOfSicovamsParsed" type="xs:double" use="optional" default="0"></xs:attribute>
+	<xs:attribute name="numberOfSicovamsIntegrated" type="xs:double" use="optional" default="0"></xs:attribute>
+	<xs:attribute name="reason" type="xs:string" use="optional" default="Unknown reason"></xs:attribute>
+	<xs:attribute name="result" type="xs:string" use="optional" default="FAIL"></xs:attribute>
+	<xs:attribute name="calculationId" type="xs:double" use="optional" default="0"></xs:attribute>
+  </xs:complexType> 
+  
+  <xs:complexType name="LineType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Instrument associated with its sensitivities.</xs:documentation>
+    </xs:annotation>
+	<xs:sequence>
+	  <xs:element minOccurs="0" maxOccurs="1" name="identifier" type="instrument:Underlyer" />
+	  <xs:element minOccurs="0" maxOccurs="unbounded" name="sensiType" type="tns:SensiType" />
+	</xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="SensiType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Sensitivity name and value.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+	  <xs:extension base="xs:double">
+	    <xs:attribute name="sensi" type="xs:string" use="required"></xs:attribute>
+		<xs:attribute name="A" use="optional" />
+        <xs:attribute name="B" use="optional" />
+        <xs:attribute name="BarrierLevel" use="optional" />
+        <xs:attribute name="C" use="optional" />
+        <xs:attribute name="CalculationDate" use="optional" />
+        <xs:attribute name="Commodity" use="optional" />
+        <xs:attribute name="DataType" use="optional" />
+        <xs:attribute name="folioident" use="optional" />
+        <xs:attribute name="FutureMaturity" use="optional" />
+        <xs:attribute name="InPosition" use="optional" />
+        <xs:attribute name="InstrumentX" use="optional" />
+        <xs:attribute name="InstrumentX-id" use="optional" />
+        <xs:attribute name="InstrumentX-ref" use="optional" />
+        <xs:attribute name="InstrumentY" use="optional" />
+        <xs:attribute name="InstrumentY-id" use="optional" />
+        <xs:attribute name="InstrumentY-ref" use="optional" />
+        <xs:attribute name="ParentCommodity" use="optional" />
+        <xs:attribute name="SABRParameter" use="optional" />
+        <xs:attribute name="Unit" use="optional" />
+        <xs:attribute name="ValueType" use="optional" />
+        <xs:attribute name="WeightedVega" use="optional" />
+        <xs:attribute name="barrier" use="optional" />
+        <xs:attribute name="column" use="optional" />
+        <xs:attribute name="counterparty" use="optional" />
+        <xs:attribute name="credit" use="optional" />
+        <xs:attribute name="credit-currency" use="optional" />
+        <xs:attribute name="credit-currency1" use="optional" />
+        <xs:attribute name="credit-currency2" use="optional" />
+        <xs:attribute name="credit-defaultEvent" use="optional" />
+        <xs:attribute name="credit-defaultEvent1" use="optional" />
+        <xs:attribute name="credit-defaultEvent2" use="optional" />
+        <xs:attribute name="credit-issuer" use="optional" />
+        <xs:attribute name="credit-issuer1" use="optional" />
+        <xs:attribute name="credit-issuer2" use="optional" />
+        <xs:attribute name="credit-seniority" use="optional" />
+        <xs:attribute name="credit-seniority1" use="optional" />
+        <xs:attribute name="credit-seniority2" use="optional" />
+		<xs:attribute name="credit-runningCoupon" use="optional" />
+        <xs:attribute name="creditRisk" use="optional" />
+        <xs:attribute name="currency" use="optional" />
+        <xs:attribute name="effect" use="optional" />
+        <xs:attribute name="expiry_bucket" use="optional" />
+        <xs:attribute name="expiry_date" use="optional" />
+        <xs:attribute name="family" use="optional" />
+        <xs:attribute name="folio" use="optional" />
+        <xs:attribute name="greek" use="optional" />
+        <xs:attribute name="indicator" use="optional" />
+        <xs:attribute name="initialRating" use="optional" />
+        <xs:attribute name="inflationIndex" use="optional" />
+        <xs:attribute name="instrument" use="optional" />
+        <xs:attribute name="instrument-id" use="optional" />
+        <xs:attribute name="instrument-name" use="optional" />
+        <xs:attribute name="is_call" use="optional" />
+        <xs:attribute name="is_listed" use="optional" />
+        <xs:attribute name="finalRating" use="optional" />
+        <xs:attribute name="maturity" use="optional" />
+        <xs:attribute name="mvtident" use="optional" />
+        <xs:attribute name="optionMaturities" use="optional" />
+        <xs:attribute name="option_code" use="optional" />
+        <xs:attribute name="option_ttm" use="optional" />
+        <xs:attribute name="option_type" use="optional" />
+        <xs:attribute name="option_volat" use="optional" />
+        <xs:attribute name="output" use="optional" />
+        <xs:attribute name="parentFolio" use="optional" />
+        <xs:attribute name="parentUnderlying" use="optional" />
+        <xs:attribute name="position" use="optional" />
+        <xs:attribute name="positionCode" use="optional" />
+        <xs:attribute name="positionCurrency" use="optional" />
+        <xs:attribute name="positionType" use="optional" />
+        <xs:attribute name="rate" use="optional" />
+        <xs:attribute name="result_name" use="optional" />
+        <xs:attribute name="result_type" use="optional" />
+        <xs:attribute name="risk_source" use="optional" />
+        <xs:attribute name="risk_source_1" use="optional" />
+        <xs:attribute name="risk_source_2" use="optional" />
+        <xs:attribute name="spot" use="optional" />
+        <xs:attribute name="strike" use="optional" />
+        <xs:attribute name="subScenarios" use="optional" />
+        <xs:attribute name="swapMaturities" use="optional" />
+        <xs:attribute name="typeX" use="optional" />
+        <xs:attribute name="typeY" use="optional" />
+        <xs:attribute name="underlying" use="optional" />
+        <xs:attribute name="underlying-id" use="optional" />
+        <xs:attribute name="underlying-ref" use="optional" />
+        <xs:attribute name="underlying-shift" use="optional" />
+        <xs:attribute name="underlying-spot" use="optional" />
+        <xs:attribute name="underlying_future" use="optional" />
+        <xs:attribute name="underlying_price" use="optional" />
+        <xs:attribute name="volatility" use="optional" />
+        <xs:attribute name="yieldCurve" use="optional" />
+        <xs:attribute name="yieldCurve-currency" use="optional" />
+        <xs:attribute name="yieldCurve-family" use="optional" />
+        <xs:attribute name="yieldCurvePoint" use="optional" />
+        <xs:attribute name="calcType" use="optional" />
+        <xs:attribute name="infoType" use="optional" />
+		<xs:attribute name="nostroaccount" use="optional" />
+		<xs:attribute name="nostroaccountname" use="optional" />
+		<xs:attribute name="cashflowtype" use="optional" />
+		<xs:attribute name="date" use="optional" />
+	  </xs:extension>
+	</xs:simpleContent>
+  </xs:complexType>
+  
+</xs:schema>

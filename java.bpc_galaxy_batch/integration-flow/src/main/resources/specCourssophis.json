@@ -1,0 +1,14 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "quotation": {
+        "quotatnIdntfctn": {
+          "securtyIdntfctn": {
+            "isin" :"identifier"
+          }
+        }
+      }
+    }
+  }
+]

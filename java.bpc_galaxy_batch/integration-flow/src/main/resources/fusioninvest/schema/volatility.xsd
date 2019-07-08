@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sophis.net/volatility" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:tns="http://www.sophis.net/volatility" xmlns:instr="http://www.sophis.net/Instrument" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xs:element name="volatilityData" type="tns:VolatilityData">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Unicity constrainte. Lets the user set several volatilities surfaces</xs:documentation>
+    </xs:annotation>
+    <xs:unique name="UniqueSurface">
+      <xs:selector xpath="tns:volatilitySurface" />
+      <xs:field xpath="@surface" />
+    </xs:unique>
+  </xs:element>
+<xs:element name="volatilityIdentifier" type="instr:Identifier" />
+  <xs:complexType name="VolatilityData">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A matrix of volatilities with dimension 0-3</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="identifier" type="instr:Identifier" />
+      <xs:element name="snapshotBaseline" type="common:SnapshotBaseline" minOccurs="0" maxOccurs="1" />
+	  <xs:element name="calculationParameters" type="tns:CalculationParameters" />
+      <xs:element name="volatilitySurface" type="tns:VolatilitySurface" minOccurs="1" maxOccurs="10" />
+      <xs:element name="swaptionVolatilityData" type="tns:SwaptionVolatilityData" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="common:PersistentEntity.model"/>
+  </xs:complexType>
+  <xs:complexType name="CalculationParameters">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The parameters used for defining how the dimensions and values in the Volatility Curve are interpreted</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Selection among the Strike definitions as absicca of the Smile Curves</xs:documentation>
+        </xs:annotation>
+        <xs:element name="strikeInPercentSpotPrice" type="tns:StrikeInPercentSpotPrice" />
+        <xs:element name="strikeInPercentForwardPrice" type="tns:StrikeInPercentForwardPrice" />
+        <xs:element name="onlyATM" type="tns:OnlyATM" />
+        <xs:element name="strikeInPercentPivotPrice" type="tns:StrikeInPercentPivotPrice" />
+        <xs:element name="strikeInPercentForwardPivotPrice" type="tns:StrikeInPercentForwardPivotPrice" />
+      </xs:choice>
+      <xs:element name="model" type="common:StringBounded39" />
+      <xs:element minOccurs="0" maxOccurs="1" name="modelParameters" type="common:ExtraFields" />
+      <xs:element minOccurs="0" maxOccurs="1" name="dayCountBasis" type="instr:DayCountBasis" />
+      <xs:element minOccurs="0" maxOccurs="1" ref="tns:timeDensity" />
+	  <xs:element minOccurs="0" maxOccurs="1" name="shortRateSpread" type="xs:double" />
+	  <xs:element minOccurs="0" maxOccurs="1" name="longRateSpread" type="xs:double" />
+      <xs:element minOccurs="0" maxOccurs="1" name="logNormalShift" type="xs:double" />
+      <xs:element minOccurs="0" maxOccurs="1" name="formulaType" type="tns:VolatilityFormulaType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="volConventionParameters" type="tns:VolatilityConvention" />
+      <xs:element minOccurs="0" maxOccurs="1" name="interpolationParameters" type="tns:InterpolationParameters" />
+      
+      <xs:element minOccurs="0" maxOccurs="1" name="referenceCap" type="instr:Underlyer" />
+      <xs:element minOccurs="0" maxOccurs="1" name="quotationType" type="tns:CapFloorVolatilityQuotationType" />
+	  <xs:element minOccurs="0" maxOccurs="1" name="boundaryStrike" type="xs:double" />
+      <xs:element minOccurs="0" maxOccurs="1" name="mgtType" type="tns:VolatilityMgtType" />
+      
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TimeDensity">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Time Density is a model that lets the user takes into account the volatility's seasonality and the impact of discrete events on its value</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="xs:int"  use="optional"/>
+    <xs:attribute name="name" type="xs:normalizedString" use="optional" />
+  </xs:complexType>
+  <xs:element name="timeDensity" type="tns:TimeDensity"/>
+  <xs:complexType name="StrikeInPercentSpotPrice">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Strike expressed in percent of a spot price.</xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+  <xs:complexType name="StrikeInPercentForwardPrice">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Strike expressed in percent of a forward price.</xs:documentation>
+    </xs:annotation>
+  </xs:complexType>  
+   <xs:complexType name="OnlyATM">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Only At the Money.</xs:documentation>
+    </xs:annotation>
+  </xs:complexType>  
+  <xs:complexType name="StrikeInPercentPivotPrice">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Strike expressed in percent of a defined pivot price.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute use="optional" name="pivot" type="xs:double" />
+  </xs:complexType>
+  <xs:complexType name="StrikeInPercentForwardPivotPrice">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Strike expressed in percent of a defined forward pivot price.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute use="optional" name="forwardPivot" type="xs:double" />
+  </xs:complexType>
+  <xs:complexType name="VolatilitySurface">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Volatility surfaces are Asset Volatility Models that are multi-dimensional collections of estimates of the volatility of some underlying asset price.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="model" type="tns:ModelEnum" minOccurs="1" maxOccurs="1" />
+      <xs:element name="volatilityPoint" minOccurs="0" maxOccurs="unbounded" type="tns:VolatilityPoint" />
+    </xs:sequence>
+    <xs:attribute name="surface" type="tns:SurfaceEnum" use="required" />
+    <xs:attribute name="haveSpecificSmiles" type="xs:boolean" use="required" />
+  </xs:complexType>
+  <xs:complexType name="VolatilityPoint">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes a given point of volatility data. Smile can be described by a smile curve (Smile) or by Risk Reversal and Butterfly quotes (SmileQuotes)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="date" type="common:AdjustableOrRelativeDate" />
+      <xs:element name="atTheMoney" type="xs:double" />
+      <xs:element name="smile" type="tns:Smile" minOccurs="0" maxOccurs="1" />
+	  <xs:element name="smileQuotes" type="tns:SmileQuotes" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="SurfaceEnum">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Selection among the Volatility Curves available for an Instrument (Call, Put, Result, Market...)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="CallResult" />
+      <xs:enumeration value="CallMarket" />
+      <xs:enumeration value="CallManagement" />
+      <xs:enumeration value="CallBid" />
+      <xs:enumeration value="CallAsk" />
+      <xs:enumeration value="PutResult" />
+      <xs:enumeration value="PutMarket" />
+      <xs:enumeration value="PutManagement" />
+      <xs:enumeration value="PutBid" />
+      <xs:enumeration value="PutAsk" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ModelEnum">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Selection among the possible interpretations of the additional Volatility Curves (for example Market Curve may be defined as spreads over the Result Curve)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="SameAsBasis" />
+      <xs:enumeration value="Absolute" />
+      <xs:enumeration value="BasisSpread" />
+      <xs:enumeration value="PutSpread" />
+      <xs:enumeration value="SameAsCall" />
+      <xs:enumeration value="SameAsCallPlusPutSpread" />
+      <xs:enumeration value="SameAsPutPlusCallSpread" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Smile">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A common graphical shape that results from plotting the strike price and implied volatility of a group of options with the same expiration date</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="strikeType" type="tns:StrikeType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="volatilityType" type="tns:VolatilityType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="smilePoint" type="tns:SmilePoint" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SmilePoint">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">One two-dimensional point in a Smile Curve</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="strike" type="xs:decimal" />
+      <xs:element name="value" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="StrikeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Express the strike in percent, in delta or in absolute value</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="cash" />
+      <xs:enumeration value="absolute" />
+      <xs:enumeration value="delta" />
+      <xs:enumeration value="percent" />
+      <xs:enumeration value="unknown" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VolatilityType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Lets the user adds the smile as an absolute value, delta, percent , etc..</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="absolute" />
+      <xs:enumeration value="delta" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="SmileQuotes">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Risk Reversal and Butterfly Quotes giving the volatility smile</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="smileQuote" type="tns:SmileQuote" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SmileQuote">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Risk Reversal and Butterfly Quotes for a given delta strike</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="deltaStrike" type="xs:int" />
+      <xs:element name="volatilityRR" type="xs:double" />
+	  <xs:element name="volatilityFLY" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Abscissa">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Axis of the volatility representation : could be a set of maturities or strikes</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice>
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Maturity may be a fixed or relative date</xs:documentation>
+        </xs:annotation>
+        <xs:element name="maturity" type="xs:date" />
+        <xs:element name="maturityRel" type="common:AdjustableOrRelativeDate" />
+      </xs:choice>
+      <xs:element name="type" type="tns:VolatilityPointType" />
+      <xs:element name="shiftValue" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="VolatilityPointType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Format of the maturity identifier for a Volatility Point </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Absolute" />
+      <xs:enumeration value="Day" />
+      <xs:enumeration value="Month" />
+      <xs:enumeration value="Year" />
+      <xs:enumeration value="MonthEndOfMonth" />
+      <xs:enumeration value="QuarterEndOfQuarter" />
+      <xs:enumeration value="YearEndOfYear" />
+      <xs:enumeration value="AbsoluteMonth" />
+    </xs:restriction>
+  </xs:simpleType> 
+  <xs:simpleType name="VolatilityFormulaType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies whether volatity data formula (Normal, LogNormal or ShiftedLogNormal</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="LogNormal" />
+      <xs:enumeration value="LogNormalShifted" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="VolatilityConvention">
+	<xs:sequence>
+	  <xs:element name="maturityThreshold" type="xs:int" />
+	  <xs:element name="quoteConventionLowMat" type="tns:QuoteConvention" />
+	  <xs:element name="quoteConventionHighMat" type="tns:QuoteConvention" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InterpolationParameters">
+	<xs:sequence>
+	  <xs:element name="Butterfly" type="xs:int" />
+	  <xs:element name="Smile" type="xs:int" />
+	  <xs:element name="Maturity" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="QuoteConvention">
+	<xs:sequence>
+	  <xs:element name="atmConvention" type="xs:int" />
+	  <xs:element name="deltaConvention" type="xs:int" />
+	  <xs:element name="isDeltaPremiumAdjusted" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="VolatilityMgtType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies whether the strike dimension in the Smile curves represents an absolute Rate or a difference over the Forward Interest Rate</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="BasePlusDeltaSmile" />
+      <xs:enumeration value="ATMPlusDeltaSmileDeltaStrike" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CapFloorVolatilityQuotationType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specifies whether the values in the Volatility Cube are implied volatilities or Prices of Caps/Floors. This is only implemented for Inflation Caps</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="CapletImpliedVol" />
+      <xs:enumeration value="CapFloorPriceInPercent" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="SwaptionVolatilityData">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Description of a set of Swaption or Cap/Floor Volatility Cubes</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="swaptionVolatilityMatrix" type="tns:SwaptionVolatilityMatrix" minOccurs="1" maxOccurs="10" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SwaptionVolatilityMatrix">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Description of a Swaption or Cap/Floor Volatility Cube. Dimensions are the Option Maturity, Underlying Tenor and Option Strike</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="pricingStructurePoint" type="tns:PricingStructurePoint" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="curveType" type="tns:SurfaceEnum" use="required" />
+  </xs:complexType>
+  <xs:complexType name="PricingStructurePoint">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A single valued point with a set of coordinates that define an arbitrary number of identifying indexes (0 or more). Note that the collection of coordinates/coordinate references for a PricingStructurePoint must not define a given dimension (other than "generic") more than once. This is to avoid ambiguity.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="coordinate" type="tns:PricingDataPointCoordinate" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">An explicit, filled in data point coordinate. This might specify expiration, strike, etc.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="value" type="xs:decimal" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The value of the quotation.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PricingDataPointCoordinate">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A set of index values that identify a pricing data point. For example: (strike = 17%, expiration = 6M, term = 1Y).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="pricingStructureIndexModel" type="tns:PricingStructureIndexModel" maxOccurs="unbounded" />
+      <xs:element name="dummyForDotNet" type="xs:decimal" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AdjustableOrRelativeDateAdv">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">In case of relative date, element isRolled indicates if date must be rolled to previous end of month/year</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="common:AdjustableOrRelativeDate">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="isRolled" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PricingStructureIndexModel">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The index (an ordinate) of a pricing structure. The index expresses how far along a particular dimension (e.g. time, strike, etc.) a point is located.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Selection among possible dimensions of a Volatility Cube</xs:documentation>
+      </xs:annotation>
+      <xs:element name="term" type="tns:AdjustableOrRelativeDateAdv">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A time dimension that represents the term of a financial instrument, e.g. of a zero-coupon bond on a curve, or of an underlying caplet or swap for an option.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="expiration" type="tns:AdjustableOrRelativeDateAdv">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A time dimension that represents the time to expiration of an option.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="strike" type="xs:decimal">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A numerical dimension that represents the strike rate or price of an option.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="currency" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Yield Curve's Currency</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="family" type="xs:string">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The family that is used for the forwards of the corresponding tenor in case of cap volatility and multi-curves framework</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="VolatilityHistoricElement">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">couple date / volatility</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="histoDate" type="xs:date"/>
+      <xs:element ref="tns:volatilityData"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="volatilityHistoricElement" type="tns:VolatilityHistoricElement"/>
+
+  <xs:complexType name="VolatilityHistoric">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">historic of credit data</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+      <xs:element ref="tns:volatilityHistoricElement" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="common:PersistentEntity.model"/>
+  </xs:complexType>
+  <xs:element name="volatilityHistoric" type="tns:VolatilityHistoric"/>
+
+  <xs:complexType name="VolatilityHistoricIdentifier">
+    <xs:sequence>
+      <xs:element name="identifier" type="instr:Identifier" minOccurs="1" />
+      <xs:element name="histoDate" type="xs:date" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="volatilityHistoricIdentifier" type="tns:VolatilityHistoricIdentifier"/>
+
+  <xs:complexType name="TimeDensityData">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Time Density is a model that lets the user takes into account the volatility's seasonality and the impact of discrete events on its value</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+	  <xs:element name="timeDensity" type="tns:TimeDensity"/>
+      <xs:element name="model" type="xs:normalizedString" />
+    </xs:sequence>
+ <xs:attributeGroup ref="common:PersistentEntity.model"/>
+  </xs:complexType>
+  <xs:element name="timeDensityData" type="tns:TimeDensityData"/>
+  <xs:element name="timeDensityDataParametric" substitutionGroup="tns:timeDensityData" type="tns:TimeDensityDataParametric"/>
+  <xs:element name="timeDensityDataMDH" substitutionGroup="tns:timeDensityData" type="tns:TimeDensityDataMDH"/>
+  <xs:complexType name="TimeDensityDataParametric">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Time Density model for FX Parametric Time Densities</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:TimeDensityData">
+        <xs:sequence>
+          <xs:element name="normalization" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeDensityDataMDH">
+
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Time Density Data MDH model for FX Parametric Time Densities</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:TimeDensityDataParametric">
+        <xs:sequence>
+          <xs:element name="monthWeights" type="tns:TimeDensityWeightList"/>
+          <xs:element name="specificMonthWeights" type="tns:TimeDensitySpecificMonthWeightList"/>
+		  <xs:element name="weekDayWeights" type="tns:TimeDensityWeightList"/>
+		  <xs:element name="hourWeights" type="tns:TimeDensityWeightList"/>
+		  <xs:element name="discreteEventWeights" type="tns:TimeDensityDiscreteEventWeightList"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeDensityMDHWeight">
+    <xs:sequence>
+      <xs:element name="key" type="xs:int"/>
+      <xs:element name="weight" type="xs:double"/>
+      <xs:element name="comment" type="xs:normalizedString"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TimeDensityWeightList">
+    <xs:sequence>
+      <xs:element name="periodWeight" type="tns:TimeDensityMDHWeight" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TimeDensitySpecificMonthWeight">
+    <xs:complexContent>
+      <xs:extension base="tns:TimeDensityMDHWeight">
+        <xs:attribute name="monthYear" type="xs:gYearMonth"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeDensitySpecificMonthWeightList">
+    <xs:sequence>
+      <xs:element name="specificMonth" type="tns:TimeDensitySpecificMonthWeight" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TimeDensityDiscreteEventWeight">
+    <xs:complexContent>
+      <xs:extension base="tns:TimeDensityMDHWeight">
+        <xs:attribute name="date" type="xs:date"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TimeDensityDiscreteEventWeightList">
+    <xs:sequence>
+      <xs:element name="discreteEvent" type="tns:TimeDensityDiscreteEventWeight" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

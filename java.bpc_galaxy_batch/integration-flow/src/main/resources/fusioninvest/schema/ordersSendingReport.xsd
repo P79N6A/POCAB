@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:folio="http://www.sophis.net/folio" xmlns:tns="http://www.sophis.net/ordersSendingReport" targetNamespace="http://www.sophis.net/ordersSendingReport" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:documentation source="http://www.sophis.net" xml:lang="en"></xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  <xsd:element name="ordersSendingReport" type="tns:OrdersSendingReport" />
+  <xsd:complexType name="OrdersSendingReport">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains all the data computed by the VALUE End of Day (Asset Value, Cash Value, Fees, GAV, number of shares etc...)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="parameters" type="tns:Parameters" minOccurs="0" />
+      <xsd:element name="ordersCount" type="tns:OrdersCount" minOccurs="0" />
+	  <xsd:element name="results" type="tns:Results" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Parameters">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Orders count</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="dateTime" type="xsd:date" />
+      <xsd:element name="ordersGenerator" type="xsd:string" />
+      <xsd:element name="originationStrategy" type="xsd:string" />
+      <xsd:element name="ordersGroup" type="xsd:int" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="OrdersCount">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Orders sending parameters</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="total" type="xsd:int" />
+      <xsd:element name="sent" type="xsd:int" />
+      <xsd:element name="errors" type="xsd:int" />
+    </xsd:sequence>
+  </xsd:complexType>  
+  <xsd:complexType name="Results">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Orders sending results (success or failure)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="resultNode" type="tns:ResultNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ResultNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Contains the basic information on each order (sending success or failure)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="status" type="tns:OrderStatus" minOccurs="0"/>
+      <xsd:element name="instrument" type="instrument:Identifier" minOccurs="0"/>
+      <xsd:element name="portfolio" type="folio:FolioReference" minOccurs="0"/>
+      <xsd:element name="quantity" type="xsd:double" minOccurs="0"/>
+      <xsd:element name="orderId" type="xsd:int" minOccurs="0"/>
+      <xsd:element name="information" type="xsd:string" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="OrderStatus">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specifies whether the order has been sent (failure or success).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Failure"/>
+      <xsd:enumeration value="Success"/>
+    </xsd:restriction>
+  </xsd:simpleType>   
+</xsd:schema>

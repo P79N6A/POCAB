@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:common="http://sophis.net/sophis/common" xmlns:taxcred="http://www.sophis.net/tax_credit" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/tax_credit" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common" />
+  <xs:element name="Tax_credit" type="taxcred:TaxCredit" />
+  <xs:complexType name="TaxCredit">
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="share" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="arbitrage" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="option" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="future" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="loan" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="taxCredit" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="dividend" type="xs:double" />
+        <xs:element minOccurs="1" maxOccurs="1" name="taxCreditList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="taxCreditItem">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="countryTaxRate" type="xs:double" />
+                    <xs:element minOccurs="1" maxOccurs="1" name="companyTaxRate" type="xs:double" />
+                    <xs:element minOccurs="1" maxOccurs="1" name="taxCreditDate" type="common:AdjustableOrRelativeDate" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+	</xs:complexType>
+</xs:schema>

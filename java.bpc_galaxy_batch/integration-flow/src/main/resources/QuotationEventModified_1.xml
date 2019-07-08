@@ -1,0 +1,253 @@
+<QuotationEvent>
+    <Quotation>
+        <QuotatnIdntfctn>
+            <SecurtyIdntfctn>
+                <ISIN>XS1132428761</ISIN>
+            </SecurtyIdntfctn>
+            <PlaceOfListng>449</PlaceOfListng>
+            <ValdtyDate>2015-10-28</ValdtyDate>
+        </QuotatnIdntfctn>
+        <QuotatnStatus>
+            <Status>MODF</Status>
+        </QuotatnStatus>
+        <Mesure>
+            <BondPrice>
+                <YieldToMaturty RateBase="100">0</YieldToMaturty>
+                <NetDuratn>0</NetDuratn>
+                <NetModifDuratn>0</NetModifDuratn>
+                <WeightdAvrgeLife>0</WeightdAvrgeLife>
+                <AccredIntrstRate RateBase="100">0</AccredIntrstRate>
+                <TradeDateAccredIntrst RateBase="100">0</TradeDateAccredIntrst>
+                <AskPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">110.88</Rate>
+                    </Value>
+                </AskPrice>
+                <AskPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1108.8</Amnt>
+                    </Value>
+                </AskPrice>
+                <BidPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.88</Rate>
+                    </Value>
+                </BidPrice>
+                <BidPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1098.8</Amnt>
+                    </Value>
+                </BidPrice>
+                <HighPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">110.98</Rate>
+                    </Value>
+                </HighPrice>
+                <HighPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1109.8</Amnt>
+                    </Value>
+                </HighPrice>
+                <LowPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.22</Rate>
+                    </Value>
+                </LowPrice>
+                <LowPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1092.2</Amnt>
+                    </Value>
+                </LowPrice>
+                <OpeningPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">110.38</Rate>
+                    </Value>
+                </OpeningPrice>
+                <OpeningPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1103.8</Amnt>
+                    </Value>
+                </OpeningPrice>
+                <ClosngPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">110.38</Rate>
+                    </Value>
+                </ClosngPrice>
+                <ClosngPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1103.8</Amnt>
+                    </Value>
+                </ClosngPrice>
+                <PriceExprssn>PCTF</PriceExprssn>
+            </BondPrice>
+        </Mesure>
+        <Provdr>
+            <DataProvdr>SIX-TELEKURS</DataProvdr>
+            <ProvdrTimeStamp>2015-10-29T13:35:30</ProvdrTimeStamp>
+        </Provdr>
+        <Cntxt>
+            <Origin>REFCOURS</Origin>
+            <CreatnDate>2015-10-29T13:35:30</CreatnDate>
+            <UpdtDate>2015-10-30T16:18:41</UpdtDate>
+        </Cntxt>
+    </Quotation>
+    <Quotation>
+        <QuotatnIdntfctn>
+            <SecurtyIdntfctn>
+                <ISIN>XS0604031988</ISIN>
+            </SecurtyIdntfctn>
+            <PlaceOfListng>535</PlaceOfListng>
+            <ValdtyDate>2015-10-29</ValdtyDate>
+        </QuotatnIdntfctn>
+        <QuotatnStatus>
+            <Status>MODF</Status>
+        </QuotatnStatus>
+        <Mesure>
+            <BondPrice>
+                <AccredIntrstRate RateBase="100">0.21364417</AccredIntrstRate>
+                <BidPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">105.04</Rate>
+                    </Value>
+                </BidPrice>
+                <BidPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">105253.64417</Amnt>
+                    </Value>
+                </BidPrice>
+                <PriceExprssn>PCTF</PriceExprssn>
+            </BondPrice>
+        </Mesure>
+        <Provdr>
+            <DataProvdr>BLOOMBERG</DataProvdr>
+            <ProvdrTimeStamp>2015-10-30T11:38:20</ProvdrTimeStamp>
+        </Provdr>
+        <Cntxt>
+            <Origin>REFCOURS</Origin>
+            <CreatnDate>2015-10-30T11:38:20</CreatnDate>
+            <UpdtDate>2015-10-30T16:18:41</UpdtDate>
+        </Cntxt>
+    </Quotation>
+    <Quotation>
+        <QuotatnIdntfctn>
+            <SecurtyIdntfctn>
+                <ISIN>XS1132428761</ISIN>
+            </SecurtyIdntfctn>
+            <PlaceOfListng>449</PlaceOfListng>
+            <ValdtyDate>2015-10-29</ValdtyDate>
+        </QuotatnIdntfctn>
+        <QuotatnStatus>
+            <Status>MODF</Status>
+        </QuotatnStatus>
+        <Mesure>
+            <BondPrice>
+                <YieldToMaturty RateBase="100">0</YieldToMaturty>
+                <NetDuratn>0</NetDuratn>
+                <NetModifDuratn>0</NetModifDuratn>
+                <WeightdAvrgeLife>0</WeightdAvrgeLife>
+                <AccredIntrstRate RateBase="100">0</AccredIntrstRate>
+                <TradeDateAccredIntrst RateBase="100">0</TradeDateAccredIntrst>
+                <AskPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">110.42</Rate>
+                    </Value>
+                </AskPrice>
+                <AskPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1104.2</Amnt>
+                    </Value>
+                </AskPrice>
+                <BidPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.42</Rate>
+                    </Value>
+                </BidPrice>
+                <BidPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1094.2</Amnt>
+                    </Value>
+                </BidPrice>
+                <HighPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">111.04</Rate>
+                    </Value>
+                </HighPrice>
+                <HighPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1110.4</Amnt>
+                    </Value>
+                </HighPrice>
+                <LowPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.1</Rate>
+                    </Value>
+                </LowPrice>
+                <LowPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1091</Amnt>
+                    </Value>
+                </LowPrice>
+                <OpeningPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.92</Rate>
+                    </Value>
+                </OpeningPrice>
+                <OpeningPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1099.2</Amnt>
+                    </Value>
+                </OpeningPrice>
+                <ClosngPrice>
+                    <PriceType>PCTF</PriceType>
+                    <Value>
+                        <Rate RateBase="100">109.92</Rate>
+                    </Value>
+                </ClosngPrice>
+                <ClosngPrice>
+                    <PriceType>PERU</PriceType>
+                    <Value>
+                        <Amnt Currency="EUR">1099.2</Amnt>
+                    </Value>
+                </ClosngPrice>
+                <PriceExprssn>PCTF</PriceExprssn>
+            </BondPrice>
+        </Mesure>
+        <Provdr>
+            <DataProvdr>SIX-TELEKURS</DataProvdr>
+            <ProvdrTimeStamp>2015-10-30T13:33:31</ProvdrTimeStamp>
+        </Provdr>
+        <Cntxt>
+            <Origin>REFCOURS</Origin>
+            <CreatnDate>2015-10-30T13:33:31</CreatnDate>
+            <UpdtDate>2015-10-30T16:18:41</UpdtDate>
+        </Cntxt>
+    </Quotation>
+    <EmptyFileIndic>No</EmptyFileIndic>
+    <FileIdntfctn>
+        <CreatnDate>2015-10-30T16:18:30</CreatnDate>
+    </FileIdntfctn>
+</QuotationEvent>

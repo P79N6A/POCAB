@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML Studio 1.0.7.0 (http://www.liquid-technologies.com) -->
+<xsd:schema xmlns:instrument="http://www.sophis.net/Instrument" xmlns:folio="http://www.sophis.net/folio" xmlns:common="http://sophis.net/sophis/common" xmlns:party="http://www.sophis.net/party" xmlns="http://www.sophis.net/scheduling" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/scheduling" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common" />
+  <xsd:import schemaLocation="folio.xsd" namespace="http://www.sophis.net/folio" />
+  <xsd:import schemaLocation="party.xsd" namespace="http://www.sophis.net/party" />
+  <xsd:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument" />
+  <xsd:complexType name="HourlyPeriod">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.FpML.org" xml:lang="en">A type representing the sequence of Electricity or Gas delivery during a full day. The delivery is described by blocks, typically hourly blocks and a delivery quantity is given for each. Note that the blocks may actually correspond to a smaller duration (e.g. 10 minutes) depending on the setup of the Electricity or Gas commodity and depending on the Scheduling report parameters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string" />
+      <xsd:element name="value" type="xsd:double" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="Scheduling">
+    <xsd:complexType>
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">This type represents the result of a Scheduling report for Electricity or Gas. The result is made of a sequence of daily reports, for one or several dates.
+For each date, the report contain:
+- the corresponding date
+- a description of the portfolio, the counterparties which may have been filtered, etc.
+- the result; which is made of several 'HourlyPeriod' rows. One row corresponds to Physical purchases, the other to Physical deliveries, the other to Financial purchases, etc.
+
+The result is also detailed per counterparty and per type of instrument (e.g. to split simple deliveries and options).</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+        <xsd:element minOccurs="1" name="deliveryDate" type="common:AdjustableOrRelativeDate" />
+        <xsd:element minOccurs="1" name="folioReference" type="folio:Portfolio" />
+        <xsd:element minOccurs="1" name="instrument" type="instrument:Instrument" />
+        <xsd:element minOccurs="1" name="granularity">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="value" type="xsd:string" />
+              <xsd:element minOccurs="0" name="description" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" name="filteredCounterparties">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" name="party">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="party" type="party:Party" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="classOfInstrument">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="name" type="xsd:string" />
+              <xsd:element minOccurs="0" name="netPhysical">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="netFinancial">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="boughtPhysical">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="boughtFinancial">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" name="sellPhysical">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" name="counterparty">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" name="name" type="xsd:string" />
+                    <xsd:element minOccurs="0" name="ident" type="xsd:long" />
+                    <xsd:element minOccurs="0" name="party" type="party:Party" />
+                    <xsd:element minOccurs="0" name="netPhysical">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="netFinancial">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="boughtPhysical">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="boughtFinancial">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" name="sellPhysical">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="instrument">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element maxOccurs="unbounded" ref="instrument:instrument" />
+                          <xsd:element minOccurs="0" name="netPhysical">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element minOccurs="0" name="netFinancial">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element minOccurs="0" name="boughtPhysical">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element minOccurs="0" name="boughtFinancial">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element minOccurs="0" name="sellPhysical">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element minOccurs="0" maxOccurs="unbounded" name="hourlyPeriod" type="HourlyPeriod" />
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

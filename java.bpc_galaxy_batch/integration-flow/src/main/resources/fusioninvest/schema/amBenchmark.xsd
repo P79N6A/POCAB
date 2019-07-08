@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:amBenchmarkComposition="http://www.sophis.net/amBenchmarkComposition" xmlns:folio="http://www.sophis.net/folio" xmlns:tns="http://www.sophis.net/amBenchmark" targetNamespace="http://www.sophis.net/amBenchmark" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/amBenchmarkComposition" schemaLocation="amBenchmarkComposition.xsd" />
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  <xsd:element name="amBenchmark" type="tns:AmBenchmark" substitutionGroup="instrument:instrument" />
+  <xsd:complexType name="AmBenchmark">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Definition of an instrument in Sophis that will represent a Benchmark. This instrument can then be used to benchmark a fund or a strategy.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="instrument:Instrument">
+        <xsd:sequence>
+		 <xsd:element minOccurs="0" name="pricing" type="instrument:Pricing" />
+          <xsd:element name="drifted" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies whether the components weights should be constant or drifted. Please note that some compositions may not support drifting, depending on their type or components nature. By default, it is false.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="enabled" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies whether the benchmark gives rise to dedicated columns in the portfolio and missing component lines in criteria extractions. By default, it is false.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="pricingMethod" type="xsd:normalizedString" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the pricing method used for returns computation.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="definitionType" type="tns:DefinitionType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the composition definition type (in weight, in market value or in nominal).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="hedgeRatio" type="xsd:double" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the ratio in terms of total asset value that will be used for FX hedge purposes.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:choice>
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the type of benchmark composition: Standard, Fixed Income, Liability or Synthetic.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:element ref="amBenchmarkComposition:standardComposition">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The benchmark is defined bottom-up by a list of instruments.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <!--<xsd:element name="fixedIncomeComposition" type="amBenchmarkComposition:FixedIncomeComposition">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The benchmark is defined bottom-up by a list of bonds.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="liabilityComposition" type="amBenchmarkComposition:LiabilityComposition">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The benchmark is defined bottom-up by a list of liability cash flow containers.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>-->
+            <xsd:element ref="amBenchmarkComposition:syntheticComposition">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">The benchmark is defined top-down by a list of weights for different criteria values. The criterium can be for example 'Currency' or 'Ratings'.</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+          <xsd:element ref="amBenchmarkComposition:fxHedgeComposition" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The standard benchmark FX hedge composition.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="DefinitionType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specifies the composition definition type (in weight, in market value or in nominal).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Weight"/>
+      <xsd:enumeration value="Market Value"/>
+      <xsd:enumeration value="Nominal"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" 
+attributeFormDefault="qualified" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:tns="http://sophis.net/sophis/var/preference"
+targetNamespace="http://sophis.net/sophis/var/preference">
+  <xs:element name="Preferences" type="tns:PreferencesType" />
+  <xs:complexType name="PreferencesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Preferences of the Risk Management Module</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="tns:SpotPreference" minOccurs="0" />
+      <xs:element ref="tns:CommoditySpotPreference" minOccurs="0" />
+      <xs:element ref="tns:PowerCommoditySpotPreference" minOccurs="0" />
+      <xs:element ref="tns:ExchangeRatePreference" minOccurs="0" />
+      <xs:element ref="tns:InstrumentSpreadPreference" minOccurs="0" />
+      <xs:element ref="tns:CreditSpreadPreference" minOccurs="0" />
+      <xs:element ref="tns:CreditDefaultSwapPreference" minOccurs="0" />
+      <xs:element ref="tns:StockVolatilityPreference" minOccurs="0" />
+      <xs:element ref="tns:CommodityVolatilityPreference" minOccurs="0" />
+      <xs:element ref="tns:InterestRateVolatilityPreference" minOccurs="0" />
+	  <xs:element ref="tns:InflationVolatilityPreference" minOccurs="0"/>
+      <xs:element ref="tns:FutureVolatilityPreference" minOccurs="0" />
+      <xs:element ref="tns:ExchangeRateVolatilityPreference" minOccurs="0" />
+      <xs:element ref="tns:InterestRateCurvePreference" minOccurs="0" />
+	  <xs:element ref="tns:InflationCurvePreference"                    minOccurs="0"/>
+      <xs:element ref="tns:InstrumentCorrelationPreference" minOccurs="0" />
+      <xs:element ref="tns:InstrumentExchangeRateCorrelationPreference" minOccurs="0" />
+      <xs:element ref="tns:ExchangeRateCorrelationPreference" minOccurs="0" />
+      <xs:element ref="tns:DividendPreference" minOccurs="0" />
+      <xs:element ref="tns:RepoMarginPreference" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SpotPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to an Equity Spot or Index</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CommoditySpotPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to a Commodity or Commodity Future</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PowerCommoditySpotPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to a Power/Commodity</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRatePreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to a Forex Rate</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentSpreadPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Defines the preferences for instrument spread (relative / absolute)</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreditSpreadPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">This type of shift is depreciated</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreditDefaultSwapPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the CDS Spreads of a Reference Entity</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StockVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the volatility matrix of an Equity or Index</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+        <xs:element name="Volatility" type="tns:VolatilityStrikeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CommodityVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the volatility matrix of a Commodity</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Volatility" type="tns:VolatilityStrikeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InterestRateVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to a Cap/Floor or Swaption Volatility Cube</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InflationVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to an inflation Volatility Cube</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FutureVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the volatility of a Future instrument (generally Short-term Interest Rate Future or Bond Future)</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+        <xs:element name="Volatility" type="tns:VolatilityStrikeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRateVolatilityPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the volatility matrix of a Forex Pair</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InterestRateCurvePreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to an Interest Yield Curve</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="InterestRateShock"  type="tns:InterestRateShockType" />
+		<xs:element name="AbsoluteMin" type="xs:double" minOccurs="0" maxOccurs="1" />
+		<xs:element name="AbsoluteMax" type="xs:double" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InflationCurvePreference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Stress" 		    type="tns:StressType" />
+        <xs:element name="Approximation" 	type="tns:ApproximationType" />
+        <xs:element name="InflationShock" type="tns:InflationShockType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentCorrelationPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the correlation of two Instruments</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InstrumentExchangeRateCorrelationPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the correlation of an Instrument with a Forex Pair</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExchangeRateCorrelationPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the correlation of two Forex Pairs</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+        <xs:element name="Approximation" type="tns:ApproximationType" />
+        <xs:element name="Application" type="tns:ApplicationType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DividendPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the dividends of an Equity or Index</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RepoMarginPreference">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Describes a Bump applied to the Repo Rates of an Equity</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+        <xs:element name="Stress" type="tns:StressType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="StressType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Describes a Bump applied to a market data, either as Additive (Snew = Sold + bump), Multiplicative (Snew = Sold*(1+bump)) or Fixed (Snew = bump)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Relative" />
+      <xs:enumeration value="Absolute" />
+      <xs:enumeration value="Fixed" />
+  <xs:enumeration value="Index"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ApproximationType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Type of approximation : "Extrapolated", "Capped", "IncreaseBeforeDiminishAfter", "DiminishAfter").</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Extrapolated" />
+      <xs:enumeration value="Capped" />
+      <xs:enumeration value="IncreaseBeforeDiminishAfter" />
+      <xs:enumeration value="DiminishAfter" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ApplicationType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">"Translation" or "Affinity".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Translation" />
+      <xs:enumeration value="Affinity" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VolatilityStrikeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Type of valatility strike : "AtTheMoney", "AbsoluteStrike", "RelativeStrike".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AtTheMoney" />
+      <xs:enumeration value="AbsoluteStrike" />
+      <xs:enumeration value="RelativeStrike" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InterestRateShockType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MarketPoint"/>
+      <xs:enumeration value="ZCCurve"/>
+      <xs:enumeration value="DiscountFactor"/>
+      <xs:enumeration value="NoShock"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InflationShockType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MarketPoint"/>
+      <xs:enumeration value="ZCCurve"/>
+      <xs:enumeration value="DiscountFactor"/>
+      <xs:enumeration value="GlobalOverRate"/>
+      <xs:enumeration value="NoShock"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

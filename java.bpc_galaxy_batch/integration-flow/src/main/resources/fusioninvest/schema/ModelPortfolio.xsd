@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:common="http://sophis.net/sophis/common" 
+  xmlns:instrument="http://www.sophis.net/Instrument" 
+  xmlns:folio="http://www.sophis.net/folio"  
+  xmlns:tns="http://www.sophis.net/modelPortfolio"
+  targetNamespace="http://www.sophis.net/modelPortfolio" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  
+  <xsd:element name="modelPortfolio" type="tns:ModelPortfolio" />
+  <xsd:element name="modelPortfolioIdentifier" type="tns:ModelPortfolioIdentifier" />
+  
+  <!-- Portfolio model description -->
+  <xsd:complexType name="ModelPortfolio">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Model Portfolio description</xsd:documentation>
+    </xsd:annotation>
+    
+    <xsd:sequence>
+    
+     <xsd:element ref="tns:modelPortfolioIdentifier" minOccurs="0" >
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Element to identify a Model Portfolio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      
+      <xsd:element name="modelPortfolioDefinition" type="tns:ModelPortfolioDefinition" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Element to describe Model Portfolio parameters</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      
+      <xsd:element name="modelPortfolioComposition" type="tns:ModelPortfolioComposition" minOccurs="0">
+	    <xsd:annotation>
+		  <xsd:documentation xml:lang="en">List of Model Portfolio components</xsd:documentation>
+	    </xsd:annotation>
+      </xsd:element>
+      
+    </xsd:sequence>
+    
+    <!-- persistent type to import from Integration Service. -->
+    <xsd:attributeGroup ref="common:PersistentEntity.model" />
+      
+  </xsd:complexType>
+  
+  <!-- Model Portfolio identifier -->
+  <xsd:complexType name="ModelPortfolioIdentifier">
+  	<xsd:sequence>
+  	  <xsd:element name="sophis" type="xsd:int" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Internal key to identify a Model Portfolio: no external reference is supported. Use 0 for new entities, or leave empty.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="name" type="tns:StringBounded40" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Can be empty</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+	</xsd:sequence>
+  </xsd:complexType>
+  
+  <!-- Model Portfolio base definition -->
+  <xsd:complexType name="ModelPortfolioDefinition" >
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of Model Portfolio parameters</xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+      <xsd:element name="comment" type="tns:StringBounded128" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Comment on the Model Portfolio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="benchmark" type="instrument:Identifier" minOccurs="0" >
+     	<xsd:annotation>
+        	<xsd:documentation xml:lang="en">Reference of the Benchmark instrument</xsd:documentation>
+      	</xsd:annotation>
+      </xsd:element>
+      <xsd:element name="benchmarkOffset" type="common:AdjustableOrRelativeDate" minOccurs="0" maxOccurs="1">
+     	<xsd:annotation>
+        	<xsd:documentation xml:lang="en">Benchmark offset (expressed as a count of business days)</xsd:documentation>
+      	</xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sqlFilter" type="tns:StringBounded1000" minOccurs="0" >
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">SQL WHERE clause to use in order to filter trades during the Modelling session</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="indicator" type="xsd:normalizedString" >
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Indicator to use for exposure calculations and adjustments. Among the possible values, there are for instance:
+          Asset Value in %, Contribution to duration, Delta Cash in %, FX Class Hedging Ratio, FX Exposure in %. More indicators can be added dynamically.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+       
+      <xsd:element name="tolerance" type="tns:Tolerance" minOccurs="0">
+      <xsd:annotation>
+        	<xsd:documentation xml:lang="en">Tolerance type and threshold value to determine if orders need to be generated.</xsd:documentation>
+      </xsd:annotation>
+      </xsd:element>
+        
+      <xsd:element name="lookThrough" type="tns:Lookthrough" minOccurs="0">
+      	<xsd:annotation>
+        	<xsd:documentation xml:lang="en">Lookthrough parameters to use during the Modelling session. Applies only to Top-Down model type.</xsd:documentation>
+      	</xsd:annotation>
+      </xsd:element>
+      
+      <xsd:element name="excessCashStrategyName" type="xsd:string" minOccurs="0" maxOccurs="1" />
+	  
+	  <xsd:element name="applyTradingUnitRounding" type="xsd:boolean" minOccurs="0" />
+      
+      <xsd:element name="criteriums" type="tns:ModelPortfolioCriteriums" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">You can specify at most 4 criteria.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+	  
+	  <xsd:element name="referenceDenominator" type="xsd:normalizedString" >
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+          Total Reference Value that computations will be based on (in particular for indicators in percent). Among the possible values, there are for instance:
+		  Asset Value
+		  Asset Value Without Orders
+		  Net Asset Value
+		  Strategy Target Allocation (only available for Reference Level 'Strategy') -> Fund NAV * tactical ratio
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      
+    </xsd:sequence>
+    <xsd:attribute name="modelType" use="required" type="tns:EModelType" />
+    <xsd:attribute name="weightType" use="required" type="tns:EWeightType" />
+    <xsd:attribute name="referenceLevel" use="required" type="tns:EReferenceLevel" />
+    
+    
+  </xsd:complexType>
+  
+  <!-- Definition Types -->
+   <xsd:complexType name="Lookthrough">
+  	<xsd:annotation>
+    	<xsd:documentation xml:lang="en">Lookthrough in GUI + 2 options</xsd:documentation>
+  	</xsd:annotation>
+  	<xsd:simpleContent>
+    	<xsd:extension base="tns:ELookthroughType">
+    		<xsd:attribute name="useBenchForIntFund" use="optional" type="xsd:boolean" />
+    		<xsd:attribute name="useBenchForExtFund" use="optional" type="xsd:boolean" />
+		</xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="Tolerance">
+  	<xsd:annotation>
+    	<xsd:documentation xml:lang="en">Tolerance in GUI: value + type</xsd:documentation>
+  	</xsd:annotation>
+  	<xsd:simpleContent>
+    	<xsd:extension base="xsd:double">
+    		<xsd:attribute name="type" use="required" type="tns:EToleranceType" />
+		</xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="CriteriumName">
+  	<xsd:annotation>
+    	<xsd:documentation xml:lang="en"> 
+    	- CriteriumName :
+    	"Currency"
+    	"Sector (Bloomberg Country, level 1)"
+    	"Allotment"
+    	- level should be between 1 and 4 (included)
+    	</xsd:documentation>
+  	</xsd:annotation>
+  	<xsd:simpleContent>
+    	<xsd:extension base="tns:StringBounded40">
+    		<xsd:attribute name="level" use="required" type="xsd:int" />
+		</xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ModelPortfolioCriteriums">
+  	<xsd:annotation>
+    	<xsd:documentation xml:lang="en">List of criteria. The maximum number of criteria supported is 4.</xsd:documentation>
+  	</xsd:annotation>
+	<xsd:sequence>
+      <xsd:element name="criterionName" type="tns:CriteriumName" minOccurs="1" maxOccurs="4" />
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <!-- Composition -->
+  <xsd:complexType name="ModelPortfolioComposition" >
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      List of Model Portfolio nodes. Caution: the order matters.
+      </xsd:documentation>
+    </xsd:annotation>
+  	<xsd:sequence>
+  		<xsd:element name="modelPortfolioNode" type="tns:ModelPortfolioNode" minOccurs="0" maxOccurs="unbounded" />
+  	</xsd:sequence>
+  	<xsd:attribute name="total" use="optional" type="xsd:double" />
+  	<xsd:attribute name="cash" use="optional" type="xsd:double" />
+  </xsd:complexType>
+  
+  <xsd:complexType name="ModelPortfolioNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      One Model Portfolio node is made of:
+      - criteria: name of the criterion involved in the node level
+      - instrument: instrument identifier
+      - level: can range from 1 to 4 for criteria nodes, but can be up to 5 for instrument nodes.
+      </xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+  	  <xsd:element name="weight" type="xsd:double" minOccurs="0" />
+      <xsd:choice>
+	    <xsd:element name="criteria" type="folio:Criterium" />
+      	<xsd:element name="instrument" type="instrument:Identifier" />
+      </xsd:choice>
+	</xsd:sequence>
+  	<xsd:attribute name="level" use="required" type="xsd:int" />
+  </xsd:complexType>
+  
+  <!-- Enums -->
+  <xsd:simpleType name="EModelType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Refers to sophis::modelPortfolio::eModelType in API.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="mTopDown" />
+      <xsd:enumeration value="mBottomUp" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="EWeightType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Refers to sophis::modelPortfolio::eWeightType in API.
+      "Drifting" in GUI.
+      Fixed (no drift) -> wFixed
+      Drifted -> wDrifted
+      Benchmark Linked -> wBenchmark
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="wFixed" />
+      <xsd:enumeration value="wDrifted" />
+      <xsd:enumeration value="wBenchmark" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="EReferenceLevel">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+	  "Reference" in GUI.
+	  Refers to sophis::modelPortfolio::eReferenceLevel in API.
+      Strategy -> refLvlStrategy
+      Fund -> refLvlFund
+	  </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="refLvlStrategy" />
+      <xsd:enumeration value="refLvlFund" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="EToleranceType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Refers to sophis::modelPortfolio::eToleranceType in API.
+      Relative to deviation from model -> tRelativeToCurrentLine
+      Relative to total exposure -> tRelativeToModel
+      Absolute -> tAbsolute
+      Use Fund Tolerance Settings -> tUseFundToleranceSettings
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="tRelativeToCurrentLine" />
+      <xsd:enumeration value="tRelativeToModel" />
+      <xsd:enumeration value="tAbsolute" />
+	  <xsd:enumeration value="tUseFundToleranceSettings" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="ELookthroughType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Refers to sophis::portfolio::eLookthroughType in API.
+      	None    ->	eltNone=0,		// No Lookthrough
+      	Package ->	eltPackage,		// Lookthrough for Packages and Funds
+      	Forex   ->	eltForex,		// Lookthrough for FX only
+      	Full    ->	eltFull,		// Full Lookthrough for Forwards, FX, etc
+      	Greater integer values are used to identify custom Lookthrough configurations.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:nonNegativeInteger"/>
+  </xsd:simpleType>
+  
+  <!-- String Types -->
+  <xsd:simpleType name="StringBounded40">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A StringBounded40 is a normalizedString whose length is limited to 40 characters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="40" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="StringBounded128">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A StringBounded128 is a normalizedString whose length is limited to 128 characters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="128" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="StringBounded1000">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A StringBounded1000 is a normalizedString whose length is limited to 1000 charaters.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="1000" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+</xsd:schema>

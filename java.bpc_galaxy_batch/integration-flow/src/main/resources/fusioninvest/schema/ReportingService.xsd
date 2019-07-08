@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://www.sophis.net/reportingService" elementFormDefault="qualified"
+            attributeFormDefault="qualified" xmlns:tns="http://www.sophis.net/reportingService" xmlns:fpml="http://www.fpml.org/2005/FpML-4-2"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
+
+  <xsd:import namespace="http://www.fpml.org/2005/FpML-4-2" schemaLocation="fpml-msg-4-2-extract.xsd"/>
+  
+  <xsd:element name="message" type="fpml:Message"/>
+
+  <xsd:complexType name="Report">
+    <xsd:sequence>
+      <xsd:element name="parameter" type="tns:Parameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="target" type="xsd:string" use="optional"/>
+    <xsd:attribute name="delete" type="xsd:boolean" use="optional" default="false"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Parameter">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="ReportRequest">
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element name="report" type="tns:Report" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="reportRequest" type="tns:ReportRequest" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ReportsListRequest">
+    <xsd:complexContent>
+      <xsd:extension base="fpml:Message">
+        <xsd:sequence>
+          <xsd:element name="filter" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="reportsListRequest" type="tns:ReportsListRequest" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ReportsListResult">
+    <xsd:complexContent>
+      <xsd:extension base="fpml:NotificationMessage">
+        <xsd:sequence>
+          <xsd:element name="report" type="tns:Report" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="reportsListResult" type="tns:ReportsListResult" substitutionGroup="tns:message"/>
+
+  <xsd:complexType name="ConfigParameter">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="parameters" type="xsd:string" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Document">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:base64Binary">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="status" type="xsd:string" use="required"/>
+        <xsd:attribute name="type" type="xsd:string" use="required"/>
+		<xsd:attribute name="file" type="xsd:string" use="required"/>
+        <xsd:attribute name="error" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="ReportResult">
+    <xsd:complexContent>
+      <xsd:extension base="fpml:NotificationMessage">
+        <xsd:sequence>
+          <xsd:element name="configParameter" type="tns:ConfigParameter" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="document" type="tns:Document" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="reportResult" type="tns:ReportResult" substitutionGroup="tns:message"/>
+
+</xsd:schema>

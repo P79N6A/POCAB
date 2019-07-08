@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema targetNamespace="http://www.sophis.net/var" xmlns="http://www.sophis.net/var" xmlns:tns="http://www.sophis.net/var" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" elementFormDefault="qualified" attributeFormDefault="qualified" >
+  
+	<!-- Root element -->
+	<xs:element name="VaRGlobalResult" type="VaRGlobalResult"/>
+  
+    <xs:complexType name="VaRScenarioPnl">	
+		  <xs:sequence>
+			<xs:element name="Date" type="xs:dateTime" />
+			<xs:element name="ScenarioId" type="xs:int" />
+			<xs:element name="ScenarioName" type="xs:string" />
+			<xs:element name="Value" type="xs:double" />
+		  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRPositionResult">
+		  <xs:sequence>
+			<xs:element name="Database" type="xs:string" />
+			<xs:element name="Book" type="xs:string" />
+			<xs:element name="BookId" type="xs:int" />
+			<xs:element name="Security" type="xs:string" />
+			<xs:element name="SecurityId" type="xs:int" />
+			<xs:element name="SecurityRef" type="xs:string" />
+			<xs:element name="NumberOfSecurities" type="xs:double" />
+			<xs:element name="ScenarioPnl" type="xs:double" />
+			<xs:element name="Currency" type="xs:int" />
+			<xs:element name="FairValue" type="xs:double" />
+			<xs:element name="StressedValue" type="xs:double" />
+			<xs:element name="InstrumentCode" type="xs:int" />
+			<xs:element name="AjustedNumberOfSecurities" type="xs:double" />
+			<xs:element name="ResultBeforeShock" type="xs:double" />
+		  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRMarginalResult">
+		  <xs:sequence>
+			<xs:element name="Book" type="xs:string" />
+			<xs:element name="BookId" type="xs:int" />
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+            <xs:element name="MarginalVar" type="xs:double" />
+            <xs:element name="MarginalCVar" type="xs:double" />
+            <xs:element name="IncrementalVar" type="xs:double" />
+		  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRMarginalPositionResult">
+		  <xs:sequence>
+			<xs:element name="PortfolioName" type="xs:string" />
+			<xs:element name="PortfolioId" type="xs:int" />
+			<xs:element name="SecurityName" type="xs:string" />
+			<xs:element name="SecurityId" type="xs:int" />
+			<xs:element name="SecurityRef" type="xs:string" />
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+            <xs:element name="MarginalVar" type="xs:double" />
+            <xs:element name="MarginalCVar" type="xs:double" />
+            <xs:element name="IncrementalVar" type="xs:double" />
+			<xs:element name="SecurityVar" type="xs:double" />
+			<xs:element name="AjustedNumberOfSecurities" type="xs:double" />					
+		  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRGeneralResult">
+		  <xs:sequence>
+			<xs:element name="Interpolated" type="xs:double" />
+			<xs:element name="InterpolatedCVaR" type="xs:double" />
+			<xs:element name="Previous" type="xs:double" />
+			<xs:element name="PreviousCVaR" type="xs:double" />
+			<xs:element name="Next" type="xs:double" />
+			<xs:element name="NextCVaR" type="xs:double" />
+			<xs:element name="EVTVaR" type="xs:double" />
+			<xs:element name="EVTCVaR" type="xs:double" />
+			<xs:element name="EVTSigma" type="xs:double" />
+			<xs:element name="EVTMu" type="xs:double" />
+			<xs:element name="EVTXi" type="xs:double" />
+			<xs:element name="Nav" type="xs:double" />		  
+			<xs:element name="ExtId" type="xs:double" />
+			<xs:element name="Id" type="xs:double" />
+			<xs:element name="Level" type="xs:double" />
+			<xs:element name="Name" type="xs:string" />
+		  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaREvolutionResult">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:dateTime" />
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+			<xs:element name="RealDeltaPnl" type="xs:double" />
+			<xs:element name="NoActionPnl" type="xs:double" />
+			<xs:element name="CleanedPnl" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+							  
+	<xs:complexType name="VaRBookExhaustiveResult">
+		<xs:sequence>
+			<xs:element name="Book" type="xs:string" />
+			<xs:element name="BookID" type="xs:int" />
+			<xs:element name="AssetValue" type="xs:double" />
+			<xs:element name="ExhaustiveFundInfo" type="tns:VaRFundInfo" />
+			<xs:element name="RealDeltaPnl" type="xs:double" />
+			<xs:element minOccurs="0" name="ExhaustiveFolioResult" type="tns:VaRExhaustiveFolioResult" />
+			<xs:element minOccurs="0" name="ExhaustiveBenchmarkResult" type="tns:VaRExhaustiveBenchmarkResult" />
+			<xs:element minOccurs="0" name="ExhaustivePerformanceResult" type="tns:VaRExhaustivePerformanceResult" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRExhaustiveFolioResult">
+		<xs:sequence>
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+			<xs:element name="PreviousPnl" type="xs:double" />
+			<xs:element name="NextPnl" type="xs:double" />
+			<xs:element name="WorstPnl" type="xs:double" />			  
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ExhaustiveFolioPnls" type="tns:VaRScenarioPnl" />			  
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VaRExhaustiveBenchmarkResult">
+		<xs:sequence>
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+			<xs:element name="PreviousPnl" type="xs:double" />
+			<xs:element name="NextPnl" type="xs:double" />
+			<xs:element name="WorstPnl" type="xs:double" />			  
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ExhaustiveBenchmarkPnls" type="tns:VaRScenarioPnl" />			  
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRExhaustivePerformanceResult">
+		<xs:sequence>
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />
+			<xs:element name="PreviousPnl" type="xs:double" />
+			<xs:element name="NextPnl" type="xs:double" />
+			<xs:element name="WorstPnl" type="xs:double" />			  
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ExhaustivePerformancePnls" type="tns:VaRScenarioPnl" />			  
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRFundInfo">
+		<xs:sequence>
+		  <xs:element name="Currency" type="xs:int" />
+		  <xs:element name="Nav" type="xs:double" />
+		  <xs:element name="BenchmarkCode" type="xs:int" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VaRGlobalResult">
+		<xs:sequence>
+			<xs:element name="VaRParameters" type="tns:VaRParameters" />
+			
+			<xs:element name="VaRGeneralResults" type="tns:VaRGeneralResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRDistributionResults" type="tns:VaRDistributionResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaREvolutionResults" type="tns:VaREvolutionResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRExhaustiveResults" type="tns:VaRExhaustiveResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRMarginalResults" type="tns:VaRMarginalResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRMarginalPositionResults" type="tns:VaRMarginalPositionResults" minOccurs="0"/>      
+			<xs:element name="VaRPositionResults" type="tns:VaRPositionResults" minOccurs="0" maxOccurs="1" />      
+			<xs:element name="VaRScenarioResults" type="tns:VaRScenarioResults" minOccurs="0" maxOccurs="1" />      
+			<xs:element name="VaRBacktestingResults" type="tns:VaRBacktestingResults" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRLiquidityResults" type="tns:VaRLiquidityResults" minOccurs="0" maxOccurs="1" />
+			
+			<xs:element name="VaRExAntePositionResult" type="tns:VaRExAntePositionResult" minOccurs="0" maxOccurs="1" />
+			<xs:element name="VaRExAnteFolioResult" type="tns:VaRExAnteFolioResult" minOccurs="0" maxOccurs="1" />
+			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VaRParameters">
+		<xs:sequence>      
+			<xs:element name="HoldingPeriod" type="xs:int" />
+			<xs:element name="Database" type="xs:string" />
+			<xs:element name="ComputeDate" type="xs:dateTime" />
+			<xs:element name="Configuration" type="xs:string" />
+			<xs:element name="ConfigID" type="xs:int" />
+			<xs:element name="Site" type="xs:string" />
+			<xs:element name="InNavPercentage" type="xs:boolean" />
+			<xs:element name="Confidence" type="xs:double" />
+			<xs:element name="Horizon" type="xs:int" />
+			<xs:element name="Consolidation" type="xs:boolean" />
+			<xs:element name="Currency" type="xs:string" />
+			<xs:element name="WeightMode" type="xs:string" />
+			<xs:element name="Decay" type="xs:double" />
+			<xs:element name="RiskFactors" minOccurs="0" type="tns:RiskFactors" />
+			<xs:element name="NbHistoric" type="xs:int" />
+			<xs:element name="NbMonteCarlo" type="xs:int" />
+			<xs:element name="NbStressTest" type="xs:int" />
+			<xs:element name="Books" type="tns:VaRBook"  minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="StressTestDescriptions" type="tns:StressTestDescription"  minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RiskFactors">
+		<xs:sequence>
+		  <xs:element name="StockPrices" type="xs:boolean" />
+		  <xs:element name="StockSharesVolatilities" type="xs:boolean" />
+		  <xs:element name="InterestRateFutureVolatilities" type="xs:boolean" />
+		  <xs:element name="CreditRiskData" type="xs:boolean" />
+		  <xs:element name="InterestRateCurves" type="xs:boolean" />
+		  <xs:element name="FxRates" type="xs:boolean" />
+		  <xs:element name="FxVolatilities" type="xs:boolean" />
+		  <xs:element name="Dividends" type="xs:boolean" />
+		  <xs:element name="RepoMargins" type="xs:boolean" />
+		  <xs:element name="Correlations" type="xs:boolean" />
+		  <xs:element name="InsterestRateVolatilities" type="xs:boolean" />
+		  <xs:element name="Spreads" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="StressTestDescription">
+		<xs:sequence>
+		  <xs:element name="Id" type="xs:int" />
+		  <xs:element name="InternalId" type="xs:int" />
+		  <xs:element name="Description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+    
+	<xs:complexType name="VaRBook">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:int" />
+			<xs:element name="Name" type="xs:string" />
+			<xs:element name="ExtractionId" type="xs:int" />
+			<xs:element name="ExtractionName" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>	  
+<!--	
+	<xs:complexType name="VaRResults" />
+-->	  
+	<xs:complexType name="VaRGeneralResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="GeneralResults" type="tns:VaRGeneralResult" />
+			</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VaRDistributionResults">
+		<xs:sequence>
+			<xs:element name="Var" type="xs:double" />
+			<xs:element name="CVar" type="xs:double" />				
+			<xs:element name="VarBenchmark" type="xs:double" />
+			<xs:element name="VarPerformance" type="xs:double" />
+			<xs:element name="VarFundToBenchmark" type="xs:double" />
+			<xs:element name="Mean" type="xs:double" />	
+			<xs:element name="Variance" type="xs:double" />
+			<xs:element name="Volatility" type="xs:double" />
+			<xs:element name="Skew" type="xs:double" />
+			<xs:element name="Kurtosis" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="DistributionPnls" type="tns:VaRScenarioPnl" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="DistributionPerformancePnls" type="tns:VaRScenarioPnl" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="DistributionBenchmarkPnls" type="tns:VaRScenarioPnl" />							
+			<xs:element minOccurs="0" name="DistributionFundInfo" type="tns:VaRFundInfo" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VaREvolutionResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="EvolutionResults" type="tns:VaREvolutionResult" />
+			</xs:sequence>
+	</xs:complexType>
+			
+	<xs:complexType name="VaRExhaustiveResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="BookExhaustiveResults" type="tns:VaRBookExhaustiveResult" />
+			</xs:sequence>	
+	</xs:complexType>
+
+	<xs:complexType name="VaRMarginalResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="MarginalResults" type="tns:VaRMarginalResult" />
+			</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRMarginalPositionResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="MarginalPositionResults" type="tns:VaRMarginalPositionResult" />
+			</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRPositionResults">
+		  <xs:sequence>				
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="PositionResults" type="tns:VaRPositionResult" />
+			</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRScenarioResults">
+		  	<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioBookResults" type="tns:ScenarioBookResult" />
+			</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="ScenarioBookResult">
+		  <xs:sequence>
+			<xs:element minOccurs="0" name="Book" type="xs:string" />
+			<xs:element minOccurs="0" name="BookId" type="xs:int" />
+			<xs:element minOccurs="0" name="BenchmarkCode" type="xs:int" />						
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioPnls" type="tns:VaRScenarioPnl" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioBenchmarkPnls" type="tns:VaRScenarioPnl" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ScenarioPerformancePnls" type="tns:VaRScenarioPnl" />
+		  </xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="VaRBacktestingResults">
+		<xs:sequence>				
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="BTFolioResults" type="tns:BTFolioResults" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BTFolioResults">
+		<xs:sequence>				
+			<xs:element name="FolioName" type="xs:string" />
+			<xs:element name="FolioId" type="xs:int" />
+			<xs:element name="NumberOfBacktestPerformed" type="xs:int" />				
+			<xs:element name="NumberOfDayPnlException" type="xs:int" />
+			<xs:element name="NumberOfHypotheticalPnlException" type="xs:int" />
+			<xs:element name="NumberOfCleanException" type="xs:int" />					
+			<xs:element name="HypotheticalExceptionRatio" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="BTToolkitTest" type="tns:BTToolkitTest" />	
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="BTFolioDayResult" type="tns:BTFolioDayResult" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BTFolioDayResult">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:dateTime" />				
+			<xs:element name="DayPnL" type="xs:double" />
+			<xs:element name="CleanedPnL" type="xs:double" />
+			<xs:element name="HypotheticalPnL" type="xs:double" />
+			<xs:element name="VaR" type="xs:double" />
+			<xs:element name="CVaR" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BTToolkitTest">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" />				
+			<xs:element name="Value" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRLiquidityResults">
+		<xs:sequence>			
+			<xs:element name="L-VaR" type="xs:double" />				
+			<xs:element minOccurs="0" maxOccurs="1" name="LiquidationDaysLiquidityResults" type="tns:LiquidationDaysLiquidityResults" />
+			<xs:element minOccurs="0" maxOccurs="1" name="BidAskSpreadLiquidityResults" type="tns:BidAskSpreadLiquidityResults" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LiquidationDaysLiquidityResults">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="LiquidationDaysPosition" type="tns:LiquidationDaysPosition" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LiquidationDaysPosition">
+		<xs:sequence>
+			<xs:element name="Sicovam" type="xs:int" />
+			<xs:element name="InstRef" type="xs:string" />
+			<xs:element name="Instrument" type="xs:string" />
+			<xs:element name="FolioName" type="xs:string" />
+			<xs:element name="FolioId" type="xs:int" />
+			<xs:element name="Position" type="xs:double" /> <!-- Number of securities -->
+			<xs:element name="Currency" type="xs:string" />
+			<xs:element name="PositionPnL" type="xs:double" />
+			<xs:element name="LiquidationDays" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="VaRDays" type="tns:VaRDays" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRDays">
+		<xs:sequence>
+			<xs:element name="VaR" type="xs:double" />
+			<xs:element name="CVaR" type="xs:double" />
+			<xs:element name="Day" type="xs:int" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BidAskSpreadLiquidityResults">
+		<xs:sequence>
+			<xs:element name="GlobalBidAskSpreadContribution" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="BidAskSpreadPosition" type="tns:BidAskSpreadPosition" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BidAskSpreadPosition">
+		<xs:sequence>
+			<xs:element name="Instrument" type="xs:string" />
+			<xs:element name="Sicovam" type="xs:int" />
+			<xs:element name="InstRef" type="xs:string" />
+			<xs:element name="FolioName" type="xs:string" />
+			<xs:element name="FolioId" type="xs:int" />
+			<xs:element name="Position" type="xs:double" />
+			<xs:element name="Currency" type="xs:string" />
+			<xs:element name="AssetValue" type="xs:double" />
+			<xs:element name="Ask" type="xs:double" />
+			<xs:element name="Bid" type="xs:double" />
+			<xs:element name="Mid" type="xs:double" />			
+			<xs:element name="BidAskSpreadContribution" type="xs:double" />
+			<xs:element name="VaR" type="xs:double" />
+			<xs:element name="CVaR" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+		
+	<!-- header -->
+	<xs:complexType name="VaRExAnteBenchmarkIndicators">
+		<xs:sequence>			
+			<xs:element name="BenchmarkVolatilityPercent" type="xs:double" />
+			<xs:element name="FundVolatilityPercent" type="xs:double" />
+			<xs:element name="CorrelationPercent" type="xs:double" />
+			<xs:element name="Beta" type="xs:double" />
+			<xs:element name="ExAnteTrackingErrorPercent" type="xs:double" />			
+		</xs:sequence>
+	</xs:complexType>
+			
+	<xs:complexType name="VaRExAntePositionResult">
+		<xs:sequence>	
+			<xs:element name="VaRExAnteBenchmarkIndicators" type="tns:VaRExAnteBenchmarkIndicators"/>			
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="VaRExAntePositionResults" type="tns:VaRExAntePositionResults" />			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRExAntePositionResults">
+		<xs:sequence>			
+			<xs:element name="Sicovam" type="xs:int" />
+			<xs:element name="InstRef" type="xs:string" />
+			<xs:element name="InstLibelle" type="xs:string" />	
+			<xs:element name="PositionID" type="xs:int" />
+			<xs:element name="VolatilityContribution" type="xs:double" />
+			<xs:element name="RiskContribution" type="xs:double" />
+			<xs:element name="AnnVolatilityContribution" type="xs:double" />
+			<xs:element name="AnnVolatilityContributionPercent" type="xs:double" />
+			<xs:element name="AnnVolatility" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="InstrumentCorrelationMatrix" type="tns:InstrumentCorrelationMatrix" />			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InstrumentCorrelationMatrix">
+		<xs:sequence>
+			<xs:element name="Sicovam" type="xs:int" />
+			<xs:element name="InstRef" type="xs:string" />
+			<xs:element name="InstLibelle" type="xs:string" />
+			<xs:element name="PositionID" type="xs:int" />
+			<xs:element name="Correlation" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+			
+	<xs:complexType name="VaRExAnteFolioResult">
+		<xs:sequence>	
+			<xs:element name="VaRExAnteBenchmarkIndicators" type="tns:VaRExAnteBenchmarkIndicators"/>			
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="VaRExAnteFolioResults" type="tns:VaRExAnteFolioResults" />			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VaRExAnteFolioResults">
+		<xs:sequence>			
+			<xs:element name="FolioName" type="xs:string" />
+			<xs:element name="FolioId" type="xs:int" />
+			<xs:element name="VolatilityContribution" type="xs:double" />
+			<xs:element name="RiskContribution" type="xs:double" />
+			<xs:element name="AnnVolatilityContribution" type="xs:double" />
+			<xs:element name="AnnVolatilityContributionPercent" type="xs:double" />
+			<xs:element name="AnnVolatility" type="xs:double" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="FolioCorrelationMatrix" type="tns:FolioCorrelationMatrix" />			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="FolioCorrelationMatrix">
+		<xs:sequence>
+			<xs:element name="FolioName" type="xs:string" />
+			<xs:element name="FolioId" type="xs:int" />
+			<xs:element name="Correlation" type="xs:double" />
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

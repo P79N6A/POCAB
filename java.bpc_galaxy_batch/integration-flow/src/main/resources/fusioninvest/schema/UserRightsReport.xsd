@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.sophis.net/UserRights" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/UserRights" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="User">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">This defines a User</xs:documentation>
+		</xs:annotation>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="rightCategory">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">An element representing a category of rights (1 category = 1 tab on user rights dialog)</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0">
+							<xs:element minOccurs="0" name="spot">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">An element representing an entry in the Entry Spot List</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute ref="tns:name" use="optional" />
+									<xs:attribute ref="tns:readAccess" use="optional" />
+									<xs:attribute ref="tns:writeAccess" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element minOccurs="0" name="logonExpiryDays" type="xs:unsignedByte">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Logon Expiry Days field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="workstation" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Workstation field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="lossLimit" type="xs:unsignedByte">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Loss Limit field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="street" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Street field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="number" type="xs:int">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Number field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="city" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The City field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="country" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Country field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="zipCode" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Zip Code field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="email" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Email field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="defaultTrader" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Default Trader field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="traderPortfolio" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Trader Portfolio field of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="trader" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Trader checkbox of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="singleFeed-Back" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Single Feed Back checkbox of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="recovery" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Recovery checkbox of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="fix" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Fix checkbox of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="unigateUser" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Unigate User checkbox of the User Information dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="maximumCalculationServers" type="xs:unsignedByte">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Maximum Calculation Servers field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="calculationServerPriority" type="xs:unsignedByte">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Priority field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="backOfficeCode" type="xs:int">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Code field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="allotments">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The list of allotments accessible by the user</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0">
+										<xs:element minOccurs="0" maxOccurs="unbounded" name="allotment" type="xs:string">
+											<xs:annotation>
+												<xs:documentation source="http://www.sophis.net" xml:lang="en">An individual allotment accessible by the user</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="right">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">Represents an individual right</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute ref="tns:category" use="optional">
+											</xs:attribute>
+											<xs:attribute ref="tns:name" use="optional">
+												<xs:annotation>
+													<xs:documentation source="http://www.sophis.net" xml:lang="en">The name of the right</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+											<xs:attribute ref="tns:rightType" use="optional"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute ref="tns:name" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="tns:auditModifiedBy" use="optional" />
+			<xs:attribute ref="tns:auditType" use="optional" />
+			<xs:attribute ref="tns:auditVersion" use="optional" />
+			<xs:attribute ref="tns:ident" use="optional" />
+			<xs:attribute ref="tns:name" use="optional" />
+			<xs:attribute ref="tns:parentProfileID" use="optional" />
+			<xs:attribute ref="tns:parentProfileName" use="optional" />
+			<xs:attribute ref="tns:type" use="optional" />
+	</xs:complexType>
+	<xs:attribute name="auditModifiedBy" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The name of the user that modified this user (only present if Audit Trail is exported)</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="auditType" type="xs:unsignedByte">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The audit type (1=Creation, 2=Modification, 3=Deletion) (only present if Audit Trail is exported)</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="auditVersion" type="xs:unsignedByte">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The version of the user (only present if Audit Trail is exported)</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="ident" type="xs:unsignedShort">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The unique identifier for the user</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="name" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The name of the user or right</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="parentProfileID" type="xs:unsignedShort">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The unique identifier of the users parent (only present if the user has a parent)</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="parentProfileName" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The name of the user's parent</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="type" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The type of user</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="rightType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The type of right</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="category" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">The category a right belongs to (see rightCategory element above)</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="readAccess" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Specifies the type of read access assigned to an Entry Spot</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="writeAccess" type="xs:string">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Specifies the type of write access assigned to an Entry Spot</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>			
+	<xs:complexType name="Group">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">This defines a group/profile</xs:documentation>
+		</xs:annotation>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" name="rightCategory">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">An element representing a category of rights (1 category = 1 tab on user rights dialog)</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence minOccurs="0">
+							<xs:element minOccurs="0" name="logonExpiryDays" type="xs:unsignedByte">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Logon Expiry Days field of the profile dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="defaultSettings" type="xs:string">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The Default Settings field of the user dialog</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" name="allotments">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">The list of allotments accessible by the profile</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence minOccurs="0">
+										<xs:element minOccurs="0" maxOccurs="unbounded" name="allotment" type="xs:string">
+											<xs:annotation>
+												<xs:documentation source="http://www.sophis.net" xml:lang="en">An individual allotment accessible by the user</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element minOccurs="0" maxOccurs="unbounded" name="right">
+								<xs:annotation>
+									<xs:documentation source="http://www.sophis.net" xml:lang="en">Represents an individual right</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute ref="tns:category" use="optional" />
+											<xs:attribute ref="tns:name" use="optional" />
+											<xs:attribute ref="tns:rightType" use="optional" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute ref="tns:name" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="tns:auditModifiedBy" use="optional" />
+			<xs:attribute ref="tns:auditType" use="optional" />
+			<xs:attribute ref="tns:auditVersion" use="optional" />
+			<xs:attribute ref="tns:ident" use="optional" />
+			<xs:attribute ref="tns:name" use="optional" />
+			<xs:attribute ref="tns:type" use="optional" />
+			<xs:attribute ref="tns:parentProfileID" use="optional" />
+			<xs:attribute ref="tns:parentProfileName" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="UserRights">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="user" type="tns:User"/>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="group" type="tns:Group"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://www.sophis.net/position" xmlns:tns="http://www.sophis.net/position" xmlns:instr="http://www.sophis.net/Instrument" xmlns:trade="http://www.sophis.net/trade" xmlns:common="http://sophis.net/sophis/common" xmlns:tag="http://www.sophis.net/Tag">
+
+	<xsd:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument"/>
+	<xsd:import schemaLocation="trade.xsd" namespace="http://www.sophis.net/trade"/>
+  <xsd:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common"/>
+  <xsd:import schemaLocation="Tag.xsd" namespace="http://www.sophis.net/Tag"/>
+
+
+  <xsd:complexType name="PositionExtRef">
+	<xsd:sequence>
+			<xsd:element name="ref_name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ref_value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+	</xsd:sequence>
+	</xsd:complexType>	
+			
+	<xsd:complexType name="PositionExtRefList">
+		<xsd:sequence>
+			<xsd:element name="USI_namespace" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="USI_ident" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="priorUSI_namespace" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="priorUSI_ident" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="blockUSI_namespace" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="blockUSI_ident" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="cptyID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="elecID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="clearingID" type="xsd:string" minOccurs="0"/>					
+			<xsd:element name="positionExtRef" type="tns:PositionExtRef" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	
+	
+	<xsd:complexType name="Positions">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" name="position" type="tns:Position"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="positions" type="tns:Positions"/>
+
+	<xsd:complexType name="Position">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="references" type="tns:References"/>
+			<xsd:element name="positionInfos" type="tns:PositionInfos" minOccurs="0"/>
+			<xsd:element name="tradesToDelete" type="tns:TradeList" minOccurs="0"/>
+      <xsd:element name="tags" type="tag:Tags" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation source="http://www.sophis.net" xml:lang="en">Since 7.1.2.8 : contains all tags applied to the position </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+		<xsd:attributeGroup ref="common:PersistentEntity.model">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">Since 5.3.3 add persitenceType for import</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attributeGroup>
+		<xsd:attribute name="sessionStatus" type="tns:SessionStatus"/>
+		<xsd:attribute name="valuationDate" type="xsd:date"/>
+		<xsd:attribute name="importType" type="tns:ImportType" default="Update"/>
+		<xsd:attribute name="importMode" type="tns:ImportMode" default="Default"/>
+		<xsd:attribute name="sessionId" type="xsd:unsignedInt"/>
+		<xsd:attribute name="tradesFullRemove" type="xsd:boolean"/>
+  </xsd:complexType>
+	<xsd:element name="position" type="tns:Position"/>
+	
+	<xsd:simpleType name="SessionStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Begin"/>
+			<xsd:enumeration value="End"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ImportType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Update"/>
+			<xsd:enumeration value="ReplaceAll"/>
+			<xsd:enumeration value="ReplaceAllInFund"/>
+			<xsd:enumeration value="ExtRefOnly"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="ImportMode">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Default"/>
+			<xsd:enumeration value="SecurityWithoutBalance"/>
+			<xsd:enumeration value="AdjustCashPerFund"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:complexType name="References">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Describes references of the position.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="identifier" type="tns:Identifier"/>
+			<xsd:element name="portfolio" type="tns:Portfolio" minOccurs="0"/>
+			<xsd:element name="instrument" type="instr:Identifier" minOccurs="0"/>
+			<xsd:element name="fundReference" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="carveOutReference" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="positionRef" type="tns:References"/>
+	
+	<xsd:complexType name="Identifier">
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="reference" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="extReferences" type="tns:PositionExtRefList" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="identifier" type="tns:Identifier"/>
+	
+	<xsd:complexType name="Portfolio">
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="reference" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="PositionInfos">
+		<xsd:sequence>
+			<!-- Position type -->
+			<xsd:element name="positionType" type="tns:PositionType"/>
+			<!-- Securities... -->
+			<xsd:element name="longShortIndicator" type="tns:LongShortIndicator" minOccurs="0"/>
+			<xsd:element name="quantity" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="quantityType" type="tns:QuantityType" minOccurs="0"/>
+			<xsd:element name="averagePrice" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="averagePriceType" type="tns:AveragePriceType" minOccurs="0"/>
+			<!-- Cash -->
+			<xsd:element name="cashBalance" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="cashCurrency" type="instr:Currency" minOccurs="0"/>
+			<!-- FX -->
+			<xsd:element name="receivedCurrency" type="instr:Currency" minOccurs="0"/>
+			<xsd:element name="paidCurrency" type="instr:Currency" minOccurs="0"/>
+			<xsd:element name="maturity" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="discountCurveFamily" type="xsd:unsignedInt" minOccurs="0"/>
+			<!-- Other fields -->
+			<xsd:element name="accountType" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="depositary" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="counterparty" type="xsd:unsignedInt" minOccurs="0"/>
+			<xsd:element name="realized" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="income" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="financing" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="treasury" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="forextreasury" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="accrued" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="dealEffect" type="xsd:double" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="PositionType">
+        <xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Dedicated field used to specify whether a line is a : - Security; - Cash : When it is a cash, the Position reference field becomes not mandatory
+			</xsd:documentation>
+        </xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Security"/>
+			<xsd:enumeration value="Cash"/>
+			<xsd:enumeration value="Forex"/>
+			<xsd:enumeration value="NDF"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="LongShortIndicator">
+        <xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Indicates whether it is a short or long position. In Sophis, it correspond to the sign Minus/Plus
+			</xsd:documentation>
+        </xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Long"/>
+			<xsd:enumeration value="Short"/>
+			<xsd:enumeration value="Flat"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="QuantityType">
+        <xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Indicates whether the quantity is expressed in number of securities or in amount: By default one supposes the quantity expressed in units.
+			</xsd:documentation>
+        </xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=""/>
+			<xsd:enumeration value="Number"/>
+			<xsd:enumeration value="Amount"/>
+			<xsd:enumeration value="InitialNominal"/>
+			<xsd:enumeration value="FloatingNominal"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="AveragePriceType">
+        <xsd:annotation>
+			<xsd:documentation xml:lang="en">
+			NotDefined = -1,InPrice = 0, InRate = 1, InPercentage = 2, InPriceWithoutAccrued = 3,
+			InPercentWithAccrued = 4, InAnotherCurrency = 5, UncertainMode = 6. 
+			If not mentioned in the file, the Quotation Type of the instrument will be used.
+			</xsd:documentation>
+        </xsd:annotation>
+		<xsd:restriction base="xsd:short">
+			<xsd:enumeration value="-1"/>
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+			<xsd:enumeration value="5"/>
+			<xsd:enumeration value="6"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="TradeList">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Describes a list of trades.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="trade:tradeIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

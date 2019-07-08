@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/CustomCorporateActions"
+			xmlns:mca="http://www.sophis.net/MisysCorporateActions"
+			xmlns:custom="http://www.sophis.net/CustomCorporateActions"
+			xmlns:instr="http://www.sophis.net/Instrument"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified" attributeFormDefault="qualified">
+
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+	<xsd:import namespace="http://www.sophis.net/MisysCorporateActions" schemaLocation="MisysCorporateActions.xsd" />
+	<!-- Disclaimer: any other xsd schemas must be defined under the same targetNamespce: CustomCorporateActions" -->
+	
+	<!-- Sample of custom corporate action; if you want to test this sample, add a new corporate action type called My New Dividend in Ribbon->Life Cycle->Corporate action Types dialog -->
+	<xsd:element name="CA_NewDividendSample" type="custom:myNewDividend_desc" substitutionGroup="mca:CorporateAction" />
+	<!-- Add here any new type of corporate action -->
+	
+	<xsd:complexType name="myNewDividend_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"SWIFT to XML" description of a corporate action - My New Dividend</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" /> <!-- uses the existing type from MisysCorporateActions.xsd -->
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" /> <!-- uses the existing type from MisysCorporateActions.xsd -->
+					<xsd:element name="CorporateActionDetails" type="custom:NewDiv_Details_desc" /> <!-- custom type defined in this schema -->
+					<xsd:element name="CorporateActionOptions" type="custom:NewDiv_Options_desc" /> <!-- custom type defined in this schema -->
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NewDiv_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">My New Dividend Details</xsd:documentation>
+		</xsd:annotation>
+			<xsd:all>
+				<xsd:element name="MyRecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+				<xsd:element name="MyExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+				<xsd:element name="MyEffectiveDate" type="xsd:date" />
+			</xsd:all>
+	</xsd:complexType>
+	
+	<xsd:complexType name="NewDiv_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">My New Dividend Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="MyDividend_Amount" type="xsd:double" />
+			<xsd:element name="MyCurrency" type="instr:Currency" nillable="true" />
+		</xsd:all>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:instrument="http://www.sophis.net/Instrument" xmlns:common="http://sophis.net/sophis/common" xmlns:tns="http://www.sophis.net/listedmarket" attributeFormDefault="qualified" elementFormDefault="qualified"
+            targetNamespace="http://www.sophis.net/listedmarket" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common"/>
+	<xsd:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument"/>
+
+	<xsd:annotation>
+		<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/user" schemaLocation="user.xsd"/>
+
+	<xsd:complexType name="ListedMarket">
+		<xsd:annotation>
+			<xsd:documentation/>
+		</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element ref="tns:listedMarketIdentifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Used in case of an update only to identify a listed market</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:listedMarketProperties" minOccurs="0"/>
+			<xsd:element ref="tns:realTime" minOccurs="0"/>
+			<xsd:element ref="tns:listedMarketSchedules" minOccurs="0"/>
+			<xsd:element ref="tns:assetClasses" minOccurs="0"/>
+			<xsd:element ref="tns:seriesList" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="common:PersistentEntity.model">
+	    	<xsd:annotation>
+	        	<xsd:documentation xml:lang="en">Since 5.3.3 add persitenceType for import</xsd:documentation>
+	      	</xsd:annotation>
+	    </xsd:attributeGroup>
+	</xsd:complexType>
+	<xsd:element name="listedMarket" type="tns:ListedMarket"/>
+
+	<xsd:complexType name="ListedMarketIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>Used to identify a listed market in case of an update.
+				One search is made for each provided reference by respecting the order. The first found market is retained.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophisId" type="xsd:unsignedInt" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Sophis internal identifier of a listed market</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:lmReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="listedMarketIdentifier" type="tns:ListedMarketIdentifier"/>
+
+	<xsd:complexType name="LmReference">
+		<xsd:annotation>
+			<xsd:documentation>A listed market reference (corresponds to a line in the transcodification data for Listed_Market dialog).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:normalizedString">
+				<xsd:attribute name="source" type="xsd:normalizedString" use="required">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="e">The source column to be used</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="lmReference" type="tns:LmReference"/>
+
+	<xsd:complexType name="ListedMarketProperties">
+		<xsd:annotation>
+			<xsd:documentation>The general properties of a listed market</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines the name of the market</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="flag" type="tns:CountryFlag" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines the flag of the country where the market is situated</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="index" type="instrument:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the reference equity index</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="listedMarketProperties" type="tns:ListedMarketProperties"/>
+
+	<xsd:simpleType name="CountryFlag">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="France"/>
+			<xsd:enumeration value="Belgium"/>
+			<xsd:enumeration value="Germany"/>
+			<xsd:enumeration value="UnitedKingdom"/>
+			<xsd:enumeration value="Netherlands"/>
+			<xsd:enumeration value="Switzerland"/>
+			<xsd:enumeration value="Europe"/>
+			<xsd:enumeration value="USA"/>
+			<xsd:enumeration value="Japan"/>
+			<xsd:enumeration value="EuroUSA"/>
+			<xsd:enumeration value="Italy"/>
+			<xsd:enumeration value="Spain"/>
+			<xsd:enumeration value="Australia"/>
+			<xsd:enumeration value="China"/>
+			<xsd:enumeration value="NorthKorea"/>
+			<xsd:enumeration value="SouthKorea"/>
+			<xsd:enumeration value="HongKong"/>
+			<xsd:enumeration value="India"/>
+			<xsd:enumeration value="Indonesia"/>
+			<xsd:enumeration value="Iran"/>
+			<xsd:enumeration value="Lebanon"/>
+			<xsd:enumeration value="Malaysia"/>
+			<xsd:enumeration value="NewZealand"/>
+			<xsd:enumeration value="Pakistan"/>
+			<xsd:enumeration value="Philippines"/>
+			<xsd:enumeration value="Singapore"/>
+			<xsd:enumeration value="Taiwan"/>
+			<xsd:enumeration value="Thailand"/>
+			<xsd:enumeration value="Turkey"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="RealTime">
+		<xsd:annotation>
+			<xsd:documentation>Properties of the real time data feed</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="integrator" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines the integrator to use in accepting the data feed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="source" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines the real-time source of the data feed</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FID" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Select the Reuters FID type for the last quote. This feed is retrieved during the trading day and saved at the end of the day.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="realTime" type="tns:RealTime"/>
+
+	<xsd:complexType name="ListedMarketSchedules">
+		<xsd:annotation>
+			<xsd:documentation>List of available schedules</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:listedMarketSchedule" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>Used for update only. If true, the existing schedules are removed.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="listedMarketSchedules" type="tns:ListedMarketSchedules"/>
+
+	<xsd:complexType name="ListedMarketSchedule">
+		<xsd:annotation>
+			<xsd:documentation>Defines the option maturity dates and the cycle for the underlying series</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:scheduleIdentifier" minOccurs="0"/>
+			<xsd:element name="name" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Defines the name of the schedule</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:scheduleMaturity" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="isFuture" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">For futures, set it to true. Days of the month are ignored if true. The date format for futures is MMMYY.
+					Considered as false if missing.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>Used for update only. If true, the existing maturities are removed.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="listedMarketSchedule" type="tns:ListedMarketSchedule"/>
+
+	<xsd:complexType name="ScheduleIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>Used to identify a schedule of a listed market in case of an update. It can be the Sophis internal identifier or its name.
+				When more scheduled with the same names exist, any one of them can be returned.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophisId" type="xsd:unsignedInt" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Sophis internal identifier of a listed market schedule</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Name of the schedule.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="scheduleIdentifier" type="tns:ScheduleIdentifier"/>
+
+	<xsd:complexType name="ScheduleMaturity">
+		<xsd:annotation>
+			<xsd:documentation>Defines the cycle and expiry of the series</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:date">
+				<xsd:attribute name="cycle" type="tns:Cycle">
+					<xsd:annotation>
+						<xsd:documentation>Use the cycle to define multiple maturities for a schedule</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="name" type="xsd:normalizedString"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="scheduleMaturity" type="tns:ScheduleMaturity"/>
+
+	<xsd:complexType name="AssetClasses">
+		<xsd:sequence>
+			<xsd:element ref="tns:assetClass" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="assetClasses" type="tns:AssetClasses"/>
+
+	<xsd:complexType name="AssetClass">
+		<xsd:sequence>
+			<xsd:element name="index" type="xsd:integer" minOccurs="0"/>
+			<xsd:element name="name" type="xsd:normalizedString" minOccurs="0"/>
+			<xsd:element name="template" type="instrument:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines a template derivative contract</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="defaultRTSyntax" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the default real-time syntax</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="marginCall" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines a margin call for the market. If true, the following occurs:
+							• The premium pay date of the option template is set to the expiry date.
+							• The payoff is not discounted.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:listedMarketFees" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="assetClass" type="tns:AssetClass"/>
+
+	<xsd:complexType name="SeriesList">
+		<xsd:sequence>
+			<xsd:element ref="tns:series" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="seriesList" type="tns:SeriesList"/>
+
+	<xsd:complexType name="Series">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">The underlying series</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="underlying" type="instrument:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the underlying instrument of the series</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="tns:scheduleIdentifier" minOccurs="0"/>
+			<xsd:element name="template" type="instrument:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Used to overwrite the default template</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lmOptions" type="tns:LmOptions" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+		<xsd:attribute name="version" type="xsd:int">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">The series version number. Considered -1 if missing.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="assetClassIndex" type="xsd:int">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">The asset class index. If missing, considered as 0 (Default Asset Class)</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="cycle" type="tns:Cycle">
+			<xsd:annotation>
+				<xsd:documentation>
+					Defines the cycle for the series. You can group schedule dates by cycle. The cycle to enter is comprised of one letter (A,B,C…).
+					This column is optional. Cycles are used only if underlyings are defined with a same type 
+					(Short, Long Index, Short Long Shares) and do not have the same maturities.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="rtUnd" type="xsd:normalizedString">
+			<xsd:annotation>
+				<xsd:documentation>The real-time code of the underlying</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="rtSyntax" type="xsd:normalizedString">
+			<xsd:annotation>
+				<xsd:documentation>The default syntax can be overwritten by providing this field</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="cSize" type="xsd:double">
+			<xsd:annotation>
+				<xsd:documentation>Default contract size for the support. 1 by default.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="prtion" type="xsd:double">
+			<xsd:annotation>
+				<xsd:documentation>The default proportion for the series. 1 by default.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="cRatio" type="xsd:double">
+			<xsd:annotation>
+				<xsd:documentation>Default conversion ratio for the support. 1 by default.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="extRef" type="xsd:normalizedString">
+			<xsd:annotation>
+				<xsd:documentation>The external reference of the series.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="expGap" type="xsd:unsignedInt">
+			<xsd:annotation>
+				<xsd:documentation>
+					For options on future, this value is added to the underlying maturity date to determine 
+					which future is the first one expiring after the option.
+					Missing means 0.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="exercise" type="tns:OptionExercise">
+			<xsd:annotation>
+				<xsd:documentation>
+					The exercise type defined in the template can be overwritten.
+					The following types can be selected:
+					• European
+					• American
+					Attribute missing = Use Template
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="marginCall" type="xsd:boolean">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					The margin call selection can be overwritten. The following types can be selected:
+					• No (false)
+					• Yes (true)
+					Attribute missing = Use Asset Class
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="series" type="tns:Series"/>
+
+	<xsd:simpleType name="OptionExercise">
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="E">
+				<xsd:annotation>
+					<xsd:documentation>European</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>American</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Cycle">
+    	<xsd:annotation>
+      		<xsd:documentation xml:lang="en">String representing a cycle. Maximum length of 2 character.</xsd:documentation>
+    	</xsd:annotation>
+    	<xsd:restriction base="xsd:normalizedString">
+      		<xsd:maxLength value="2" />
+    	</xsd:restriction>
+  	</xsd:simpleType>
+
+	<xsd:complexType name="LmOptions">
+    	<xsd:annotation>
+      		<xsd:documentation xml:lang="en">Description of parameters of listed options series in a Listed Market.</xsd:documentation>
+    	</xsd:annotation>
+    	<xsd:sequence>
+      		<xsd:element name="lmOption" type="tns:LmOption" maxOccurs="unbounded"/>
+    	</xsd:sequence>
+  	</xsd:complexType>
+
+	<xsd:complexType name="LmOption">
+    	<xsd:annotation>
+      		<xsd:documentation xml:lang="en">Quick description of some parameters of an option to be used in a Listed Market Definition.</xsd:documentation>
+    	</xsd:annotation>
+
+		<xsd:sequence>
+			<xsd:element name="oPutRef" type="tns:OptionReference" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="oCallRef" type="tns:OptionReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="rCall" type="xsd:string" />
+    	<xsd:attribute name="rPut" type="xsd:string" />
+      	<xsd:attribute name="stk" type="xsd:double" />
+      	<xsd:attribute name="exp" type="xsd:date" />
+      	<xsd:attribute name="qty" type="xsd:double" />
+		<xsd:attribute name="prop" type="xsd:double" />
+		<xsd:attribute name="cratio" type="xsd:double" />
+      	<!--<xsd:attribute name="type" type="xsd:string" use="required"></xsd:attribute>-->
+  	</xsd:complexType>
+
+	<xsd:complexType name="OptionReference">
+		<xsd:annotation>
+			<xsd:documentation>Reference used when an option is booked.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:normalizedString">
+				<xsd:attribute name="name" type="xsd:normalizedString" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ListedMarketFees">
+		<xsd:sequence>
+			<xsd:element ref="tns:listedMarketFee" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation>Used for update only. If true, the existing fees are removed.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="listedMarketFees" type="tns:ListedMarketFees"/>
+
+	<xsd:complexType name="ListedMarketFee">
+		<xsd:sequence>
+			<xsd:element name="limitPrice" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the threshold price for deals on listed options</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Defines the cost associated with specified limit price threshold</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="listedMarketFee" type="tns:ListedMarketFee"/>
+</xsd:schema>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.sophis.net/otc_message" 
+xmlns:ns0="http://www.sophis.net/trade" 
+xmlns:ns1="http://www.sophis.net/party" 
+xmlns:ns3="http://www.sophis.net/Instrument" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" 
+targetNamespace="http://www.sophis.net/otc_message" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:import schemaLocation="trade.xsd" namespace="http://www.sophis.net/trade" />
+  	<xs:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument" />
+  	<xs:import schemaLocation="party.xsd" namespace="http://www.sophis.net/party" />  		
+
+	<xs:complexType name="NameAndID">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Ident of some object and its name.</xs:documentation>
+		</xs:annotation>
+    	<xs:sequence>
+	   		<xs:element name="name" type="xs:string" minOccurs="0"/>
+	   		<xs:element name="id" type="xs:int" minOccurs="0" />
+       	</xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="FinancialInstitution">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">This type is used to describe clearing routing of the message deal parties.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="field1" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The code of Financial Institution itself.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="field2" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The code of Financial Institution Custodian.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="field3" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The code of Financial Institution Agent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="account1" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Financial Institution account at Custodian.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="account2" type="xs:string">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Financial Institution account at Agent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MessageInformation" mixed="true">
+		<xs:sequence>
+			<xs:element name="ident" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Ident of the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="version" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Version of the message deal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contractType" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The contract type. Used for FX Swap legs (Spot/Forward)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="valuedate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Value date of the message. Calculated as toolkit based on the message deal. Toolkit calculator is set in 'Posting Date' field of the Third Document Generation parameterisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="matchdate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Match date of the message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="generationdate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Generation date of the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="reversaldate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Reversal date of the message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="templateid" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Ident of the template used for message document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="linkreversalid" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Ident of the reversal (or reversed) message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="nettingid" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Ident of the netting message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Amount of the message. Calculated as toolkit based on the message deal. Toolkit calculator is set in 'Amount type' field of the Third Document Generation parameterisation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notional2" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Notional2 of the message. Calculated as in deal input GUI</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="currencyamount" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Amount of the message in the message currency.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="settlementsenderrow" type="xs:int">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the settlement instruction rule in the message sender (usually entity) parameterisation that was used to fill message sender information.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="senderssipath" type="xs:int">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the settlement instruction rule in the message sender (usually entity) parameterisation that was used to fill message sender information.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="settlementreceiverrow" type="xs:int">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the settlement instruction rule in the message receiver (usually counterparty) parameterisation that was used to fill message sender information.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="receiverssipath" type="xs:int">
+					<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the settlement instruction rule in the message receiver (usually counterparty) parameterisation that was used to fill message sender information.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+	        <xs:element name="templaterow" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the document generation rule in the message receiver (usually counterparty) parameterisation that is used to retrieve the template for the message document generation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="agreementrow" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the agreement rule in the message reciever parameterisation that is used to fill agreement row of the message. The agreement itself is usually between counterparty and entity and follows ISDA practices.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="nettingrow" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The position of the netting rule in the message reciever parameterisation that is used to net messages.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="bookid" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Folio ident where the message deal is located.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="docmodification" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Version of the message document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+           	<xs:element name="docnotes" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Comments assosiated with the message document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="externalstatus" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Status of the incoming message related to current message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="initialstatus" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Last saved status of the message. Named 'initial' because it's used as initial status in OTC WF framework for message transition from initial status to final status by applying some event (see also 'otceventid').</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+	        <xs:element name="otceventid" type="xs:int">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">If otceventid is set then for next OTC WF transition it will be used to retrieve the OTC WF definition rule.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userid" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">User that saved last modification of the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="businessevent" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Business event of the message deal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="externalreference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Reference of the incoming message related to current message, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+           	<xs:element name="documentname" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Name of the document if 'Choose other document' feature was used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+           	<xs:element name="remarks" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Comments of the message. May be used by the system to store last error during message or message document generation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="messagetype" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Type of the message (confirmation, payment, etc.).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="recipienttype" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Recipient type of the message (Third1, Third2, Broker, etc. plus user defined).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="sender" type="tns:FinancialInstitution">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Sender (usually entity) ident and routing information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="receiver" type="tns:FinancialInstitution">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Receiver (usually counteparty) ident and routing information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			
+			<xs:element name="sender2" type="tns:FinancialInstitution">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Sender (usually entity) ident and routing information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="receiver2" type="tns:FinancialInstitution">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Receiver (usually counteparty) ident and routing information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+        	<xs:element name="sendingmethod" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Sending method of the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+        	<xs:element name="paymentmethod" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Payment method of the message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:NameAndID">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">The message status name and ID.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+      	</xs:sequence>
+    </xs:complexType>
+
+  	<xs:complexType name="AbstractSourceType"/>
+	<xs:element name="abstractSource" type="tns:AbstractSourceType">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Abstract placeholder for the message source description.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:complexType name="TradeSourceType">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Trade source type as extension of abstract source type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="tns:AbstractSourceType">
+				<xs:sequence>
+					<xs:element ref="ns0:trade" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="tradeSource" type="tns:TradeSourceType" substitutionGroup="tns:abstractSource">
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">Placeholder for the message trade source description.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:complexType name="NettedMessageExt" mixed="true">		
+		<xs:annotation>
+			<xs:documentation source="http://www.sophis.net" xml:lang="en">This type describes data related to the message and dependend netted messages if a given message is netting one.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="true">
+		<xs:extension base="tns:MessageInformation">
+		<xs:sequence>
+			<xs:element name="SourceDescription" minOccurs="0">
+				<xs:annotation> 
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Deal info of the netted message.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns0:trade" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>										
+			<xs:element name="EntityDescription" minOccurs="0">
+				<xs:annotation> 
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Entity info of the netted message.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+				  		<xs:element ref="ns1:party"/>
+					</xs:sequence>
+				</xs:complexType>
+	        </xs:element>
+	        <xs:element name="CounterPartyDescription" minOccurs="0">
+				<xs:annotation> 
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Counterparty info of the netted message.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+	            	<xs:sequence>
+	              		<xs:element ref="ns1:party"/>
+	            	</xs:sequence>
+	          	</xs:complexType>
+	        </xs:element>
+			<xs:element name="InstrumentDescription" minOccurs="0">
+				<xs:annotation> 
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Instrument info of the netted message.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+	            	<xs:sequence>
+						<xs:element ref="ns3:share" minOccurs="0"/>					
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="MessageDescription" mixed="true">
+		<xs:complexContent mixed="true">
+			<xs:extension base="tns:MessageInformation">
+				<xs:sequence>
+					<xs:element name="NettedMessage" type="tns:NettedMessageExt" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="message" type="tns:MessageDescription"></xs:element>
+
+</xs:schema>
+
+
+
+
+

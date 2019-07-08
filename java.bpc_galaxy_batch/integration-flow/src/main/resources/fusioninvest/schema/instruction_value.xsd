@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.sophis.net/instruction" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="instruction.xsd" namespace="http://www.sophis.net/instruction" />
+  <xs:import schemaLocation="fund.xsd" namespace="http://www.sophis.net/fund" />
+</xs:schema>

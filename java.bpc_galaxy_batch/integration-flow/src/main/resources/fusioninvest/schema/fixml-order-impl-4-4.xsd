@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Revision: FIXML 4.4 Schema Version - 2003,20041218
+    Copyright 2003,2004 FIX Protocol Limited.  All rights reserved.
+
+    This Schema represents FIXML vocabulary based on version 4.4 of the FIX Protocol
+
+    Comments should be posted on the FIX protocol web-site
+    www.fixprotocol.org
+-->
+<xs:schema targetNamespace="http://www.fixprotocol.org/FIXML-4-4"
+           xmlns:common="http://sophis.net/sophis/common"
+           xmlns:instrument="http://www.sophis.net/Instrument"
+           xmlns:exec="http://www.sophis.net/execution"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.fixprotocol.org/FIXML-4-4"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:include schemaLocation="fixml-order-base-4-4.xsd"/>
+
+  <xs:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xs:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+  <xs:import namespace="http://www.sophis.net/execution" schemaLocation="execution.xsd"/>
+
+  <!-- ********************************************************** -->
+  <!--        define sophis order single  message                 -->
+  <!-- ********************************************************** -->
+
+  <!-- Sophis Order message with extended  elements and attributes -->
+  <xs:complexType name="Sph_NewOrderSingle_message_t" >
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Sophis single Order message
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:group ref="NewOrderSingleElements" />
+          <!-- New sophis fields -->
+          <xs:element name="SphInstrmt" type="instrument:Underlyer" minOccurs="0" maxOccurs="1" />
+          <xs:element name="SphCustomFields" type="SphCustomFields_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="SphProperties" type="SphProperties_Block_t" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="SphExecutions" type="exec:Execution" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="common:PersistentEntity.model"></xs:attributeGroup>
+        <xs:attributeGroup ref="NewOrderSingleAttributes" />
+        <xs:attributeGroup ref="Sph_OrderAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SphOrder" type="Sph_NewOrderSingle_message_t" substitutionGroup="Message" />
+
+  <!-- ********************************************************** -->
+  <!--        define sophis order Ack  message                    -->
+  <!-- ********************************************************** -->
+
+  <xs:complexType name="Sph_NewOrderSingle_acknowledge_t" >
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Abstract_message_t">
+        <xs:sequence>
+          <xs:element ref="SphOrderAck" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attributeGroup ref="OrderMessageAcknowledgeAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="SphOrderSingleAck" type="Sph_NewOrderSingle_acknowledge_t" substitutionGroup="Message" />
+
+</xs:schema>

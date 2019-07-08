@@ -1,0 +1,21 @@
+[
+  {
+    "operation": "default",
+    "spec": {
+      "persistenceType": "UpdateOrCreate",
+      "provider": "S2",
+      "isinName": "Isin"
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "isinName": "identifier.reference[#2].name",
+      "isin": "identifier.reference[#2].value",
+      "mans2": "notation[#2].value",
+      "provider": "notation[#2].provider",
+      "persistenceType": "&0"
+    }
+  }
+
+]

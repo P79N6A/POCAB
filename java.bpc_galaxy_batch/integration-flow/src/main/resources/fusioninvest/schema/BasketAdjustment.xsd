@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/basket_adjustment" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://www.sophis.net/basket_adjustment" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:party="http://www.sophis.net/party" xmlns:trade="http://www.sophis.net/trade">
+
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+	<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd" />
+	<xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd" />
+	
+	<xsd:complexType name="BSwapSearch">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+				Data used to find or create the basket swap.
+				Only the counterparty and the underlyer (equityUnderlyer-basketUnderlyer-basketConstituent-underlyer) are actually used to find or create the basket swap.
+				Keep the entity and conventionId though for an eventual future use.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="entity" type="party:PartyReference" minOccurs="0" />
+          	<xsd:element name="counterparty" type="party:PartyReference" />
+          	<xsd:element name="conventionId" type="xsd:int" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="bSwapSearch" type="tns:BSwapSearch" />
+	
+	<xsd:complexType name="BasketAdjustment">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">Defines a list Basket Adjustments to be applied on a specific Basket Swap Instrument.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="instrument:InstrumentBase">
+				<xsd:sequence>
+					<xsd:choice minOccurs="0">
+						<xsd:element name="identifier" type="instrument:Identifier" >
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Basket Swap Instrument ID where to apply the Basket Adjustment</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element ref="tns:bSwapSearch" />
+					</xsd:choice>
+					<xsd:element minOccurs="0" maxOccurs="unbounded" name="adjustment" type="tns:Adjustment">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of Adjustments</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Adjustment">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">Defines a single Basket Adjustment independent from Swap instrument.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="instrument:Asset">
+				<xsd:sequence>
+				    <xsd:element ref="trade:tradeIdentifier" minOccurs="0">
+				    	<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Contains a list of trade references. 
+								In case of an adjustment creation these references are stored at the adjustment trade level.
+								In case of an adjustment deletion the references are used to find the adjustment to be cancelled (including the corresponding adjustment trade). 
+								The search mechanism looks for trades that match ALL the references.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="modificationDate" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Modification date for TRS basket adjustments and fixings, otherwise ignored. If not specified, the modification date is used for the adjustment.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="valueDate" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Value date for TRS basket creation, adjustments, and fixings; ignored in other cases. By default the modification date is used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="orderAdj" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Order of the Adjustment to be edited or the position to be inserted.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="accruedPaymentType" type="instrument:AccruedPaymentType">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Accrued payment type, only used for TRS basket adjustments. If not specified, RealizedPayment is used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="underlyerAdjustmentType" type="instrument:UnderlyerAdjustmentType">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Specifies if the modification is a TRS basket adjustment or fixing. Ignored in other cases.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="underlyerAdjustmentDataFlavour" type="instrument:UnderlyerAdjustmentDataFlavour">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">If not specified, "New" is assumed.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="equityUnderlyer" type="instrument:EquityUnderlyer">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the swap's underlyer.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="spreadEndDate" type="xsd:date" />
+					<xsd:element minOccurs="0" name="spreadAdjustmentType" type="xsd:int" />
+				    <xsd:element minOccurs="0" name="earlyTerminated" type="xsd:boolean"/>
+				    <xsd:element minOccurs="0" name="extraFundingAdj" type="instrument:ExtraFundingAdj">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the Extra Funding parameters.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fwdNotional" type="instrument:FwdNotional">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">If included, it describes the forward notional currency and value for forward start basket swaps.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="upfrontFees" type="xsd:double">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the Upfront Fees paid in the transaction created when Basket Swap is booked in portfolio.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="spreadAdjustment" type="xsd:double">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the Spread value in percent applying to the Basket Adjustment and stored in the transaction created when Basket Swap is booked in portfolio.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="basketAdjustment" substitutionGroup="instrument:instrumentBase" type="tns:BasketAdjustment" />
+</xsd:schema>

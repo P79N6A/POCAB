@@ -1,0 +1,34 @@
+[
+  {
+    "operation": "shift",
+    "spec": {
+      "#EUR": "currency",
+      "quotation": {
+        "quotatnIdntfctn": {
+          "securtyIdntfctn": {
+            "isin": "identifier.reference[#1].value"
+          }
+        },
+        "mesure": {
+          "bondPrice": {
+            "openingPrice": {
+              "*": {
+                "#Open": "quotesByDate.[#2].quote[#3].side",
+                "value": {
+                  "amnt": {
+                    "value": "quotesByDate[#2].quote[#3].value",
+                    "currency": "quotesByDate[#2].quote[#3].currency"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+]

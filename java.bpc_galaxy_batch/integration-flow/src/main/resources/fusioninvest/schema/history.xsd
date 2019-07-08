@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/history" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:tns="http://www.sophis.net/history" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:element name="history" type="tns:History" />
+  <xsd:complexType name="HistoryField">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This type represents one historical price. The "name" attribute corresponds to the DataService alias of different price fixings (e.g. Low/High/Last/etc.).
+
+Type is only used internally for DataService and will be obsolete from RQ6.3/VL4.3. Use the types "Quote" and "QuotationsByInstrument" from file quotation.xsd instead.
+</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="HistoryFields">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This type represent several historical prices (cf. HistoryField) for the one date.
+
+Type is only used internally for DataService and will be obsolete from RQ6.3/VL4.3. Use the types "Quote" and "QuotationsByInstrument" from file quotation.xsd instead.
+</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="historyField" type="tns:HistoryField" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="date" type="xsd:date" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="History">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This type represents a list of historical prices for one instrument. The list contains different dates, and for each date a list of values and the corresponding DataService alias of Historical column (e.g. Low/High/Last/etc.).
+Note that this structure does not impose to have all dates and does not impose to have the same columns for different dates.
+
+Type is only used internally for DataService and will be obsolete from RQ6.3/VL4.3. Use the type "QuotationsByInstrument" from file quotation.xsd instead.
+</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="identifier" type="instrument:Identifier" minOccurs="1" maxOccurs="1" />
+      <xsd:element name="historyFields" type="tns:HistoryFields" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="HistoryList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">This type contains several Historical list, each of them describing historical prices (e.g. Low/High/Last/etc.) for one instrument.
+
+Type is only used internally for DataService and will be obsolete from RQ6.3/VL4.3. Use the type "Quotations" from file quotation.xsd instead.
+</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:history" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="historyList" type="tns:HistoryList" />
+</xsd:schema>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<order>
+	<transaction id="1">
+
+		<instrument>
+			<id>1</id>
+			<type>Action</type>
+			<code>FR00112113</code>
+		</instrument>
+		<quanity>
+			<value>2000</value>
+		</quanity>
+
+		<date>
+			<type>execution</type>
+			<value>20120909</value>
+		</date>
+
+		<date>
+			<type>negociation</type>
+			<value>20120910</value>
+		</date>
+
+		<date>
+			<type>validation</type>
+			<value>20120911</value>
+		</date>
+
+
+		<party>
+			<type>buyer</type>
+			<name>Axa</name>
+			<code>
+				<id>XXAA02</id>
+				<CreationDate>20180512</CreationDate>
+			</code>
+		</party>
+
+		<party>
+			<type>seller</type>
+			<name>Cardif</name>
+			<code>
+				<id>CAR001</id>
+				<CreationDate>20180513</CreationDate>
+			</code>
+		</party>
+	</transaction>
+
+	<transaction id="2">
+
+		<instrument>
+			<id>1</id>
+			<type>Action</type>
+			<code>FR00112113</code>
+		</instrument>
+		<quanity>
+			<value>2000</value>
+		</quanity>
+
+		<date>
+			<type>execution</type>
+			<value>20120909</value>
+		</date>
+
+		<date>
+			<type>negociation</type>
+			<value>20120910</value>
+		</date>
+
+		<date>
+			<type>validation</type>
+			<value>20120911</value>
+		</date>
+
+
+		<party>
+			<type>buyer</type>
+			<name>Axa</name>
+			<code>
+				<id>XXAA02</id>
+				<CreationDate>20180512</CreationDate>
+			</code>
+		</party>
+
+		<party>
+			<type>seller</type>
+			<name>Cardif</name>
+			<code>
+				<id>CAR001</id>
+				<CreationDate>20180513</CreationDate>
+			</code>
+		</party>
+	</transaction>
+
+
+</order>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/CustomCorporateActions" xmlns:tns="http://www.sophis.net/CustomCorporateActions"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified" attributeFormDefault="qualified"> 
+	<xsd:annotation>
+		<xsd:documentation source="http://www.sophis.net" xml:lang="en">
+			custom.xsd imports all custom schemas. Is created by .bat 	
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:include schemaLocation="CustomSampleCorporateActions.xsd" />  
+</xsd:schema> 

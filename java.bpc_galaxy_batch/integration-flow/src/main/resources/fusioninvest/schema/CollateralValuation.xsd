@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/CollateralValuation"
+ xmlns:tns="http://www.sophis.net/CollateralValuation"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:common="http://sophis.net/sophis/common"
+ xmlns:instr="http://www.sophis.net/Instrument"
+ xmlns:trade="http://www.sophis.net/trade"
+ elementFormDefault="qualified" attributeFormDefault="qualified">
+
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/trade" schemaLocation="trade.xsd" />
+
+  <xsd:element name="collateralValuation" type="tns:CollateralValuation" />
+  <xsd:element name="collateralValuations" type="tns:CollateralValuations" />
+  
+  <xsd:simpleType name="ValuationType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Valuation Type. Available values: VariationMargin, InitialMargin.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="VariationMargin" />
+      <xsd:enumeration value="InitialMargin" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:complexType name="CollateralValuations">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">The list of collateral valuations.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="collateralValuation" type="tns:CollateralValuation" minOccurs="0" maxOccurs="unbounded" />
+	</xsd:sequence>
+	<xsd:attributeGroup ref="common:PersistentEntity.model">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">PersitenceType for import through GXML</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attributeGroup>
+  </xsd:complexType>
+  
+   <xsd:complexType name="CollateralValuation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">All collateral valuation values for the selected position or agreement.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+	  <xsd:choice minOccurs="1">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Position of agreement identifier</xsd:documentation>
+		</xsd:annotation>
+		<xsd:element name="position" type="tns:PositionIdentifier" />
+		<xsd:element name="agreement" type="tns:CreditSupportAgreement" />
+	  </xsd:choice>
+      <xsd:element name="valuationValues" type="tns:valuationValues" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attributeGroup ref="common:PersistentEntity.model" />
+  </xsd:complexType>
+
+  <xsd:complexType name="PositionIdentifier">
+    <xsd:annotation>
+      <xsd:documentation source="http://www.sophis.net" xml:lang="en">Link to the position. If multiple ids are given, they must refer to the same position.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="linkId" type="trade:LinkId" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+	<xsd:complexType name="CreditSupportAgreement">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Link to the agreement. If multiple ids are given, they must refer to the same position.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="type" type="trade:AgreementType"/>			
+			<xsd:element name="date" type="xsd:date"/>			
+			<xsd:element minOccurs="0" name="identifier" type="trade:AgreementIdentifier"/>			
+		</xsd:sequence>
+	</xsd:complexType>
+	
+  <xsd:complexType name="valuationValues">
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">The list of collateral valuation values on a specified position or agreement.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="valuationValue" type="tns:ValuationValue" minOccurs="0" maxOccurs="unbounded" />
+	</xsd:sequence>
+	<xsd:attribute name="resetExisting" type="xsd:boolean" use="optional" default="true">
+		<xsd:annotation>
+			<xsd:documentation source="http://www.sophis.net" xml:lang="en">If any existing values should be resetted if not specified in xml.</xsd:documentation>
+		</xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ValuationValue">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specific collateral valuation.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+	  <xsd:element name="date" type="xsd:date" minOccurs="1" />
+      <xsd:element name="valuationType" type="tns:ValuationType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="entityValue" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="counterpartyValue" type="xsd:double" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="agreedValue" type="xsd:double" minOccurs="0" maxOccurs="1" />
+	  <xsd:element name="currency" type="instr:Currency" minOccurs="1" maxOccurs="1" />
+    </xsd:all>
+  </xsd:complexType>
+</xsd:schema>

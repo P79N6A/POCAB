@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by BNP PARIBAS ASSURANCE (BNP PARIBAS ASSURANCE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0.3">  
+  <!--4.0.3 (31/07/2009, FTSAT ETL) - MàJ / correction automatique d'encodage vers ISO-8859-1 -->
+  <!--4.0.2 (11/05/2009/ FTSAT PWCT) - MàJ / correction automatique d'encodage vers ISO8859-1 -->  
+  <!--06/04/2009 - DTA : remplacement des types nonNegativeInteger et positiveInteger par integer suite à bug informatica de la nouvelle version 8.6-->  
+  <!--V4.0.0 (27/11/08, CMO) : Revue du bloc Anmly : Suppression de la sequence itérative dans le bloc Anomly.Source (remontée des tags ProvdrAnmlyType et Desc), suppression de l'itération sur la sequence après Target et ajout d'une itération sur Anomly.-->  
+  <!--V4.0.0 (21/10/08, CMO) : Remplacement des xs:decimal par xs:double et passage à la nouvelle numérotation des pivots - modif connecteurs all sur optfutprice et indexprice en sequence-->  
+  <!--V03.05 (30/05/08, CMO) : Modification de QuotationType suite aux abbréviations des balises du type ObjectIdentificationType + Format EventInpuDate + Ajout de MidPrice dans DebtPrice + Ajout du Bloc FileIdntfctn + Rattachement Status à un type-->  
+  <!--V03.04 (22/05/08, DTAS) : Ajout du top EmtyFileIndic permettant d'indiquer si le fichier est vide ou non. La collection d'objets Quotation devient facultative.-->  
+  <!--V03.03 : Suppression des blocs FundPrice et InHouseFundPrice qui ne sont pas utiles sur ce pivot => Pivot NetAssetValue-->  
+  <!--V03.02 : Ajout de CashBillRate (taux bon du trésor) dans SecurityPrice/Measure/DebtPrice (28/04/2008 DTAS)-->  
+  <!--V03.01 : Place de cotation passée en facultative - HBO-->  
+  <!--version V03.00 (16/04/2008, Eric de Rochefort) : livraison ETOIL-->  
+  <!--V2.04 : Revue du bloc InitiatingEvent (Distinction Evt interne/externe et autres identifiants) + Context (ajout CREIdentifier) + Renommage de SecurityPrice en Quotation-->  
+  <!--V2.03 : Modification de InitiatingEvent (ajout InputChannelCode), renommage bloc Identifier - ajout de DataContext en remplacement de Context et création blocs Status et Provider : CorporateActionIndicator est supprimé : info à véhiculer dans InitiatingEvent (nouvelle valeur EventTypeCode = "OST")-->  
+  <!--Normalisation Cours - Cours Titres - Version V 2.01 du 14 Mars 2008 - CM-->  
+  <!--V2.01 : Passage du bloc InitiatingEvent en facultatif + retour en arrière sur le bloc DataContext pour limiter les impacts applicatifs-->  
+  <!--V2.00 : Mise aux normes techniques (transformation des elements en type), taille des zones + éclatement en 3 fic (CoursType, CoursDump et Cours)-->  
+  <!--V1.25 : Passage des Cours en itératif pour gérer les cours en pourcentage et à la pièce (ETOIL) -->  
+  <!--V1.24 : Ajout de la source du cours "SourceOfPrice" et de l'indicateur de coupon couru inclu "CumDividendIndicator" pour les obligations et TCN (Refcours AVT22 - interface Reuters-Datascope)-->  
+  <!--V1.23 : Passage en obligatoire de la donnée NetAssetValuePerUnit pour les OPCVM et les FI-->  
+  <!--V1.23 : Ajout de l'objet SecurityPriceDump - ajout de la donnée PriceExpression - Création du bloc InHouseFundPrice pour les VL de Fonds internes-->  
+  <!--V1.23 : Création de DebtPrice, Ajout des données MidPrice, YieldToMaturity, WeightedAverageLife, TradePrice, CorporateActionIndicator, UpdateDate, SecurityPriceStatus + Bloc Anomaly + Objet SecurityPriceDump-->  
+  <!--V1.22 : Ajout du cours d'un indice, arborescence IndexPrice-->  
+  <xs:include schemaLocation="QuotationType.xsd"/>  
+  <xs:element name="QuotationEvent"> 
+    <xs:annotation> 
+      <xs:documentation>Collection d'Evénements Cours</xs:documentation> 
+    </xs:annotation>  
+    <xs:complexType> 
+      <xs:sequence> 
+        <xs:element name="Quotation" type="QuotationType" minOccurs="0" maxOccurs="unbounded"/>  
+        <xs:element name="EmptyFileIndic" type="YesNoIndicator" minOccurs="0"> 
+          <xs:annotation> 
+            <xs:documentation>Top indquant si le fichier est vide (YES: fichier vide/No fichier non vide)</xs:documentation> 
+          </xs:annotation> 
+        </xs:element>  
+        <xs:element name="FileIdntfctn" minOccurs="0"> 
+          <xs:annotation> 
+            <xs:documentation>Bloc d'identification du fichier</xs:documentation> 
+          </xs:annotation>  
+          <xs:complexType> 
+            <xs:sequence> 
+              <xs:element name="Idntfctn" type="IdentificationInformation" minOccurs="0"> 
+                <xs:annotation> 
+                  <xs:documentation>Identifiant du fichier</xs:documentation> 
+                </xs:annotation> 
+              </xs:element>  
+              <xs:element name="CreatnDate" type="ISODateTime" minOccurs="0"> 
+                <xs:annotation> 
+                  <xs:documentation>Date de création</xs:documentation> 
+                </xs:annotation> 
+              </xs:element> 
+            </xs:sequence> 
+          </xs:complexType> 
+        </xs:element> 
+      </xs:sequence> 
+    </xs:complexType> 
+  </xs:element>  
+
+</xs:schema>

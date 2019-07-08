@@ -1,0 +1,82 @@
+[{
+  "operation": "default",
+  "spec": {
+    "isinName": "Isin",
+    "isinModifiable": "UniquePrioritary"
+  }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "quotatnIdntfctn": {
+        "securtyIdntfctn": {
+          "id": "=concat(@(1,isin), '#', @(2,placeOfListng))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "isinName": "identifier.reference[#].name",
+      "isinModifiable": "identifier.reference[#].modifiable",
+      "quotatnIdntfctn": {
+        "securtyIdntfctn": {
+          "id": "identifier.reference[#].value"
+        },
+        "valdtyDate": "quotesByDate[#0].quotationDate"
+      },
+      "#EUR": "currency",
+      "mesure": {
+        "bondPrice": {
+          "askPrice": {
+            "*": {
+              "targetNode": {
+                "sideString": "quotesByDate.[#2].quote[#4].side",
+                "value": "quotesByDate[#2].quote[#4].value",
+                "currency": "quotesByDate[#2].quote[#4].currency"
+              }
+            }
+          },
+          "bidPrice": {
+            "*": {
+              "targetNode": {
+                "sideString": "quotesByDate.[#2].quote[#4].side",
+                "value": "quotesByDate[#2].quote[#4].value",
+                "currency": "quotesByDate[#2].quote[#4].currency"
+              }
+            }
+          },
+          "highPrice": {
+            "*": {
+              "targetNode": {
+                "sideString": "quotesByDate.[#2].quote[#4].side",
+                "value": "quotesByDate[#2].quote[#4].value",
+                "currency": "quotesByDate[#2].quote[#4].currency"
+              }
+            }
+          },
+          "lowPrice": {
+            "*": {
+              "targetNode": {
+                "sideString": "quotesByDate.[#2].quote[#4].side",
+                "value": "quotesByDate[#2].quote[#4].value",
+                "currency": "quotesByDate[#2].quote[#4].currency"
+              }
+            }
+          },
+          "openingPrice": {
+            "*": {
+              "targetNode": {
+                "sideString": "quotesByDate.[#2].quote[#4].side",
+                "value": "quotesByDate[#2].quote[#4].value",
+                "currency": "quotesByDate[#2].quote[#4].currency"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.sophis.net/bo_xml" 
+		xmlns:tns="http://www.sophis.net/bo_xml" 
+		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:ns0="http://www.sophis.net/trade" 
+		xmlns:ns1="http://www.sophis.net/party" 
+		xmlns:ns2="http://www.sophis.net/folio" 
+		xmlns:ns3="http://www.sophis.net/Instrument" 
+		xmlns:ns4="http://sophis.net/sophis/common" 
+		xmlns:ns5="http://www.sophis.net/otc_message" 
+		attributeFormDefault="unqualified" elementFormDefault="qualified">
+
+    <xs:import schemaLocation="trade.xsd" namespace="http://www.sophis.net/trade" />
+	<xs:import schemaLocation="folio.xsd" namespace="http://www.sophis.net/folio"/>
+	<xs:import schemaLocation="common.xsd" namespace="http://sophis.net/sophis/common"/>
+	<xs:import schemaLocation="instrument.xsd" namespace="http://www.sophis.net/Instrument"/>
+	<xs:import schemaLocation="party.xsd" namespace="http://www.sophis.net/party"/>
+	<xs:import schemaLocation="otc_message.xsd" namespace="http://www.sophis.net/otc_message"/>
+
+	<xs:complexType name="SphOtcMessage">
+		<xs:sequence>
+			<xs:element name="source" minOccurs="0">
+				<xs:annotation>
+						<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message underlying object (trade/SR/...).</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns5:abstractSource"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="adjustment" minOccurs="0" type="tns:Adjustment">
+                <xs:annotation>
+                    <xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the basket adjustment associated with the source trade.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="position" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message deal position.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns2:position"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="instrument" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message deal instrument.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns3:instrument"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InstrumentIssuer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Insrument issuer of the message deal instrument.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element name="instrument" minOccurs="0">
+							<xs:complexType mixed="true">
+								<xs:sequence>
+									<xs:element ref="ns3:instrument"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="UnderlyingInstrument" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Underlying instrument of Insrument issuer of the message deal instrument.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType mixed="true">
+								<xs:sequence>
+									<xs:element name="instrument" minOccurs="0">
+										<xs:complexType mixed="true">
+											<xs:sequence>
+												<xs:element ref="ns3:instrument"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="entity" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message deal entity.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns1:party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="counterparty" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message deal counterparty.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns1:party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="depositary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.sophis.net" xml:lang="en">Element contains xml description of the message deal depositary.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns1:party"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="otc_message">
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element ref="ns5:message"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="messageAdditionalData">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MessageID" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Message ident.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="OpeningMessageID" type="xs:unsignedInt" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">Opening Message ident.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="NDFCurrency" type="xs:string" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation source="http://www.sophis.net" xml:lang="en">NDF Currency</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="messageCreationTimestamp" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="documentCreationTimestamp" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="creationTimestamp" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="GMT" type="xs:string"/>
+						<xs:element name="YY" type="xs:unsignedShort"/>
+						<xs:element name="MM" type="xs:unsignedByte"/>
+						<xs:element name="DD" type="xs:unsignedByte"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="Adjustment">
+        <xs:sequence>
+            <xs:element name="notional" type="xs:double" />
+            <xs:element name="tradeDate" type="xs:date" />
+            <xs:element name="valueDate" type="xs:date" />
+            <xs:element name="constituent" maxOccurs="unbounded" type="tns:Constituent" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Constituent">
+        <xs:sequence>
+            <xs:element name="identifier" type="ns3:Identifier" />
+            <xs:element name="name" type="ns4:StringBounded39" />
+            <xs:element name="reference" type="ns4:StringBounded256" />
+			<xs:element name="modificationType" type="xs:string" />
+            <xs:element name="currency" type="xs:string" />
+            <xs:element name="averagePrice" type="xs:double" />
+            <xs:element name="averageSpread" type="xs:double" />
+            <xs:element name="diffQuantity" type="xs:double" />
+            <xs:element name="quantity" type="xs:double" />
+            <xs:element name="securityFixing" type="xs:double" />
+            <xs:element name="forexFixing" type="xs:double" />
+            <xs:element name="currencyOrder" type="xs:int" />
+            <xs:element name="notional" type="xs:double" />
+            <xs:element name="realized" type="xs:double" />
+            <xs:element name="totalInterestValue" type="xs:double" />
+            <xs:element name="interestUnpaid" type="xs:double" />
+        </xs:sequence>
+    </xs:complexType>
+	<xs:element name="sph_otc_message" type="tns:SphOtcMessage"/>
+</xs:schema>

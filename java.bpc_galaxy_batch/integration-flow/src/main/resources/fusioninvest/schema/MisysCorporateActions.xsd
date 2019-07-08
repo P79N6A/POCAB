@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.sophis.net/MisysCorporateActions"
+			xmlns:mca="http://www.sophis.net/MisysCorporateActions"
+			xmlns:instr="http://www.sophis.net/Instrument"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified" attributeFormDefault="qualified">
+
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+	
+	<xsd:element name="CorporateAction" type="mca:CorporateAction_base"/>	
+	<xsd:element name="CA_Split" type="mca:CA_Split_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_Reverse_Split" type="mca:CA_ReverseSplit_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_SpinOff" type="mca:CA_SpinOff_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_DVCA" type="mca:CA_DVCA_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_DVCA_JP" type="mca:CA_DVCA_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_DVCA_Another_Currency" type="mca:CA_DVCA_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_StockDividend" type="mca:CA_StockDividend_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_DVOP" type="mca:CA_DVOP_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_Renaming" type="mca:CA_Renaming_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_SCRIP" type="mca:CA_SCRIP_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_DRIP" type="mca:CA_DRIP_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_ShareCapitalConsolidation" type="mca:CA_ShareCapitalConsolidation_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_ExchangeOffer" type="mca:CA_ExchangeOffer_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_ReturnOfCapital" type="mca:CA_ReturnOfCapital_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_MergerAcquisition" type="mca:CA_Merger_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_TenderOffer" type="mca:CA_TenderOffer_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_RightIssue" type="mca:CA_RightIssue_desc" substitutionGroup="mca:CorporateAction" />
+	<xsd:element name="CA_BonusRightIssue" type="mca:CA_RightIssue_desc" substitutionGroup="mca:CorporateAction" />
+
+	<xsd:complexType name="CorporateAction_base">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Base type extended by all custom Corporate Actions</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+	
+	<xsd:complexType name="CA_Split_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - SPLIT</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:SplitCorporateActionDetails_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:Split_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_ReverseSplit_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Reverse SPLIT</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:SplitCorporateActionDetails_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:ReverseSplit_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_SpinOff_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - SPIN OFF</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:CorporateActionDetails_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:SpinOff_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_DVCA_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:CorporateActionDetails_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:DVCA_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_ReturnOfCapital_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:ReturnOfCapital_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:ReturnOfCapital_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_SCRIP_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:SCRIP_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:SCRIP_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_StockDividend_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:StockDividend_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:StockDividend_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_DVOP_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:DVOP_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:DVOP_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_Renaming_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - RENAMING</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:Renaming_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:Renaming_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_ShareCapitalConsolidation_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Share Capital Consolidation </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:ShareCapitalConsolidation_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:ShareCapitalConsolidation_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_DRIP_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - DIVIDEND</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:DRIP_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:DRIP_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_ExchangeOffer_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Exchange Offer</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:ExchangeOffer_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:ExchangeOffer_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_Merger_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Merger and acquisition</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:Merger_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:Merger_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_TenderOffer_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Tender Offer</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:TenderOffer_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:TenderOffer_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CA_RightIssue_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Right Issue</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="mca:CorporateAction_base">
+				<xsd:all>
+					<xsd:element name="GeneralInformation" type="mca:GeneralInformation_desc" />
+					<xsd:element name="UnderlyingSecurities" type="mca:UnderlyingSecurities_desc" />
+					<xsd:element name="CorporateActionDetails" type="mca:RightIssue_Details_desc" />
+					<xsd:element name="CorporateActionOptions" type="mca:RightIssue_Options_desc" />
+				</xsd:all>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="GeneralInformation_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">General Information</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="References" type="instr:Identifier"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="UnderlyingSecurities_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Underlying Securities</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="References" type="instr:Identifier"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="SplitCorporateActionDetails_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Split Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:restriction base="mca:CorporateActionDetails_desc">
+				<xsd:all>
+					<xsd:element name="AnnouncementDate" type="xsd:date" minOccurs="0" nillable="true"/>
+					<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+					<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+					<xsd:element name="EffectiveDate" type="xsd:date" />
+					<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+					<xsd:element name="ImpactListedInstruments" type="mca:ImpactListed_desc" minOccurs="0" />
+				</xsd:all>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DVOP_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">DVOP Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="AnnouncementDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionStartDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionEndDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ImpactListedInstruments" type="mca:ImpactListed_desc" minOccurs="0" />
+			<xsd:element name="ConfirmationDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="Renaming_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Renaming Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="EffectiveDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="CorporateActionDetails_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="AnnouncementDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="EffectiveDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ConfirmationDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ImpactListedInstruments" type="mca:ImpactListed_desc" minOccurs="0" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="SCRIP_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">SCRIP Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="DRIP_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionStartDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionEndDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ResultDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="StockDividend_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Stock Dividend Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ShareCapitalConsolidation_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Share Capital Consolidation Details</xsd:documentation>
+		</xsd:annotation>   
+		<xsd:all>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="EffectiveDate" type="xsd:date" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="Merger_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Merger and acquisition details</xsd:documentation>
+		</xsd:annotation>   
+		<xsd:all>
+			<xsd:element name="EffectiveDate" type="xsd:date" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ExchangeOffer_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Exchange Offer Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionStartDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionEndDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="Result" type="mca:ResultType_desc" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="TenderOffer_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Tender Offer Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ElectionStartDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ElectionEndDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="ResultDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="Result" type="mca:ResultType_desc" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReturnOfCapital_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Return of Capital Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RecordDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="EffectiveDate" type="xsd:date" />
+			<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="RightIssue_Details_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Right Issue Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ExDate" type="xsd:date" minOccurs="0" nillable="true"/>
+			<xsd:element name="SubscriptionStartDate" minOccurs="0" type="xsd:date" />
+			<xsd:element name="SubscriptionEndDate" minOccurs="0" type="xsd:date" />
+			<xsd:element name="PaymentDate" minOccurs="0" type="xsd:date" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="Split_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Split Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc"/>
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReverseSplit_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Reverse Split Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RenamingList" type="mca:RenamingList_desc"/>
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc"/>
+			<xsd:element name="FractionalShares" type="mca:FractionalShares_desc" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="SpinOff_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ReferenceOfTheNewCompany" type="instr:Identifier" minOccurs="0" />
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" />
+			<xsd:element name="TicketPriceForTheNewShare" type="mca:TwoStates_desc" minOccurs="0" />
+			<xsd:element name="UnitPrice" type="mca:Price_desc" minOccurs="0" />
+			<xsd:element name="RoundingForFractionalShares" type="mca:Rounding_desc" minOccurs="0" />
+			<xsd:element name="CashInLieu" type="mca:CashInLieu_desc" minOccurs="0" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="DVCA_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="Dividend_Amount" type="xsd:double" />
+			<xsd:element name="Currency" type="instr:Currency" nillable="true" />
+			<xsd:element name="Exchange_Rate" type="xsd:double" minOccurs="0" nillable="true" />
+			<xsd:element name="DividendsInForeignCurrencies" type="mca:DividendsInForeignCurrencies_desc" minOccurs="0" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="Renaming_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Renaming" type="mca:Renaming_desc" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SCRIP_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">SCRIP Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="EntitlementDefinedByRatio" type="mca:EntitlementDefinedByRatio_desc" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="DRIP_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">DRIP Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CashDividend" type="mca:CashDividend_desc" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="DripDividend" type="mca:DripDividend_desc" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ReturnOfCapital_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">"CA to XML" description of a corporate action - Return of Capital</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ReturnOfCapitalAmount" type="mca:Price_desc" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+			<xsd:element name="ExchangeRate" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="StockDividend_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Stock Dividend Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="EntitlementDefinedByRatio" type="mca:EntitlementDefinedByRatio_desc" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="DVOP_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">DVOP Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CashDividends" type="mca:CashDividends_desc" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="ScripDividend" type="mca:ScripDividend_desc" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ShareCapitalConsolidation_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Share Capital Consolidation Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="RenamingList" type="mca:RenamingList_desc"/>
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc"/>
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+			<xsd:element name="FractionalShares" type="mca:FractionalShares_desc"/>
+			<xsd:element name="ReturnOfCash" type="mca:Price_desc"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ExchangeOffer_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Exchange Offer Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ExchangedShares" type="instr:Identifier" minOccurs="0" />
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" />
+			<xsd:element name="TicketPriceForTheOldShare" type="mca:TwoStates_desc" minOccurs="0" />
+			<xsd:element name="UnitPrice" type="mca:Price_desc" minOccurs="0" />
+			<xsd:element name="FractionalShares" type="mca:FractionalShares_desc" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="TenderOffer_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Tender Offer Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="PriceOffer" type="mca:Price_desc" minOccurs="0" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="Merger_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Merger and acquisition options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="ReferenceOfTheNewCompany" type="instr:Identifier" minOccurs="0" />
+			<xsd:element name="AcquiredCompanyUnavailable" type="mca:TwoStates_desc" minOccurs="0" />
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc"/>
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+			<xsd:element name="ClosingPriceForPurchasedCompany" type="mca:Price_desc"/>
+			<xsd:element name="Cash" type="mca:Price_desc"/>
+			<xsd:element name="FractionalShares" type="mca:FractionalShares_desc"/>
+			<xsd:element name="RenamingList" type="mca:RenamingList_desc" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="RightIssue_Options_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Right Issue options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="IssuedRight" type="mca:IssuedRight_desc" minOccurs="0" />
+			<xsd:element name="AdditionalShares" type="mca:AdditionalShares_desc" minOccurs="0" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="ScripDividend_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="Type" type="mca:ScripDividendType_desc" minOccurs="0" nillable="true" />
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" nillable="true" />
+			<xsd:element name="MarketValue" type="mca:Price_desc" minOccurs="0" nillable="true"/>
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/> 
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="DripDividend_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="Type" type="mca:DripDividendType_desc" minOccurs="0" nillable="true" />
+			<xsd:element name="ReinvestmentFixingDate" type="xsd:date" minOccurs="0" nillable="true" />
+			<xsd:element name="ReinvestmentPrice" type="mca:Price_desc" minOccurs="0" nillable="true" />
+			<xsd:element name="ReinvestmentPriceFinal" type="mca:TwoStates_desc" minOccurs="0" nillable="true" /> 
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" nillable="true" />
+			<xsd:element name="RFactor" type="xsd:double" minOccurs="0" nillable="true"/> 
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="EntitlementDefinedByRatio_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Options - DVOP options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="CashDividend_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="Amount" type="xsd:double" />
+			<xsd:element name="Currency" type="instr:Currency" minOccurs="0" nillable="true" />
+			<xsd:element name="ForexRate" type="xsd:double" minOccurs="0" nillable="true" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="CashDividends_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Corporate Action Details</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CashDividend" type="mca:CashDividend_desc" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Renaming_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">One renaming change</xsd:documentation>
+		</xsd:annotation>
+		<xsd:all>
+			<xsd:element name="NameChange" type="xsd:string" minOccurs="0" nillable="true" />
+			<xsd:element name="NewNameOfCompany" type="xsd:string" minOccurs="0" nillable="true" />
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="NewSharesForOldShares_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">New shares for Old shares</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NewShares" type="xsd:double" />
+			<xsd:element name="OldShares" type="xsd:double" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Price_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Cash Description</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Price" type="xsd:double" nillable="true"/>
+			<xsd:element name="Currency" type="instr:Currency" nillable="true" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CashInLieu_desc">
+		<xsd:complexContent>
+			<xsd:extension base="mca:Price_desc">
+				<xsd:sequence>
+					<xsd:element name="PaymentDate" type="xsd:date" minOccurs="0" nillable="true" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Rounding_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Method of rounding. Available methods are: Truncated, Upper, Rounded, Round. 4 digits.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Not Applicable" />
+			<xsd:enumeration value="Truncated" />
+			<xsd:enumeration value="Upper" />
+			<xsd:enumeration value="Rounded" />
+			<xsd:enumeration value="Round. 4 dgts" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ImpactListed_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Impact listed instruments</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="None"/>
+			<xsd:enumeration value="LotSize"/>
+			<xsd:enumeration value="NumberOfLots"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TwoStates_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Used for allowing or disallowing something</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Yes" />
+			<xsd:enumeration value="No" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="RenamingList_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of renaming changes</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Renaming" type="mca:Renaming_desc" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="FractionalShares_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">How fractional shares will be processed</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Mode" type="mca:FractionalSharesModes_desc" />
+			<xsd:element name="Options" type="mca:CashInLieu_desc" minOccurs="0" nillable="true" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="FractionalSharesModes_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Ways to impact fractional shares</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="CashedOutAtClosingPrice" />
+			<xsd:enumeration value="DefinedFromProceedSales" />
+			<xsd:enumeration value="RoundUpForFree" />
+			<xsd:enumeration value="RoundDown" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DripDividendType_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">SCRIP type: defined by ratio or by market value</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="None" />
+			<xsd:enumeration value="ByRatio" />
+			<xsd:enumeration value="ByPrice" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ScripDividendType_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">SCRIP type: defined by ratio or by market value</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="None" />
+			<xsd:enumeration value="ByRatio" />
+			<xsd:enumeration value="ByMarketValue" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ResultType_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Result type: Confirmed, Pending, Failed.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Pending" />
+			<xsd:enumeration value="Confirmed" />
+			<xsd:enumeration value="Failed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="DividendsInForeignCurrencies_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">How dividends with FOREX known later than the anouncement date will be processed</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Mode" type="mca:DividendsInForeignCurrenciesModes_desc" />
+			<xsd:element name="Options" type="mca:DividendsInForeignCurrenciesOptions_desc" minOccurs="0" nillable="true" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="DividendsInForeignCurrenciesModes_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Ways to generate tickets when the FOREX rate is known later than the anouncement date</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="DividendInStockCurrency" />
+			<xsd:enumeration value="EstimatedDividend" />
+			<xsd:enumeration value="FinalDividendAmount" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="DividendsInForeignCurrenciesOptions_desc">
+		<xsd:complexContent>
+			<xsd:extension base="mca:Price_desc">
+				<xsd:sequence>
+					<xsd:element name="ConfirmationDate" type="xsd:date" nillable="true" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="IssuedRight_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Information about the issued right</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="References" type="instr:Identifier" minOccurs="0"/>
+			<xsd:element name="RightUnavailable" type="mca:TwoStates_desc" minOccurs="0" />
+			<xsd:element name="Value" type="mca:Price_desc" minOccurs="0" />
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" />
+			<xsd:element name="FractionalShares" type="mca:FractionalShares_desc"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AdditionalShares_desc">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Information about the additional shares</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="References" type="instr:Identifier" minOccurs="0"/>		
+			<xsd:element name="NewSharesForOldShares" type="mca:NewSharesForOldShares_desc" minOccurs="0" />
+			<xsd:element name="SubscriptionPrice" type="mca:Price_desc" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

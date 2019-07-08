@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by BNP PARIBAS ASSURANCE (BNP PARIBAS ASSURANCE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<!--1.0 (31/07/2009, FTSAT ETL) - MàJ / correction automatique d'encodage vers ISO-8859-1 -->
+	<!--1.0 (11/05/2009/ FTSAT PWCT) - MàJ / correction automatique d'encodage vers ISO8859-1 -->
+	<!--INCLUDE à intégrer dans les pivots pour intégrer des les types simples et complexes -->
+	<xs:include schemaLocation="NormalisationComplexTypes.xsd"/>
+</xs:schema>

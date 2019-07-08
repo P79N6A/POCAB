@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="us-ascii" standalone="no"?>
+<xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.sophis.net/amBenchmarkComposition" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:folio="http://www.sophis.net/folio" xmlns:tns="http://www.sophis.net/amBenchmarkComposition" xmlns="http://www.sophis.net/amBenchmarkComposition" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd" />
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd" />
+  <xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd" />
+  <xsd:element name="composition" type="tns:Composition"></xsd:element>
+  <xsd:element name="cashComposition" type="tns:CashComposition" substitutionGroup="tns:composition" />
+  <xsd:element name="standardComposition" substitutionGroup="tns:composition" type="tns:StandardComposition"></xsd:element>
+  <xsd:element name="fixedIncomeComposition" substitutionGroup="tns:standardComposition" type="tns:FixedIncomeComposition"></xsd:element>
+  <xsd:element name="liabilityComposition" substitutionGroup="tns:fixedIncomeComposition" type="tns:LiabilityComposition"></xsd:element>
+  <xsd:element name="syntheticComposition" type="tns:SyntheticComposition" substitutionGroup="tns:composition" />
+  <xsd:element name="standardComponent" type="tns:StandardComponent" />
+  <xsd:element name="instrumentStdComponent" type="tns:InstrumentStdComponent" substitutionGroup="tns:standardComponent" />
+  <xsd:element name="cashStdComponent" type="tns:CashStdComponent" substitutionGroup="tns:standardComponent" />
+  <xsd:element name="portfolioStdComponent" type="tns:PortfolioStdComponent" substitutionGroup="tns:standardComponent" />
+  <xsd:element name="rebalancingPortfolioStdComponent" type="tns:RebalancingPortfolioStdComponent" substitutionGroup="tns:portfolioStdComponent" />
+  <xsd:element name="fxHedgeComponents" type ="tns:FXHedgeComponents" />
+  <xsd:element name="fxHedgeFXFwdComponents" type="tns:FXHedgeFXFwdComponents" substitutionGroup="tns:fxHedgeComponents" />
+  <xsd:element name="fxHedgeComponentsRecordHistory" type="tns:FXHedgeComponentsRecordHistory" />
+  <xsd:complexType name="Composition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The composition defines the way the benchmark will be broken down.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:complexType name="CashComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A Cash composition, also known as composite or bottom-up composition, is a flat, weighted collection of instruments and portfolios.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:Composition">
+        <xsd:sequence>
+          <xsd:element name="cashComponent" type="tns:CashComponent"  minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Cash Component.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="CashComponent">
+    <xsd:sequence>
+      <xsd:element name="currency" type="xsd:long">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">currency.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="quantity" type="xsd:double">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This is the persistent weight (not the drifted one). This weight is relative, not absolute; it determines a proportion over the sum of all component weights.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="StandardComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A standard composition, also known as composite or bottom-up composition, is a flat, weighted collection of instruments and portfolios.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:Composition">
+        <xsd:sequence>
+          <xsd:element name="useComponentsReturn" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies if the benchmark return should be computed from its components return. When set to false, the return is preferably computed from the benchmark history if possible. By default, it is false.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="includeCashSinceRecordStart" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies whether the coupons of fixed income instruments must be included into the cash.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="resize" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies whether the benchmark composition must be resized.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+		  <xsd:element name="resizingType" type="tns:ResizingType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies how the benchmark must be resized</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="weightType" type="tns:WeightType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the composition weight type (in NAV Weight, in Quantity).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="standardCompositionRecordHistory" type="tns:StandardCompositionRecordHistory">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Chronological records of the benchmark standard composition. Every record must refer to a different date.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="FixedIncomeComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A fixed income composition is a flat, weighted collection of bonds and cash instruments. It is a subtype of standard composition.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:StandardComposition">
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="LiabilityComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A liability composition is a flat, weighted collection of liability cash flow containers. It is a subtype of fixed income composition.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:FixedIncomeComposition">
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A synthetic composition, also known as top-down composition, is made of multiple criteria breakdowns. For instance, a synthetic composition can consist of one breakdown referring to criterion Currency, and another one referring to a Geographic Business Sector criterion. Each breakdown is a flat, weighted collection of criterion values.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:Composition">
+        <xsd:sequence>
+          <xsd:element name="useHedgedReturns" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies if the forex performance should be ignored for reference instruments return computation. By default, it is false.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="criterionForReturn" type="tns:StringBounded255" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Specifies the name of the breakdown to be used for return computations. The breakdown name is built as a concatenation of the breakdown criteria names. If not defined, no return can be computed.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="syntheticCompositionRecordHistory" type="tns:SyntheticCompositionRecordHistory">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Chronological records of the benchmark synthetic composition. Every record must refer to a different date.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="StandardCompositionRecordHistory">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The standard composition record history is a list of standard composition record. They are used to define the standard benchmark through time.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="standardCompositionRecord" type="tns:StandardCompositionRecord" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="StandardCompositionRecord">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The standard composition record defines the benchmark standard components for one given date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="recordDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Date the record accounts for.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:element name="standardComponents" type="tns:StandardComponents"/>
+        <xsd:element name="recordDateToCopy" type="tns:RecordDateReference">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Reference to another record already available at the time of update. This element is supported in update mode, not generated in description.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="StandardComponents">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The "standard components" is a list of standard components of the benchmark.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:standardComponent" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="StandardComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A standard component is a generic type of component. It defines weight, constraint and timeShift (not used yet). It has to be extended to define the "instrument" (instrument or portfolio).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="weight" type="xsd:double">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This is the persistent weight (not the drifted one). This weight is relative, not absolute; it determines a proportion over the sum of all component weights.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="constraint" type="tns:Constraint" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Constraint to apply when breaking down the component. For instance, if the component is an index, it is possible to discard some of its components according to a Business Sector criterion. By default, no constraint is applied. Please note that the use of such constraints comes with some restrictions depending on the component nature.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="timeShift" type="xsd:nonNegativeInteger" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Time offset to apply when valuating the component. It is measured as a positive number of days in the past. By default, it is zero. For the time being, this feature is not supported.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="InstrumentStdComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">An instrument std component defines a standard component and an instrument. (Instrument, Weight, Constraint, (timeshift))</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:StandardComponent">
+        <xsd:sequence>
+          <xsd:element name="instrument" type="instrument:Identifier">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Describes the instrument of the component. That instrument must already exist.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="CashStdComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A cash std component defines a standard component and a currency. (Currency, Weight, Constraint, (timeshift))</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:StandardComponent">
+        <xsd:sequence>
+          <xsd:element name="cash" type="instrument:Currency">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Describes the currency component. That currency must already exist.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="PortfolioStdComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">An portfolio std component defines a standard component and a portfolio. (Portfolio, Weight, Constraint, (timeshift))</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:StandardComponent">
+        <xsd:sequence>
+          <xsd:element name="portfolio" type="folio:FolioReference">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Describes the portfolio of the component. That portfolio must already exist, it will not be created on demand.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="RebalancingPortfolioStdComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">An rebalancing portfolio std component defines a portfolio standard component and a rebalancing portfolio (Reblancing Portfolio, Portfolio, Weight, Constraint, (timeshift)). This feature is used for the old rebalancing portfolios.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:PortfolioStdComponent" />
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name ="FXHedgeComposition">
+    <xsd:sequence>
+      <xsd:element name="fxHedgeComponentsRecordHistory" type="tns:FXHedgeComponentsRecordHistory"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="fxHedgeComposition" type="tns:FXHedgeComposition"></xsd:element>
+
+  <xsd:complexType name="FXHedgeComponentsRecordHistory">
+    <xsd:sequence>
+      <xsd:element name="fxHedgeComponentsRecord" minOccurs="0" maxOccurs="unbounded" type="tns:FXHedgeComponentsRecord"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FXHedgeComponentsRecord">
+    <xsd:sequence>
+      <xsd:element name="recordDate" type="xsd:date"/>
+      <xsd:element name="fxHedgeComponents" type="tns:FXHedgeComponents"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FXHedgeComponents"/>
+  <xsd:complexType name="FXHedgeFXFwdComponents">
+    <xsd:complexContent>
+      <xsd:extension base="tns:FXHedgeComponents">
+        <xsd:sequence>
+          <xsd:element name="expiryDate" type="xsd:date" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="fxHedgeFXFwdComponent" type="tns:FXHedgeFXFwdComponent" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="FXHedgeFXFwdComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Fx Forward Hedge Component</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="currency" type="xsd:long"/>
+      <xsd:element name="paidAmount" type="xsd:double"/>
+      <xsd:element name="receivedAmount" type="xsd:double"/>
+      <xsd:element name="fxForwardRate" type="xsd:double"/>
+      <xsd:element name="fxSpot" type="xsd:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Constraint">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Constraints applied to the benchmark breakdown</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Internal identifier of the constraint. If it is omitted, matching with an identical existing constraint will be attempted. If it is supplied, the constraint must already exist.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="name" type="tns:StringBounded255">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Name of the constraint. Its uniqueness is not imposed but recommended.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:element name="constraintFilter" type="tns:ConstraintFilter"/>
+        <xsd:sequence>
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Deprecated constraint filter format, used prior to version 5.1.2, kept for compatibility only.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:element name="criterionName" type="common:StringBounded39">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">Name of the criterion the constraint applies to.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="inclusionType" type="tns:InclusionType">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The inclusion type defines how the set of criterion values must be understood. For more complex constraints (e.g. exclude intervals of criterion values), it is possible to use bucketed criteria.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="criterionValues" type="tns:CriterionValues">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">For the time being, constraints with more than one criterion value are not supported.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CriterionValues">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The "Criterion Values" is a list of "criterion value". The criterion value is a value of a folio criterium (extraction criterion). </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="criterionValue" type="folio:Criterium" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionRecordHistory">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The synthetic composition record history is a list of synthetic composition record. They are used to define the synthetic benchmark through time.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="syntheticCompositionRecord" type="tns:SyntheticCompositionRecord" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionRecord">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The synthetic composition record defines the benchmark synthetic components for one given date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="recordDate" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Date the record accounts for.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:element name="syntheticCompositionBreakdowns" type="tns:SyntheticCompositionBreakdowns">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">List of available breakdowns.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="recordDateToCopy" type="tns:RecordDateReference">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">Reference to another record already available at the time of update. This element is supported in update mode, not generated in description.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionBreakdowns">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The synthetic composition breakdowns lists the synthetic composition breakdown. This is use to define the composition of the synthetic benchmark at a given date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="syntheticCompositionBreakdown" type="tns:SyntheticCompositionBreakdown" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionBreakdown">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">For the time being: the name and comments of a breakdown are hidden in GUI; breakdowns with more than one criterion are not supported; every breakdown must refer to a different criterion. The breakdown is a name, a comment, a criteria name and synthetic composition breakdown nodes.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="tns:StringBounded255" />
+      <xsd:element name="comments" type="tns:StringBounded255" minOccurs="0" />
+      <xsd:element name="criteriaNames" type="tns:CriteriaNames" />
+      <xsd:element name="syntheticCompositionBreakdownNodes" type="tns:SyntheticCompositionBreakdownNodes" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CriteriaNames">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The order of criteria matters to build the nodes hierarchy.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="criterionName" type="tns:StringBounded255" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionBreakdownNodes">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The "Synthetic Composition Breakdown Nodes" lists the Synthetic Composition Breakdown node, which are the elements of the synthetic benchmark.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="syntheticCompositionBreakdownNode" type="tns:SyntheticCompositionBreakdownNode" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SyntheticCompositionBreakdownNode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The Synthetic Composition Breakdown Node defines on element of the synthetic benchmark using criterion value, weight, duration, reference instrument.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="criterionValues" type="tns:CriterionValues" />
+      <xsd:element name="weight" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">This weight is relative, not absolute; it determines a proportion over the sum of all the component weights in the same criterion breakdown. Components with a null weight are ignored in basic breakdowns.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="duration" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The modified duration is used to compute the drifted weights and the CTMD breakdown of a synthetic benchmark. By default, it is zero and the component is ignored in CTMD breakdowns.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="referenceInstrument" type="instrument:Identifier" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Describes the reference instrument to be used as a representative of the criterion value. If specified, the instrument must exist.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extraColumns" type="tns:ExtraColumns" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Describes extra data for the extra columns that can be define (programmatically) in the breakdown.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ExtraColumns">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Describes extra data for the extra columns that can be define (programmatically) in the breakdown.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="extraColumn" type="tns:ExtraColumn" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ExtraColumn">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Describes extra data for the extra columns.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:double">
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ConstraintFilter">
+    <xsd:sequence>
+      <xsd:element name="criteriaFilter" type="xsd:normalizedString">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Formatted string that describes the criteria and criteria values involved in filtering.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="inclusionType" type="tns:InclusionType">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The inclusion type defines whether the constraint keeps all the instruments matching the filter, or on the contrary if it is keeping all instruments but those matching the filter.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RecordDateReference">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Reference for a composition record date. It can be an explicit date, or implicitly refer to a specific record date already available in the composition.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="explicitDate" type="xsd:date" minOccurs="1"/>
+      <xsd:element name="implicitDate" type="tns:ImplicitDate" minOccurs="1"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:simpleType name="ResizingType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specifies how the benchmark must be resized</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="ReferenceNAV" />
+      <xsd:enumeration value="HistoricalBenchmarkMarketValue" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="WeightType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specifies the composition weight type (in NAV Weight, in Quantity).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="quantity" type="xsd:double"/>
+      <xsd:element name="NAVweight" type="tns:NAVWeight"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="NAVWeight">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Weight in NAV.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:simpleType name="InclusionType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The inclusion type is an enumeration. Its values can be "Include only" or "Exclude". It is used to define benchmark constraints.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Include only" />
+      <xsd:enumeration value="Exclude" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="StringBounded255">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A stringbouded255 is a normalizedString with a restriction on the maximum length beeing 255</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:maxLength value="255" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ImplicitDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">An implicit date refers to a specific record date in a composition.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Latest">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Refers to the latest record date available in the composition.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

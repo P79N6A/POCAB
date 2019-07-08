@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:tns="http://www.sophis.net/dailyData" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" targetNamespace="http://www.sophis.net/dailyData" elementFormDefault="qualified" attributeFormDefault="qualified">
+  <xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+  <xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+
+  <xsd:element name="dailyDataHistory" type="tns:DailyDataHistory"/>
+  <xsd:element name="dailyDataExport" type="tns:DailyDataExport"/>
+
+  <xsd:complexType name="DailyDataValue">
+    <xsd:sequence>
+      <xsd:element name="valueDate" type="xsd:date"/>
+      <xsd:element name="valueMultisource" type="xsd:string"/>
+      <xsd:choice>
+        <xsd:element name="numericValue" type="xsd:double" nillable="true" minOccurs="0"/>
+        <xsd:element name="stringValue" type="xsd:string" nillable="true" minOccurs="0"/>
+        <xsd:element name="dateValue" type="xsd:date" nillable="true" minOccurs="0"/>
+      </xsd:choice>
+      <xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="forex" type="xsd:double" minOccurs="0">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DailyDataByInstrument">
+    <xsd:sequence>
+	  <xsd:choice>
+      <xsd:element name="identifier" type="instrument:Identifier"/>
+        <xsd:element name="currency" type="instrument:Currency"/>
+        <xsd:element name="quotedCurrencyPair" type="instrument:QuotedCurrencyPair"/>
+      </xsd:choice>
+      <xsd:sequence>
+        <xsd:element name="data" type="tns:DailyDataValue" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DailyDataHistory">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A list of Historical data per instrument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="dailyDataByInstrument" type="tns:DailyDataByInstrument" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+	<xsd:attributeGroup ref="common:PersistentEntity.model"/>
+  </xsd:complexType>
+
+  
+  <xsd:complexType name="DailyDataExport">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A list of Historical data per instrument (only for export via IS)</xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="identifier" type="instrument:Identifier"/>
+        <xsd:element name="currency" type="instrument:Currency"/>
+        <xsd:element name="quotedCurrencyPair" type="instrument:QuotedCurrencyPair"/>
+      </xsd:choice>
+	  <xsd:element name="Multisource" type="tns:MultiSourceName"/> 
+	  <xsd:element name="dateInterval" type="tns:DateInterval"/>
+	</xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="MultiSourceName">
+	<xsd:sequence>
+		<xsd:element name="SourceName" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="DateInterval">
+	<xsd:choice minOccurs="1" maxOccurs="2">
+		<xsd:element name="DateFrom" type="xsd:date"/>
+		<xsd:element name="DateTo" type="xsd:date"/>
+	</xsd:choice>
+  </xsd:complexType>
+  
+  
+  
+</xsd:schema>

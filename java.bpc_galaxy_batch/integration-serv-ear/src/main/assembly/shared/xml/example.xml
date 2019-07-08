@@ -1,0 +1,30 @@
+<?xml version = "1.0"?>
+<class xmlns = "http://www.tutorialspoint.com"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "example.xsd">
+
+    <client id = "001">
+        <firstname>Jon</firstname>
+        <lastname>Snow</lastname>
+        <email>jon.snow@gmail.com</email>
+        <phone>0675854689</phone>
+        <dept>019</dept>
+    </client>
+
+    <client id = "002">
+        <firstname>Daenerys</firstname>
+        <lastname>Targaryen</lastname>
+        <email>daenerys.targaryen@gmail.com</email>
+        <phone>0612345678</phone>
+        <dept>075</dept>
+    </client>
+
+    <client id = "003">
+        <firstname>Arya</firstname>
+        <lastname>Stark</lastname>
+        <email>arya.stark@gmail.com</email>
+        <phone>0668446893</phone>
+        <dept>092</dept>
+    </client>
+
+</class>

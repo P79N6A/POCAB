@@ -1,0 +1,1990 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:common="http://sophis.net/sophis/common" xmlns:instrument="http://www.sophis.net/Instrument" xmlns:party="http://www.sophis.net/party" xmlns:amBenchmarkComposition="http://www.sophis.net/amBenchmarkComposition" xmlns:folio="http://www.sophis.net/folio" xmlns:tns="http://www.sophis.net/fund" xmlns:dividend="http://www.sophis.net/dividend" targetNamespace="http://www.sophis.net/fund" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/party" schemaLocation="party.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/folio" schemaLocation="folio.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/dividend" schemaLocation="dividend.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/amBenchmarkComposition" schemaLocation="amBenchmarkComposition.xsd"/>
+	<xsd:element name="internalFund" type="tns:InternalFund" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="externalFund" type="tns:ExternalFund" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="fundClass" type="tns:FundClass" substitutionGroup="instrument:instrument"/>	
+	<xsd:element name="exchangeTradedFund" type="tns:ExchangeTradedFund" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="hedgeFund" type="tns:HedgeFund" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="hedgeFundClass" type="tns:HedgeFundClass" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="mutualFund" type="tns:MutualFund" substitutionGroup="instrument:instrument"/>
+	<xsd:element name="fee" type="tns:Fee"/>
+	<xsd:element name="fixedFee" type="tns:FixedFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="highWaterMarkFee" type="tns:HighWaterMarkFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="incentiveFee" type="tns:IncentiveFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="managementFee" type="tns:ManagementFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="partnershipFee" type="tns:PartnershipFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="provisionFee" type="tns:ProvisionFee" substitutionGroup="tns:fee"/>
+	<xsd:element name="excelFee" type="tns:ExcelFee" substitutionGroup="tns:fee"/>
+	<xsd:complexType name="InternalFund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The Internal Fund structure defines the fund portfolio that the asset managers work on.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fund">
+				<xsd:sequence>
+					<xsd:element name="portfolios" type="tns:Portfolios">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Portfolios.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="authorizedUsers" type="tns:AuthorizedUsers" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of the authorized users.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="primeBrokers" type="tns:PrimeBrokers" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of prime brokers with their cash accounts, as well as their instrument accounts. Used by cash reports and reconciliation.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fees" type="tns:Fees" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of fund fees computed during the End Of Day procedure.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="valuation" type="tns:Valuation" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the way the fund Net Asset Value is computed.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="businessPartnerships" type="tns:BusinessPartnerships" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of declared business partners and their formula for computation of the dedicated fee in subscriptions. The list of business partners is also used for the related EOD fees.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="navCalculationWorksheet" type="tns:StringBounded255" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Name of the Worksheet used for the process of NAV Calculation.Standard process if any.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="multiClasses" type="tns:MultiClasses" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">"Multi-classes parameters"</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="suspendedNavDates" type="tns:Custom" minOccurs="0"/>
+					<xsd:element name="additionalNavDates" type="tns:Custom" minOccurs="0"/>
+         					<xsd:element name="modellingData" type="tns:ModellingData" minOccurs="0"/>
+
+					<xsd:element name="lockDownDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>When the internal fund is locked down, the NAV cannot be changed on or before that lock down date.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="eodOffset" type="xsd:nonNegativeInteger" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Offset number of days (in the past) applied to the End of Day date to form the date that will used for the valuation process.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="administratorNAV" type="tns:AdministratorNAV" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Defines the NAV amounts on the official NAV dates.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="benchmarks" type="tns:Benchmarks" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Benchmarks tab</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="cashManagement" type="tns:CashManagement" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cash Management tab</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="investment" type="tns:Investment" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Relevant data on investment rules and investors.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ExternalFund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">External Funds are funds defined and managed outside of the application. They can however used as an instrument in a portfolio.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fund">
+				<xsd:sequence>
+					<xsd:element name="legalInformation" type="tns:LegalInformation" minOccurs="0"> 
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Standard information on the external fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="investment" type="tns:Investment" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Relevant data on investment rules and investors.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="structure" type="tns:Structure" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Structure data for the external fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fees" type="tns:ExtFundFees" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Fees data for the external fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lockUp" type="tns:LockUp" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the lock-up rules that apply to redemptions.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="sectorialComposition" type="tns:SectorialComposition" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the composition by sector of the external fund. The sum of all percentages must be 100.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="breakdown" type="tns:Breakdown" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="FundClass">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The fund class defines a class in a multi-class fund. The class has its own  fees definition, currency. We subscribe/redem directly in the class.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="instrument:Instrument">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="pricing" type="instrument:Pricing" />
+					<xsd:element name="multiClassFund" type="instrument:Underlyer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the multi-class fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>			
+					<xsd:element name="issueDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Issue date of the fund. It can be set in creation mode only.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="expiryDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Expiry date of the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="benchmark" type="instrument:Identifier" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the benchmark of the fund. Its currency must match the fund currency.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="initialNav" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Initial NAV per share.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="roundingMode" type="tns:RoundingMode" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Rounding mode for the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="decimals" type="xsd:short" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Number of decimals of a NAV.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="quotity" type="xsd:double" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Quotity.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					
+					<xsd:element name="hedgeTarget" type="xsd:double" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">HedgeTarget</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					
+					<xsd:element name="flagNbDecimals" type="xsd:boolean" minOccurs="0" default="false">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">FlagForNAVNbDecimals</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					
+					<xsd:element name="flagRounding" type="xsd:boolean" minOccurs="0" default="false">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">FlagForSRRoundingMode</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					
+					<xsd:element name="dividendList" type="dividend:DividendList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Dividend.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="srFees" type="tns:SrFees" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">S/R Fees.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fees" type="tns:Fees" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of fund fees computed during the End Of Day procedure.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="businessPartnerships" type="tns:BusinessPartnerships" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">List of declared business partners and their formula for computation of the dedicated fee in subscriptions. The list of business partners is also used for the related EOD fees.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="portfolios" type="tns:FundClassPortfolios">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Fund class portfolios.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>		
+	<xsd:complexType name="ExchangeTradedFund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">An exchange traded fund whose price depends on exchange traded constituents.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fund">
+				<xsd:sequence>
+					<xsd:element name="legalInformation" type="tns:LegalInformation">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Standard information on the external fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="misc" type="tns:Category" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Misc data on the external fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="breakdown" type="tns:Breakdown" minOccurs="0"/>
+          <xsd:element name="etfBeta" type="xsd:double" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">ETF Beta value (Benchmark related).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+            <xsd:element name="etfType" type="tns:ETFType" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">ETF Type (Physical/Synthetic).</xsd:documentation>
+              </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="HedgeFund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Hedge Funds are funds defined and managed outside of the application. They can however used as an instrument in a portfolio.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ExternalFund">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="HedgeFundClass">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Hedge Funds Class are funds defined and managed outside of the application. They can however used as an instrument in a portfolio.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="instrument:Instrument">
+				<xsd:sequence>
+				    <xsd:element minOccurs="0" name="pricing" type="instrument:Pricing" />
+					<xsd:element name="masterFund" type="instrument:Identifier" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the hedge fund of the class.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="navDates" type="tns:NavDates" minOccurs="0"/>
+					<xsd:element name="misc" type="tns:Category" minOccurs="0"/>
+					<xsd:element name="riskAndReturns" type="tns:RiskAndReturns" minOccurs="0"/>
+					<xsd:element name="investment" type="tns:Investment" minOccurs="0"/>
+					<xsd:element name="fees" type="tns:ExtFundFees" minOccurs="0"/>
+					<xsd:element name="lockUp" type="tns:LockUp" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="MutualFund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Mutual Funds are funds defined and managed outside of the application. They can however used as an instrument in a portfolio.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ExternalFund">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Fund">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">The complex type "fund" is an extension of the instrument type and used to define the basic features of a fond (external or internal)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="instrument:Instrument">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="pricing" type="instrument:Pricing" />
+					<xsd:element name="legalForm" type="tns:LegalForm" minOccurs="0"/>
+					<xsd:element name="issueDate" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Issue date of the fund. It can be set in creation mode only.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="expiryDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Expiry date of the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="benchmark" type="instrument:Identifier" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the benchmark of the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="initialNav" type="tns:NonNegativeDouble">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Initial NAV per share.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="roundingMode" type="tns:RoundingMode" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Rounding mode for the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="decimals" type="xsd:short" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Number of decimals of a NAV.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="quotity" type="xsd:double" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Quotity.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				    <xsd:element name="parity" type="xsd:double" minOccurs="0">
+					    <xsd:annotation>
+					        <xsd:documentation xml:lang="en">Parity.</xsd:documentation>
+					    </xsd:annotation>
+					</xsd:element>
+					<xsd:element name="guaranteedPerformance" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the percentage of the initial subscription value that is guaranteed at expiry to the shareholders.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="entity" type="party:PartyReference" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Entity that deals in the fund's name. Mandatory for internal funds.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="navDates" type="tns:NavDates" minOccurs="0"/>
+					<xsd:element name="srFees" type="tns:SrFees" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">S/R Fees.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="dividendList" type="dividend:DividendList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Dividend.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>					
+					<xsd:element name="parameters" type="tns:Parameters" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Describes the custom parameters you can attach to the fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="misc" type="tns:Category" minOccurs="0">
+						<xsd:annotation>
+						   <xsd:documentation xml:lang="en">Misc data on the  fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="riskAndReturns" type="tns:RiskAndReturns" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Risk and returns of the  fund.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					 <xsd:element name="FactorModel" type="xsd:string" minOccurs="0">
+					    <xsd:annotation>
+					        <xsd:documentation xml:lang="en">Factor Model associated to the fund Portfolio.</xsd:documentation>
+					    </xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LegalForm">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Legal form of the fund: SICAV, FCP, etc.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="tns:StringBounded40"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="NavDates">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Date of computation/publication of the official NAV. It may be daily, weekly or custom.</xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+		<xsd:choice>
+			<xsd:element name="daily" type="tns:Daily">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">NAV published every business day.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="weekly" type="tns:Weekly">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">NAV published every week day on a specific day.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="custom" type="tns:Custom">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">NAV published on specific days.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+		<xsd:element name="eodOffset" type="xsd:nonNegativeInteger" minOccurs="0">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					Offset number of days (in the past) applied to the End of Day date to form the date that will used for the valuation process.
+					This is specific to Internal Funds, so it was moved in InternalFund element. 
+					We keep this one for backward compatibility reasons. It should be moved in a major version.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+	</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Daily">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">NAV published every business day</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence/>
+	</xsd:complexType>
+	<xsd:complexType name="Weekly">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">NAV published every week day on a specific day</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="publishingDay" type="tns:PublishingDay">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Days of the week.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Custom">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">NAV published on specific days.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="customDate" type="xsd:date" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OfficialDate">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">An official NAV date with the corresponding NAV amount</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:date">
+				<xsd:attribute name="NAV" type="xsd:double" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="AdministratorNAV">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines the NAV amounts on the official NAV dates.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="officialDate" type="tns:OfficialDate" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="true">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					Used at import only. 
+					true = remove the existing entries for that fund. false = update the existing entries.
+					If missing it means true.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="suspendedNavDates" type="tns:Custom">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">NAV suspended Dates.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="additionalNavDates" type="tns:Custom">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">NAV additional Dates.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="Benchmarks">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">List of relevant benchmarks, with information pertaining to their association with the fund.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="benchmark" type="tns:Benchmark" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="true">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					Used at import only. 
+					true = remove the existing benchmarks for that fund. false = update the existing entries.
+					If missing it means true.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Benchmark">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Allows to identify a benchmark along with the role it has in its association with a fund.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="instrument:Identifier"/>
+			<xsd:element name="roleName" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					  <xsd:documentation xml:lang="en">
+						Used to identify the role of the benchmark. From version 7.2.4, benchmarks with no role attached are ignored.
+						A given benchmark role must not be specified more than once per fund.
+						</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>		
+	<xsd:complexType name="CashManagement">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Cash Management.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+      <xsd:element name="forexTargetPortfolio" type="folio:FolioReference" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Set in which portfolio newly created DOB forex order should be displayed</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="cashLimits" type="tns:CashLimits" minOccurs="0"/>
+      <xsd:element name="fundTargetPortfolio" type="folio:FolioReference" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Set in which portfolio newly created DOB fund order should be displayed</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="fundLimits" type="tns:FundLimits" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CashLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Cash limit list</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cashLimit" type="tns:CashLimit" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="FundLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Fund limit list</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fundLimit" type="tns:FundLimit" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="CashLimit">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Cash limit definition.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">The currency in which the fund cash limit is checked. If not specified, the limit concerns the total cash.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>			
+				<xsd:element name="totalCash" type="tns:Total" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">The total cash limit.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>	
+			<xsd:element name="minimumLimit" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="minimumLimitType" type="tns:CashLimitType" minOccurs="0"/>
+			<xsd:element name="maximumLimit" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="maximumLimitType" type="tns:CashLimitType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="Total">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines total limits.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>			
+	<xsd:complexType name="FundLimit">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Fund limit definition.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="fund" type="instrument:Identifier" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">The fund on which the fund cash limit is checked.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="totalPosition" type="tns:Total" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">The total fund limit.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="ranking" type="xsd:long"  minOccurs="1"/>
+			<xsd:element name="minimumLimit" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="minimumLimitType" type="tns:CashLimitType" minOccurs="0"/>
+			<xsd:element name="maximumLimit" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="maximumLimitType" type="tns:CashLimitType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SrFees">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the Subscription / Redemption fees for a given fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="internalSrFees" type="tns:SrFeesComposition" minOccurs="0"/>
+			<xsd:element name="externalSrFees" type="tns:SrFeesComposition" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SrFeesComposition">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">The configuration of fees can be different for subscriptions and redemptions.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="subscriptionFees" type="tns:SrFeesDetails" minOccurs="0"/>
+			<xsd:element name="redemptionFees" type="tns:SrFeesDetails" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SrFeesDetails">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Percentage and minimum amount.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="srPercentage" type="tns:BoundedPercentage" minOccurs="0"/>
+			<xsd:element name="minimumAmount" type="tns:NonNegativeDouble" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Parameters">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of parameters (Additionnal parameters that can be added to the fund definition)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="parameter" type="tns:Parameter" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Parameter">
+		<xsd:annotation>
+      <xsd:documentation xml:lang="en">Parameter name, value and comment as defined by the user.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="parameterName" type="tns:ParameterName"/>
+			<xsd:element name="parameterValue" type="xsd:double"/>
+			<xsd:element name="parameterComment" type="tns:ParameterComment" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Portfolios">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of reference portfolios for the fund definition (Cash Portfolio, S/R Portfolio, Fees Portfolio, Root Portfolio...)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="rootPortfolio" type="folio:FolioReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Root portfolio of the fund. It can be set in creation mode only. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cashPortfolio" type="folio:FolioReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Cash portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist. If not specified, a default 'Cash' portfolio is used, created under the mandatory root portfolio if necessary. The cash portfolio must be a sub-portfolio of the fund root portfolio.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+      			<xsd:element name="srPortfolio" type="folio:FolioReference" minOccurs="0">
+			        <xsd:annotation>
+				          <xsd:documentation xml:lang="en">S/R portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist. If not specified, a default 'S/R' portfolio is used, created under the mandatory root portfolio if necessary. The S/R portfolio must be a sub-portfolio of the fund root portfolio.</xsd:documentation>
+			        </xsd:annotation>
+			</xsd:element>     
+			<xsd:element name="feesPortfolio" type="folio:FolioReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fees portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist. If not specified, a default 'Fees' portfolio is used, created under the mandatory root portfolio if necessary.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fundUnderlying" type="instrument:Identifier" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Underlying of the root portfolio. Its currency must match the fund currency. It is ignored if a benchmark is supplied.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="administrator" type="party:PartyReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Administrator of the fund.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FundClassPortfolios">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the class specific portfolios (Hedging portfolio, specific portfolio, S/R portfolio, Fees portfolio).</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="hedgingPortfolio" type="folio:FolioReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Hedging portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="specificPortfolio" type="folio:FolioReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Specific portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+      			<xsd:element name="srPortfolio" type="folio:FolioReference" minOccurs="0">
+			        <xsd:annotation>
+				          <xsd:documentation xml:lang="en">S/R portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist.</xsd:documentation>
+			        </xsd:annotation>
+			</xsd:element>     
+			<xsd:element name="feesPortfolio" type="folio:FolioReference" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fees portfolio of the fund. The portfolio will be created from the full path name if not found. In that case, all parent portfolios must already exist.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AuthorizedUsers">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of users allowed to access the fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="user" type="tns:User" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="User">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">User references.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier of the user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userName" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userType" type="common:char" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of the user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PrimeBrokers">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List of prime brokers with their cash accounts, as well as their instrument accounts. Used by cash reports and reconciliation.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="primeBrokerData" type="tns:PrimeBrokerData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PrimeBrokerData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the data linked to the prime broker such as cash accounts, instrument accounts...</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="primeBroker" type="party:PartyReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identification of the prime broker.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cashAccounts" type="tns:CashAccounts" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Cash accounts defined for one prime broker. These accounts are not multi-currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="instrumentAccounts" type="tns:InstrumentAccounts" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Instrument accounts defined for one prime broker. These accounts are multi-currency.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CashAccounts">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Cash accounts defined for one prime broker. These accounts are not multi-currency</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="cashAccount" type="tns:CashAccount" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InstrumentAccounts">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Instrument accounts defined for one prime broker. These accounts are multi-currency.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instrumentAccount" type="tns:InstrumentAccount" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CashAccount">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Cash account defined. These accounts are not multi-currency.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="reference" type="tns:CashAccountReference"/>
+			<xsd:element name="interestRate" type="tns:InterestRate" minOccurs="0"/>
+			<xsd:element name="carveOutPortfolio" type="folio:FolioReference" minOccurs="0"/>
+			<xsd:element name="comments" type="tns:StringBounded255" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InstrumentAccount">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Instrument account defined. These accounts are multi-currency</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="reference" type="tns:InstrumentAccountReference"/>
+			<xsd:element name="comments" type="tns:StringBounded255" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CashAccountReference">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Data necessary to identify a cash account.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0">
+				<xsd:annotation>
+       					 <xsd:documentation xml:lang="en">Internal identifier of the account. It must not be specified for a fund creation. If specified during a fund update, then the account must exist. If not specified during a fund update, the first matching account is searched and modified if found. Search uses criteria: fund, prime broker, name and currency if specified. If no matching existing account is found, a new account is created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:normalizedString">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fund" type="instrument:Identifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">During fund update, it must match the fund being updated. If the fund is being created, however, this data is ignored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="primeBroker" type="party:PartyReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identification of the prime broker. During fund update, it must match the prime broker being updated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Currency of the account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InstrumentAccountReference">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Data necessary to identify an instrument account.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier of the account. It must not be specified for a fund creation. If specified during a fund update, then the account must exist. If not specified during a fund update, the first matching account is searched and modified if found. Search uses criteria: fund, prime broker and name. If no matching existing account is found, a new account is created.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:normalizedString">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the account.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fund" type="instrument:Identifier">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">During fund update, it must match the fund being updated. If the fund is being created, however, this data is ignored.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="primeBroker" type="party:PartyReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identification of the prime broker. During fund update, it must match the prime broker being updated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="InterestRate">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Interest rate description. Gives the rate, the short and long properties.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="rate" type="instrument:FloatingRate"/>
+			<xsd:element name="longMargin" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Long margin. Negative margin (percentage) applied to the rate when the balance is positive.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="longLimit" type="tns:NonNegativeDouble" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Long limit. Positive limit above which the long margin is applied on the account balance when that balance is long.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="shortMargin" type="xsd:double">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Short margin. Positive margin (percentage) applied to the rate when the balance is negative.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="shortLimit" type="tns:NonPositiveDouble" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Short limit. Negative limit under which the short margin is applied on the account balance when that balance is short.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="interestsOnTotalAmount" type="tns:InterestsOnTotalAmount" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Indicates in which cases the account balance is not affected by a limit: both, short only, long only, none.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+     			 <xsd:element name="paymentDate" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The interests are computed monthly. The user can choose a specific day in the month or the end of month.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultiClasses">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines the investment portfolios and the associated multi-class fund.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fundClassReferences" type="tns:FundClassReferences" minOccurs="0"/>
+			<xsd:element name="investmentFolio" type="folio:FolioReference" minOccurs="0"/>	
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FundClassReferences">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines a list of class fund references.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fundClass" type="instrument:Identifier" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<xsd:complexType name="ModellingData">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Describes parameters used for modelling.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="toleranceType" type="tns:ToleranceType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">The type of the model tolerance.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tolerance" type="tns:NonNegativeDouble" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+	<xsd:complexType name="BusinessPartnerships">
+    <xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines the business partners of the fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="businessPartnership" type="tns:BusinessPartnership" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BusinessPartnership">
+    <xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines a business partner including its name and a formula to compute fees to be payed to the partner</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="businessPartner" type="party:PartyReference">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifiers of the business partner.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="formula" type="tns:StringBounded1023" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Formula to compute the business partner fee in subscriptions.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fees">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">List all the common fees for the fund</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:fee" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="removeExisting" type="xsd:boolean" default="false">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					Used at import only. 
+					true = remove the existing fees for that fund. false = update the existing fees.
+					If missing it means false.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Fee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Define a fee using a start date, an end date, a computation order (Before / After GAV), a business event, a comment, accounting information and payment information</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="startDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fee start date. It must be after the fund issue date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="endDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fee end date. If defined, it must be before the fund expiry date.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="computationOrder" type="tns:FeesComputationOrder"/>
+			<xsd:element name="businessEvent" type="tns:BusinessEvent"/>
+			<xsd:element name="depositary" type="party:PartyReference" minOccurs="0"/>
+			<xsd:element name="counterparty" type="party:PartyReference" minOccurs="0"/>
+      			<xsd:element name="comments" type="common:StringBounded39" minOccurs="0"/>
+			<xsd:element name="accounting" type="tns:FeesAccounting" minOccurs="0"/>
+				<xsd:element name="formulaIdentifier" type="xsd:nonNegativeInteger" minOccurs="0"/>
+			<xsd:element name="payment" type="tns:FeesPayment"/>
+		</xsd:sequence>
+		<xsd:attribute name="customInfosId" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="FeesAccounting">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the accounting information of a fee in terms of periodicity, compounding and time basis.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="periodicity">
+			  <xsd:simpleType>
+			    <xsd:union memberTypes="tns:FeesAccountingPeriodicity xsd:integer"/>
+			  </xsd:simpleType>	
+			</xsd:element>
+			<xsd:element name="inAdvance" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="compounding" type="instrument:YieldCalculation" minOccurs="0"/>
+			<xsd:element name="timeBasis" type="instrument:DayCountBasis" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FeesPayment">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the payment preference of the fee (date : fixed or first date, offset, periodicity)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="fixedDate" type="tns:FeesFixedPaymentDate"/>
+				<xsd:element name="firstDate" type="xsd:date">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">The fee first payment date must be after the fee start date.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+			<xsd:element name="offset" type="common:AdjustableOrRelativeDate" minOccurs="0"/>
+			<xsd:element name="periodicity" minOccurs="0">
+			  <xsd:simpleType>
+			    <xsd:union memberTypes="tns:FeesPaymentPeriodicity xsd:nonNegativeInteger"/>
+			  </xsd:simpleType>	
+			</xsd:element>
+			<xsd:element name="inAdvance" type="xsd:boolean" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FixedFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines weither the fee is paid at the start of the next period or at the end of the current period.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:element name="amountPerDay" type="xsd:double"/>
+					<xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The fee currency. If not specified, it will be set to the fund currency.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="HighWaterMarkFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines fees of type High-Water Mark. This type of fees is a performance fee based on the highest peak in value that the fund has reached.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:element name="rate" type="tns:BoundedPercentage">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Percentage charged for the fund performance, if the fund performance is above the high watermark and above the hurdle.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="hurdle" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The value that the fund {GAV minus High Water Mark} must reach before fees are charged.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="initialHighWaterMark" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">High watermark value at the start date of the fee. If not specified, the fund issue NAV is used.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="withoutEqualization" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">If true, no equalization is performed on subscriptions and redemptions (they are created with an equalization credit of 0). By default, equalization is computed.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="IncentiveFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines fees of type Incentive. This type of fees is a performance fee relative to a benchmark (or reference instrument)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:element name="rate" type="tns:BoundedPercentage">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The fee percentage on the over-performance.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="percentage" type="tns:NonNegativeDouble">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Percentage used to adjust the benchmark performance.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="referenceInstrument" type="instrument:Identifier">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Reference instrument for performance benchmarking. It can be an interest rate.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ManagementFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines fees of type Management. This type of fees is based on the NAV or another indicator.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:element name="nav" type="tns:ManagementFeesNavType">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Type of NAV used to calculate the fee.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					            <xsd:element name="portfolioColumn" type="common:StringBounded39">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">Name of the portfolio column used to calculate the fee.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:choice>
+					<xsd:element name="rate" type="tns:BoundedPercentage">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Percentage of the fee, applicable on the fund value (NAV or portfolio column).</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rangeMin" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Lower limit on the fund value (NAV or portfolio column) for the fee to be charged.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rangeMax" type="tns:NonNegativeDouble" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Upper limit on the fund value (NAV or portfolio column) for the fee to be charged.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="PartnershipFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines fees of type Partnership. This type of fees is similar to a management fee but it is associated to a business partner who will benefit from the fee.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:ManagementFee">
+				<xsd:sequence>
+					<xsd:element name="businessPartner" type="party:PartyReference">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">Identifiers of the business partner who will benefit from the fee.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProvisionFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines fees of type Provision. This type of fees can be Increasing or Decreasing provision. An amount can be set (when can specify its currency)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:element name="provisionType" type="tns:ProvisionType"/>
+					<xsd:element name="amount" type="xsd:double"/>
+					<xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The fee currency. If not specified, it will be set to the fund currency.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ExcelFee">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines fees of type Provision. This type of fees can be Increasing or Decreasing provision. An amount can be set (when can specify its currency)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:Fee">
+				<xsd:sequence>
+					<xsd:element name="amount" type="xsd:double" minOccurs="0"/>
+					<xsd:element name="zoneNameSuffix" type="tns:ZoneNameSuffix" minOccurs="0"/>
+					<xsd:element name="currency" type="instrument:Currency" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">The fee currency. If not specified, it will be set to the fund currency.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Valuation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the preference for the valuation of the fund : Position Offset, S/R Offset, Mark P&amp;L Rule Set and Valuation Rules.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="positionOffset" type="xsd:nonNegativeInteger" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Offset number of days (in the past) applied to the End of Day date; the resulting date is used to determine the positions that are in the scope of the valuation process.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="srOffset" type="xsd:nonNegativeInteger" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Offset number of days (in the past) applied to the End of Day date; the resulting date is used to determine the Subscriptions / Redemptions that are in the scope of the valuation process.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fxFixing" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Forex fixing. Possible values: LAST,OPEN,HIGH,LOW plus all the values of the column NAME of the table NEW_HISTORY_COLUMN.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="markPnlRuleSet" type="tns:MarkPnlRuleSet" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Set of rules to use for the valuation of the fund positions during the End of Day procedure. If specified during a fund update, a failure occurs if no matching rule set could be found from the information supplied.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element name="valuationRules" type="tns:ValuationRules" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Valuation rules are described for information purposes only. Import is not supported. They can be defined outside the funds, through the End of Day rules manager, and through the Mark PnL configuration. Order is important.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ValuationRules">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines a list of Valuation Rules</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="valuationRule" type="tns:ValuationRule" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ValuationRule">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Valuation rules are described for information purposes only. Import is not supported. They can be defined outside the funds, through the End of Day rules manager, and through the Mark PnL configuration. Order is important.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:positiveInteger" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier of the Mark PnL rule pricing type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="tns:StringBounded255" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the Mark PnL rule pricing type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ruleId" type="xsd:nonNegativeInteger" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Identifier of the Mark PnL rule pricing type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ruleName" type="tns:StringBounded255" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the Mark PnL rule pricing type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="portfolio" type="folio:FolioReference" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Portfolio the rule applies to.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="allotmentFilter" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of allotment the valuation rule applies to.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="positionFilter" type="tns:PositionFilter" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of position the valuation rule applies to: short, long or both. If not supplied, 'both' is assumed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="instrumentTypeFilter" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of product the valuation rule applies to.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="instrumentFeature1" type="common:StringBounded39" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">First instrument feature filter.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="instrumentFeature2" type="common:StringBounded39" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Second instrument feature filter.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="currencyFilter" type="instrument:Currency" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Currency the valuation rule applies to. If not supplied, 'any' is assumed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="marketFilter" type="instrument:Market" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Market the valuation rule applies to. If not supplied, 'any' is assumed. It must not be specified when the currency has not been specified.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="databaseTable" type="common:StringBounded39" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Database where the fixing data must be fetched. If not supplied, the table used will be the history table specified in Value parameters.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		             <xsd:element name="fixing" type="common:StringBounded39" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Type of fixing for the rule, i.e. name of the history column used. If not supplied, 'Last' is assumed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fixingOffset" type="tns:FixingOffset" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Offset of the fixing in number of days in the past from the valuation date. If not specified, 0 - i.e. no offset or 'D' -  is assumed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="average" type="tns:FixingAverage" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FixingAverage">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Average used for valuation if specified. Direction and number of days from the fixing date.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="direction" type="tns:FixingAverageDirection" use="required"/>
+		<xsd:attribute name="range" type="tns:FixingAverageRange" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="LockUp">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines a time period and a lockup rule such as the period is time interval imposed by the fund between the inclusion of a subscription in the NAV and the date when it is possible to redeem it</xsd:documentation>
+    </xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="period" type="xsd:unsignedInt">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Time interval imposed by the fund between the inclusion of a subscription in the NAV and the date when it is possible to redeem it. It is a number of days.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lockUpRules" type="tns:LockUpRules"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="LockUpRules">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Time-ordered sequence of rules that define the periods and conditions to redeem a subscription. A typical sequence is made of a hard lock-up period followed by a soft one, then there is no lock-up at all. The last rule is implicitly an unlocked rule not bounded in time.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="lockUpRule" type="tns:LockUpRule" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LockUpRule">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">A lock-up rule applies to the time interval starting at the previous rule end date (inclusive; for the first rule it is the subscription date or 0), and ending at the rule own end date (exclusive).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="hard" type="tns:HardLockUpRule"/>
+			<xsd:element name="soft" type="tns:SoftLockUpRule"/>
+			<xsd:element name="unlocked" type="tns:UnlockedRule"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="HardLockUpRule">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines a period of time during which it is not possible to redeem a subscription.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="endDate" type="common:AdjustableOrRelativeDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SoftLockUpRule">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines a period of time during which it is possible to redeem a subscription by paying a lock-up fees.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="endDate" type="common:AdjustableOrRelativeDate"/>
+			<xsd:element name="feePercentage" type="tns:BoundedPercentage">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Percentage of the lock-up fee. It applies on the redemption gross amount.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="feeMinimumAmount" type="tns:NonNegativeDouble" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Minimal amount of the lock-up fee. The lock-up fee amount is never below this value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UnlockedRule">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Defines a period of time during which it is possible to redeem a subscription under no condition.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="endDate" type="common:AdjustableOrRelativeDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SectorialComposition">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the sectorial composition of an external fund. The is used to define the sectorial breakdown of an external fund. </xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sectorialComponent" type="tns:SectorialComponent" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SectorialComponent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the basic element of the sectorial composition. A sectorial component defines an Index associated to one sector. We also have additional data as the % (weight of the sector in the fund) and Beta.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sectorReference" type="tns:SectorReference"/>
+			<xsd:element name="percentage" type="tns:BoundedPercentage"/>
+			<xsd:element name="beta" type="tns:Beta" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SectorReference">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Sector identifiers for one provider. At least one of the sector identifiers must be supplied. Matching is performed in the order specified.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:unsignedInt" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="path" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">The path must start after the provider name and end with the sector name. Separator is ':'.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="code" type="instrument:StringBounded9" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Sector code uniqueness is not guaranteed. The first match will be retained.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+      			<xsd:element name="name" type="common:StringBounded39" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Sector name uniqueness is not guaranteed. The first match will be retained.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+    		<xsd:attribute name="provider" type="common:StringBounded39" use="required">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">In upper camel.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="BusinessEvent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines a Business Event. Business events list all the events that can occur during the lifecycle of instruments.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sophis" type="xsd:positiveInteger" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="tns:StringBounded255"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LegalInformation">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the legal information about an External fund : Third Parties (Custodian, Administrator, Prime Brokers), Financial Audit (Auditor Name, Last Audit Date, Financial Year-End) and Reporting (Frequency, Description).</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="thirdParties" type="tns:ThirdParties" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="financialAudit" type="tns:FinancialAudit" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="reporting" type="tns:Reporting" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ThirdParties">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">A type defining a legal entity or a subdivision of a legal entity</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="custodian" type="party:PartyReference" minOccurs="0"/>
+			<xsd:element name="administrator" type="party:PartyReference" minOccurs="0"/>
+			<xsd:element name="primeBrokers" type="tns:ExtFundPrimeBrokers" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExtFundPrimeBrokers">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the Prime Brokers of the external funds</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="primeBroker" type="party:PartyReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FinancialAudit">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the auditor, the last audit date and the financial year end. (for external funds)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="auditor" type="tns:StringBounded40"/>
+			<xsd:element name="lastAuditDate" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="yearEnd" type="tns:StringBounded40"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Reporting">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the reporting features : frequency of the reports and the description (for external funds)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="frequency" type="tns:Periodicity"/>
+			<xsd:element name="description" type="tns:StringBounded255"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Investment">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Relevant data on investment rules and investors.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="investmentRules" type="tns:Category"/>
+			<xsd:element name="investors" type="tns:Category"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RiskAndReturns">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Risk and returns of the external fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="returns" type="tns:Category"/>
+			<xsd:element name="risk" type="tns:Category"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Structure">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Structure data for the external fund. It contains informations (Name, Value, Description), top holdings (Reference, Name, Weight) and strategy / Sub strategy.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="information" type="tns:Category" minOccurs="0"/>
+			<xsd:element name="topHoldings" type="tns:TopHoldings" minOccurs="0"/>
+			<xsd:element name="strategy" type="tns:Strategy" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TopHoldings">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the top holdings within the external fund. It's defined by several positions.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="position" type="tns:Position" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Position">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines an instrument (reference, name) and a ranking.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="instrument" type="instrument:Identifier"/>
+			<xsd:element ref="tns:weight"/>
+		</xsd:sequence>
+		<xsd:attribute name="rank" type="xsd:integer" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Strategy">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines an investement strategy and a sub strategy. (Example : Equity Hedged / Equity Long-short)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="tns:StringBounded40"/>
+			<xsd:element name="subStrategyName" type="tns:StringBounded40"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExtFundFees">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the external fund fees (Performance Fee, Management Fee, Other Fees)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="performanceFee" type="tns:PerformanceFee" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="managementFee" type="tns:ExtFundManagementFee" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="otherFees" type="tns:Category" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PerformanceFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines performance fee of type high-water mark for an external fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="highWaterMark" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="hurdle" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="feeRate" type="xsd:double"/>
+			<xsd:element name="frequency" type="tns:Periodicity"/>
+			<xsd:element name="comment" type="tns:StringBounded255" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExtFundManagementFee">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines a fee of type management fee for an external fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="rebate" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="feeRate" type="xsd:double"/>
+			<xsd:element name="frequency" type="tns:Periodicity"/>
+			<xsd:element name="comment" type="tns:StringBounded255" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Category">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines additional external fund information for external fund.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="standardFields" type="tns:Fields" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="userDefinedFields" type="tns:Fields" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fields">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines a list of element of type "field".</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="field" type="tns:Field" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Field">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines one additional information on external fund with a description (string), a name (string) and either a double, a date or a time.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="text" type="tns:StringBounded255" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="double" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="date" type="common:AdjustableOrRelativeDate" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="time" type="xsd:time" minOccurs="0" maxOccurs="1"/>
+			</xsd:choice>
+			<xsd:element name="description" type="tns:StringBounded255" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="tns:StringBounded40" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Breakdown">
+	<xsd:sequence minOccurs="0" maxOccurs="unbounded">	
+     <xsd:choice>
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Specifies the type of breakdown composition, which can be Standard or Synthetic.</xsd:documentation>
+		</xsd:annotation>
+		 <xsd:element name="cashComposition" type="amBenchmarkComposition:CashComposition" >
+			<xsd:annotation>
+			  <xsd:documentation xml:lang="en">Specifies the Cash composition.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+		<xsd:element name="standardComposition" type="amBenchmarkComposition:StandardComposition">
+			<xsd:annotation>
+			  <xsd:documentation xml:lang="en">The composition is defined bottom-up by a list of instruments.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+		<xsd:element name="syntheticComposition" type="amBenchmarkComposition:SyntheticComposition">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">The composition is defined top-down by a list of weights for different criteria values. A criterion can be for example 'Currency' or 'Ratings'.</xsd:documentation>
+            </xsd:annotation>
+	    </xsd:element>
+     </xsd:choice>
+	</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="percent">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="tns:weight"/>
+			</xsd:sequence>
+			<xsd:attribute name="modelIndicator" use="required" form="qualified"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="weight" type="xsd:double"/>
+	<xsd:complexType name="MarkPnlRuleSet">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the Mark P&amp;L Rule Set to use for the calculation of the NAV</xsd:documentation>
+    </xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:positiveInteger" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Internal identifier of the rule set. When updating the fund, it takes precedence over the rule set name to find a matching existing rule set.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="tns:StringBounded255" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Name of the rule set. When updating the fund, if no rule set could be found from the internal identifier, the first rule set matching this name among those available in the user preferences model menu will be used.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="RoundingMode">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the the rounding restriction : upper, lower or nearest.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Upper"/>
+			<xsd:enumeration value="Lower"/>
+			<xsd:enumeration value="Nearest"/>
+			<xsd:enumeration value="Truncate"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+  <xsd:simpleType name="ToleranceType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the tolerance types.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Relative to deviation from model"/>
+      <xsd:enumeration value="Relative to total exposure"/>
+      <xsd:enumeration value="Absolute"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+	<xsd:simpleType name="InterestsOnTotalAmount">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Indicates in which cases the account balance is not affected by a limit: both, short only, long only, none</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Both"/>
+			<xsd:enumeration value="ShortOnly"/>
+			<xsd:enumeration value="LongOnly"/>
+			<xsd:enumeration value="None"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PublishingDay">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the day of publication of the NAV (Sunday, Monday...Saturday)</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Sunday"/>
+			<xsd:enumeration value="Monday"/>
+			<xsd:enumeration value="Tuesday"/>
+			<xsd:enumeration value="Wednesday"/>
+			<xsd:enumeration value="Thursday"/>
+			<xsd:enumeration value="Friday"/>
+			<xsd:enumeration value="Saturday"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ParameterName">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Define the name of a custom parameter</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="40"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ZoneNameSuffix">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Define the Excel worksheet zone name</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="39"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ParameterComment">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the comment of a custom parameter</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="80"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FeesAccountingPeriodicity">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines  the periodicity on which we generate fees tickets. The minimum periodicity is the NAV publication periodicity.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Each NAV date"/>
+			<xsd:enumeration value="Weekly"/>
+			<xsd:enumeration value="Bi-monthly"/>
+			<xsd:enumeration value="Monthly"/>
+			<xsd:enumeration value="Quarterly"/>
+			<xsd:enumeration value="Semi-annually"/>
+			<xsd:enumeration value="Annually"/>
+			<xsd:enumeration value="Final"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FeesPaymentPeriodicity">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the periodicity on which the fees are to be paid. The minimum periodicity is the Accounting Periodicity.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Same as accounting"/>
+			<xsd:enumeration value="Weekly"/>
+			<xsd:enumeration value="Bi-monthly"/>
+			<xsd:enumeration value="Monthly"/>
+			<xsd:enumeration value="Quarterly"/>
+			<xsd:enumeration value="Semi-annually"/>
+			<xsd:enumeration value="Annually"/>
+			<xsd:enumeration value="Final"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FeesComputationOrder">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines when the fees are computed : before the GAV computation or after the GAV computation.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Before GAV"/>
+			<xsd:enumeration value="After GAV"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FeesFixedPaymentDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the fixed payment date of the fees. The fees are paid either at the start of the next period or at the end of the current period.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Start of next period"/>
+			<xsd:enumeration value="End of current period"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ManagementFeesNavType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the NAV on which the management fees are being computed on the period. It's either at the period beginning, at the period end, an average value, or day to day.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Period beginning"/>
+			<xsd:enumeration value="Period end"/>
+			<xsd:enumeration value="Average"/>
+			<xsd:enumeration value="Day to day"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ProvisionType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the type of provision for provision fees. It's either Increasing provision fees or decreasing provision fees.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Increasing"/>
+			<xsd:enumeration value="Decreasing"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PositionFilter">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Type of position the valuation rule applies to: short, long or both. If not supplied, 'both' is assumed.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Both"/>
+			<xsd:enumeration value="Long"/>
+			<xsd:enumeration value="Short"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FixingOffset">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the Fixing Offset used for the valuation of the fund as a non negative Integer. It's the offset of the fixing in number of days in the past from the valuation date. If not specified, 0 - i.e. no offset or 'D' -  is assumed.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger">
+			<xsd:maxInclusive value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FixingAverageDirection">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Direction of the average used for valuation if specified.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Forward"/>
+			<xsd:enumeration value="Backward"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FixingAverageRange">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Range in number of days from the fixing date for the average used for valuation if specified.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:minInclusive value="2"/>
+			<xsd:maxInclusive value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Beta">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Number describing the relation of its returns with that of the financial market as a whole. Value between (exclusive) -100 and 100.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minExclusive value="-100"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="BoundedPercentage">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Percentage between (inclusive) 0 and 100.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringBounded40">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String of maximum length 40 characters.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="40"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringBounded255">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String of maximum length 255 characters.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="255"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StringBounded1023">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">String of maximum length 1023 characters.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:maxLength value="1023"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NonNegativeDouble">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Double with minimum value equals 0</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NonNullPositiveDouble">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Positive double with minimum of 0 excluded</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minExclusive value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NonPositiveDouble">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Double with maximum value equals 0</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:maxInclusive value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Periodicity">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the periodicity available : Undefined, weekly, bi-monthly, monthly, quarterly, semi-annually, annually, final.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Undefined"/><xsd:enumeration value="Weekly"/>
+			<xsd:enumeration value="Bi-monthly"/><xsd:enumeration value="Monthly"/>
+			<xsd:enumeration value="Quarterly"/>
+			<xsd:enumeration value="Semi-annually"/>
+			<xsd:enumeration value="Annually"/>
+			<xsd:enumeration value="Final"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ETFType">
+		<xsd:annotation>
+		  <xsd:documentation xml:lang="en">Defines the type for an ETF : Physical, Synthetic.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Physical"/>
+			<xsd:enumeration value="Synthetic"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CashLimitType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Defines the fund cash limit type : in percent or in amount.</xsd:documentation>
+    </xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Percent"/>
+			<xsd:enumeration value="Amount"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+</xsd:schema>

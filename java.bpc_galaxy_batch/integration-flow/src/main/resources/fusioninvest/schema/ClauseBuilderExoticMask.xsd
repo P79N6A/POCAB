@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" targetNamespace="http://www.sophis.net/ExoticMask" xmlns:tns="http://www.sophis.net/ExoticMask" xmlns:common="http://sophis.net/sophis/common" xmlns:sph="http://www.sophis.net/Instrument"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:import namespace="http://sophis.net/sophis/common" schemaLocation="common.xsd"/>
+	<xsd:import namespace="http://www.sophis.net/Instrument" schemaLocation="instrument.xsd"/>
+
+	<xsd:complexType name="WeddingCakeData">
+		<xsd:complexContent>
+			<xsd:extension base="sph:ExoticMaskBase">
+				<xsd:sequence>
+          <xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+          <xsd:element minOccurs="0" name="lowerLevelFrequency" type="common:AdjustableOrRelativeDate" />
+          <xsd:element name="weddingCakeType" type="tns:WeddingCakeType" />
+		  <xsd:element minOccurs="0" name="isUpContinuous" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="weddingCakeRanges" type="tns:WeddingCakeRanges">
+            <xsd:annotation>
+              <xsd:documentation>Wedding Cake Ranges</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="upperGeneratedDates" type="tns:GeneratedDates">
+            <xsd:annotation>
+              <xsd:documentation>Observation dates for standard Wedding Cake and upper barrier observation dates for Protected Wedding Cake</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="lowerGeneratedDates" type="tns:GeneratedDates">
+            <xsd:annotation>
+              <xsd:documentation> Lower barrier observation dates for Protected Wedding Cake</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="weddingCakeData" type="tns:WeddingCakeData" substitutionGroup="sph:exoticMaskBase"/>
+
+	<xsd:complexType name="RangeAccrualData">
+		<xsd:complexContent>
+			<xsd:extension base="sph:ExoticMaskBase">
+				<xsd:sequence>
+					<xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+          <xsd:element name="rangeType" type="tns:RangeAccrualType"/>
+          <xsd:element minOccurs="0" name="coupon" type="xsd:double"/>
+          <xsd:element minOccurs="0" name="minCoupon" type="xsd:double"/>
+          <xsd:element minOccurs="0" name="maxCoupon" type="xsd:double"/>
+          <xsd:element name="fixedCoupon" type="xsd:double"/>
+          <xsd:element name="nbOfPeriods" type="xsd:int"/>
+          <xsd:element name="lowerBarrierLevel" type="xsd:double"/>
+          <xsd:element name="upperBarrierLevel" type="xsd:double"/>
+          <xsd:element name="koIsChecked" type="xsd:boolean"/>
+          <xsd:element minOccurs="0" name="koBarrierLevel" type="xsd:double"/>
+          <xsd:element minOccurs="0" name="koFrequency" type="common:AdjustableOrRelativeDate"/>
+          <xsd:element name="kiIsChecked" type="xsd:boolean"/>
+          <xsd:element minOccurs="0" name="kiIntraday" type="xsd:boolean"/>
+          <xsd:element minOccurs="0" name="kiBarrierLevel" type="xsd:double"/>
+          <xsd:element minOccurs="0" name="kiFrequency" type="common:AdjustableOrRelativeDate"/>
+          <xsd:element minOccurs="0" name="conversionPrice" type="xsd:double"/>
+          <xsd:element minOccurs="0" name="isLastCoupon" type="xsd:boolean"/>
+          <xsd:element name="shiftDays" type="xsd:int"/>
+          <xsd:element name="weightedType" type="tns:WeightType"/>
+          <xsd:element minOccurs="0" name="generatedDates" type="tns:RangeAccrualGeneratedDates"/>
+		  <xsd:element minOccurs="0" name="weightingType" type="tns:WeightingType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="rangeAccrualData" type="tns:RangeAccrualData" substitutionGroup="sph:exoticMaskBase"/>
+
+	<xsd:complexType name="AutocallData">
+		<xsd:complexContent>
+			<xsd:extension base="sph:ExoticMaskBase">
+				<xsd:sequence>
+					<xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+					<xsd:element minOccurs="0" name="KIFrequency" type="common:AdjustableOrRelativeDate"/>
+					<xsd:element minOccurs="0" name="memoryFrequency" type="common:AdjustableOrRelativeDate"/>
+					<xsd:element name="couponType" type="tns:AutocallCouponType"/>
+					<xsd:element minOccurs="0" name="KOCoupon" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="KOAutocallLevel" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="KOFactor" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="KOPerfCap" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="KOPerfFloor" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="hasKI" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="KiIntraday" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="KIBarrierLevel" type="xsd:double"/>
+					<xsd:element name="payoffTypeKI" type="tns:AutocallPayoffType"/>
+					<xsd:element minOccurs="0" name="perfCapKI" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="perfFloorKI" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="factorKI" type="xsd:double"/>
+					<xsd:element name="payoffTypeNoKI" type="tns:AutocallPayoffType"/>
+					<xsd:element minOccurs="0" name="perfCapNoKI" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="perfFloorNoKI" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="factorNoKI" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="generatedDates" type="tns:AutocallGeneratedDates"/>
+					<xsd:element minOccurs="0" name="generateLastKO" type="xsd:boolean"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="autocallData" type="tns:AutocallData" substitutionGroup="sph:exoticMaskBase"/>
+	
+	<xsd:complexType name="SyntheticForwardData">
+		<xsd:complexContent>
+			<xsd:extension base="sph:ExoticMaskBase">
+				<xsd:sequence>
+					<xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+					<xsd:element name="settlementLag" type="xsd:int" />
+					<xsd:element name="contractType" type="tns:SyntheticFwdContractType" />
+					<xsd:element name="buyOrSell" type="tns:SyntheticFwdContractSide" />
+					<xsd:element name="strikeRate" type="xsd:double" />
+					<xsd:element name="leverageFactor" type="xsd:double" />
+					<xsd:element minOccurs="0" name="targetValue" type="xsd:double" />
+					<xsd:element minOccurs="0" name="mayExceedTarget" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="hasKO" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="KOStyle" type="tns:SyntheticFwdKOStyle" />
+					<xsd:element minOccurs="0" name="KOFrequency" type="common:AdjustableOrRelativeDate" />
+					<xsd:element minOccurs="0" name="KOUpperBarrier" type="xsd:double" />
+					<xsd:element minOccurs="0" name="KOLowerBarrier" type="xsd:double" />
+					<xsd:element minOccurs="0" name="hasKOTrigger" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="KOTriggerStrike" type="xsd:double" />
+					<xsd:element minOccurs="0" name="hasKOCap" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="KOCapStrike" type="xsd:double" />
+					<xsd:element minOccurs="0" name="hasPivot" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="pivotRate" type="xsd:double" />
+					<xsd:element minOccurs="0" name="buyStrikeRate" type="xsd:double" />
+					<xsd:element minOccurs="0" name="buyLeverageFactor" type="xsd:double" />
+					<xsd:element minOccurs="0" name="buyBarrierRate" type="xsd:double" />
+					<xsd:element minOccurs="0" name="sellStrikeRate" type="xsd:double" />
+					<xsd:element minOccurs="0" name="sellLeverageFactor" type="xsd:double" />
+					<xsd:element minOccurs="0" name="sellBarrierRate" type="xsd:double" />
+					<xsd:element minOccurs="0" name="generatedDates" type="tns:SynthFwdGeneratedDates" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="syntheticForwardData" type="tns:SyntheticForwardData" substitutionGroup="sph:exoticMaskBase"/>
+  
+	<xsd:complexType name ="MountainRangeData">
+		<xsd:complexContent>
+			<xsd:extension base="sph:ExoticMaskBase">
+				<xsd:sequence>
+					<xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+					<xsd:element name="mountainRangeType" type="tns:MountainRangeType" />
+					<xsd:element minOccurs="0" name="barrier" type="xsd:double">
+						<xsd:annotation>
+							<xsd:documentation>Barrier for Altiplano or Annapurna</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="isBarrierContinuous" type="xsd:boolean" />
+					<xsd:element minOccurs="0" name="coupon" type="xsd:double">
+						<xsd:annotation>
+							<xsd:documentation>Coupon for Altiplano or Step-up coupon for Annapurna</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="bestPerformersNb" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation>Number of best performers for Atlas</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="worstPerformersNb" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation>Number of worst performers for Atlas</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="strike" type="xsd:double">
+						<xsd:annotation>
+							<xsd:documentation>Strike for Everest or Himalaya</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="generatedDates" type="tns:GeneratedDates">
+						<xsd:annotation>
+							<xsd:documentation>Fixing Schedule</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="mountainRangeData" type="tns:MountainRangeData" substitutionGroup="sph:exoticMaskBase"/>
+
+  <xsd:complexType name ="CliquetData">
+    <xsd:complexContent>
+      <xsd:extension base="sph:ExoticMaskBase">
+        <xsd:sequence>
+          <xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+          <xsd:element name="settlementLag" type="xsd:int" />
+          <xsd:element name="localCap" type="xsd:double" />
+          <xsd:element name="localFloor" type="xsd:double" />
+          <xsd:element name="globalCap" type="xsd:double" />
+          <xsd:element name="globalFloor" type="xsd:double" />
+          <xsd:element name="notionalProtection" type="xsd:double" />
+          <xsd:element name="offset" type="xsd:double" />
+          <xsd:element name="gearing" type="xsd:double" />
+          <xsd:element name="lockIn" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="lockInList" type="tns:LockInList"/>
+          <xsd:element minOccurs="0" name="generatedDates" type="tns:CliquetGeneratedDates">
+            <xsd:annotation>
+              <xsd:documentation>Fixing Schedule</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="cliquetData" type="tns:CliquetData" substitutionGroup="sph:exoticMaskBase"/>
+
+  <xsd:complexType name ="AccumulatorData">
+    <xsd:complexContent>
+      <xsd:extension base="sph:ExoticMaskBase">
+        <xsd:sequence>
+          <xsd:element name="ScheduleComponent" type="tns:Scheduler"/>
+          <xsd:element name="settlementLag" type="xsd:int" />
+          <xsd:element name="accumulatorType" type="tns:AccumulatorType" />
+					 <xsd:element name="isInAbsolute" type="xsd:boolean" />
+          <xsd:element name="strike" type="xsd:double" />
+          <xsd:element name="callPutValue" type="xsd:double" />
+          <xsd:element name="nbOfSecurities" type="xsd:double" />
+          <xsd:element name="isKnockOut" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="knockOutBarrier" type="xsd:double" />
+          <xsd:element minOccurs="0" name="generatedDates" type="tns:AccumulatorGeneratedDates">
+            <xsd:annotation>
+              <xsd:documentation>Fixing Schedule</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="periodType" type="tns:AccumulatorPeriodType" />
+		  <xsd:element minOccurs="0" name="overlappingPeriods" type="xsd:boolean" />
+		</xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="accumulatorData" type="tns:AccumulatorData" substitutionGroup="sph:exoticMaskBase"/>
+
+
+	<xsd:complexType name="Scheduler">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Scheduler for Clause Builder Option Exotic Mask</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="observationFrequency" type="common:AdjustableOrRelativeDate"/>
+			<xsd:element minOccurs="0" name="firstRegularPeriodStartDate" type="common:AdjustableOrRelativeDate"/>
+			<xsd:element minOccurs="0" name="lastRegularPeriodEndDate" type="common:AdjustableOrRelativeDate"/>
+			<xsd:element minOccurs="0" name="businessDayConvention" type="sph:HolidayAdjustementEnum"/>
+			<xsd:element minOccurs="0" name="calendarsList" type="sph:CalendarsList"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="AutocallCouponType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify the autocall coupon type.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Fixed Coupon">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fixed Coupon Autocall.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Accumulated Coupon">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Accumulated Coupon Autocall</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Memory Coupon">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Memory Coupon Autocall</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="AutocallPayoffType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify the autocall payoff type (in case of Knock In or no Knock In).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Fixed Coupon">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Fixed rate</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Perf-indexed">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Performance with cap and floor</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Absolute Performance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Absolute performance with cap and floor</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Average Performance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Average performance with cap and floor</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+  <xsd:simpleType name="RangeAccrualType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the range accrual payoff type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Vanilla">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Vanilla range accrual</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Double Decker">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Double Decker range accrual</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="WeightType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the weighted type of business date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Weighted">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Weighted</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Unweighted">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Unweighted</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+    <xsd:simpleType name="WeightingType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the weighting type of business date.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Weight on Next Open Day">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Weight on Next Open Day</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Weight on Previous Open Day">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Weight on Previous Open Day</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+
+	<xsd:complexType name="GeneratedDate">
+		<xsd:sequence>
+			<xsd:element name="couponDate" type="xsd:date"/>
+			<xsd:element minOccurs="0" name="couponPayDate" type="xsd:date"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="GeneratedDates">
+		<xsd:sequence>
+		  <xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:GeneratedDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="AutocallGeneratedDate">
+		<xsd:complexContent>
+			<xsd:extension base="tns:GeneratedDate">
+				<xsd:sequence>
+					<xsd:element name="autocallLevel" type="xsd:double"/>
+					<xsd:element name="autocallCoupon" type="xsd:double"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="AutocallGeneratedDates">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:AutocallGeneratedDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="SynthFwdGeneratedDate">
+		<xsd:complexContent>
+			<xsd:extension base="tns:GeneratedDate">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="targetValue" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="strikeBuy" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="strikeSell" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="barrierBuy" type="xsd:double"/>
+					<xsd:element minOccurs="0" name="barrierSell" type="xsd:double"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SynthFwdGeneratedDates">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:SynthFwdGeneratedDate"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+  <xsd:complexType name="RangeAccrualGeneratedDate">
+    <xsd:sequence>
+      <xsd:element name="periodId" type="xsd:int"/>
+      <xsd:element name="startDate" type="xsd:date"/>
+      <xsd:element name="endDate" type="xsd:date"/>
+      <xsd:element minOccurs="0" name="observationDate" type="xsd:date"/>
+      <xsd:element name="settlementDate" type="xsd:date"/>
+      <xsd:element minOccurs="0" name="coupon" type="xsd:double"/>
+      <xsd:element minOccurs="0" name="maxCoupon" type="xsd:double"/>
+      <xsd:element minOccurs="0" name="minCoupon" type="xsd:double"/>
+      <xsd:element name="upperLevel" type="xsd:double"/>
+      <xsd:element name="lowerLevel" type="xsd:double"/>
+      <xsd:element name="barrierlevel" type="xsd:double"/>
+      <xsd:element minOccurs="0" name="nbBusinessDays" type="xsd:int"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="RangeAccrualGeneratedDates">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:RangeAccrualGeneratedDate"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+
+	<xsd:simpleType name="SyntheticFwdContractType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify the contract type for synthetic forward product.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Vanilla">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">FX Synthetic Forward Contract</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Target Redemption">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">FX Target Redemption Contract</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SyntheticFwdContractSide">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify if the synthetic forward is a purchase or a sell contract.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Buy">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Synthetic Forward is a Purchase Contract</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Sell">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Synthetic Forward is a Sell Contract</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="SyntheticFwdKOStyle">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify if the Knock Out check is done at specific dates or during specific periods.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="European">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Knock Out check done at specific dates</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="American">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Knock Out check done during specific periods</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="MountainRangeType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Specify the Mountain Range type</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString">
+			<xsd:enumeration value="Altiplano">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Altiplano type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Annapurna">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Annapurna type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Atlas">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Atlas type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Everest">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Everest type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Himalaya">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">Himalaya type</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+  <xsd:simpleType name="WeddingCakeType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the Wedding Cake type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Standard">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Standard type : same observation dates for upper and lower boundaries</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Protected">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">Protected type : distinct observation dates for upper and lower boundaries</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="WeddingCakeRange">
+    <xsd:sequence>
+      <xsd:element name="coupon" type="xsd:double"/>
+      <xsd:element name="lowerBoundary" type="xsd:double"/>
+      <xsd:element name="upperBoundary" type="xsd:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="WeddingCakeRanges">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="weddingCakeRange" type="tns:WeddingCakeRange"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="CliquetGeneratedDate">
+    <xsd:sequence>
+      <xsd:element name="startDate" type="xsd:date"/>
+      <xsd:element name="endDate" type="xsd:date"/>
+      <xsd:element name="localFloor" type="xsd:double"/>
+      <xsd:element name="localCap" type="xsd:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="CliquetGeneratedDates">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:CliquetGeneratedDate"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="LockInElement">
+    <xsd:sequence>
+      <xsd:element name="barrierId" type="xsd:int"/>
+      <xsd:element name="level" type="xsd:double"/>
+      <xsd:element name="fixedCoupon" type="xsd:double"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="LockInList">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="lockIn" type="tns:LockInElement"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="AccumulatorType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the Accumulator type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="Accumulator">
+      </xsd:enumeration>
+      <xsd:enumeration value="Decumulator">
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="AccumulatorPeriodType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Specify the Accumulator Period type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:normalizedString">
+      <xsd:enumeration value="FELI">
+      </xsd:enumeration>
+      <xsd:enumeration value="FILE">
+      </xsd:enumeration>
+	  <xsd:enumeration value="FILI">
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="AccumulatorGeneratedDate">
+    <xsd:sequence>
+      <xsd:element name="periodId" type="xsd:int"/>
+      <xsd:element name="startDate" type="xsd:date"/>
+      <xsd:element name="endDate" type="xsd:date"/>
+      <xsd:element name="settlementDate" type="xsd:date"/>
+      <xsd:element name="nbBusinessDays" type="xsd:int"/>
+      <xsd:element name="isGuaranteed" type="xsd:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="AccumulatorGeneratedDates">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="generatedDate" type="tns:AccumulatorGeneratedDate"/>
+    </xsd:sequence>
+  </xsd:complexType>
+	
+</xsd:schema>
