@@ -13,5 +13,41 @@
     "target":"http://localhost:10000",
     "secure": false,
     "logLevel":"debug"
+  },
+  "/JobInstance/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/ViewsConfiguration/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/socket/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/download/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/JobPlan/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/JobSetting/*": {
+    "target": "http://localhost:10000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }
